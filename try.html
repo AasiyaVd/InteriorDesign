@@ -14,17 +14,16 @@
 
     /* Container with background image */
     .hero {
-      min-height: 100vh;               /* full viewport height */
-      background-image: url("bg.jpg"); /* replace path */
-      background-size: cover;          /* fill while keeping aspect ratio */
-      background-position: center;     /* center the image */
-      background-repeat: no-repeat;
-      /* background-attachment: fixed;  <-- optional, creates parallax on desktop (avoid on mobile) */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+       height: 100vh;
+  width: 100%;
+  background-image: url('logo2.jpg'); /* replace with your image path */
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain; /* keeps HD details, no stretch */
+  background-color: #120000; /* fills around edges gracefully */
+  background-attachment: fixed; /* gives elegant depth on scroll */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
     }
 
     /* Optional: add a subtle overlay for text readability */
@@ -54,7 +53,6 @@
 <body>
   <section class="hero">
     <div class="hero-content">
-      <img src="final_logo1.png" style="border-radius: 100px;">
     </div>
   </section>
 </body>
