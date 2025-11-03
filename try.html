@@ -3,58 +3,69 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Background Image Fullscreen</title>
+  <title>La Obsidiané</title>
 
   <style>
-    /* Make page take full height and remove default gaps */
+    /* Reset & fullscreen setup */
     html, body {
       height: 100%;
       margin: 0;
+      overflow: hidden;
+      background: radial-gradient(circle, #4B000C 0%, #2C0008 50%, #0C0002 100%);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: 'Playfair Display', serif;
     }
 
-    /* Container with background image */
+    /* Hero section */
     .hero {
-       height: 100vh;
-  width: 100%;
-  background-image: url('final_logo1.jpg'); /* replace with your image path */
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain; /* keeps HD details, no stretch */
-  background-color: #120000; /* fills around edges gracefully */
-  background-attachment: fixed; /* gives elegant depth on scroll */
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-    }
-
-    /* Optional: add a subtle overlay for text readability */
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.25); /* tweak opacity/color */
-      pointer-events: none;
-    }
-
-    /* content inside hero */
-    .hero-content {
-      position: relative; /* sits above overlay */
-      z-index: 1;
-      padding: 2rem;
-      max-width: 1000px;
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
       text-align: center;
+      color: #d8c18a;
+      padding-top: 100px; /* adjust vertical position of logo */
+      box-sizing: border-box;
     }
 
-    /* Responsive tweaks */
-    @media (max-width: 480px){
-      .hero-content { padding: 1rem; font-size: 0.95rem; }
+    .hero img {
+      width: 600px;
+      height: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin: 0;
+      letter-spacing: 2px;
+      color: #d8c18a;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #f6f1eb;
+      opacity: 0.9;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding-top: 60px;
+      }
+      .hero img { width: 160px; }
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 1rem; }
     }
   </style>
 </head>
 <body>
   <section class="hero">
-    <div class="hero-content">
-      <img src="final_logo1.png" style="border-radius: 100px;">
-    </div>
+    <img src="pixelcut-export.png" alt="La Obsidiané Logo">
   </section>
 </body>
 </html>
