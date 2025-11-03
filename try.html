@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Background Image Fullscreen</title>
+
+  <style>
+    /* Make page take full height and remove default gaps */
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    /* Container with background image */
+    .hero {
+      min-height: 100vh;               /* full viewport height */
+      background-image: url("logo.jpg"); /* replace path */
+      background-size: cover;          /* fill while keeping aspect ratio */
+      background-position: center;     /* center the image */
+      background-repeat: no-repeat;
+      /* background-attachment: fixed;  <-- optional, creates parallax on desktop (avoid on mobile) */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+
+    /* Optional: add a subtle overlay for text readability */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.25); /* tweak opacity/color */
+      pointer-events: none;
+    }
+
+    /* content inside hero */
+    .hero-content {
+      position: relative; /* sits above overlay */
+      z-index: 1;
+      padding: 2rem;
+      max-width: 1000px;
+      text-align: center;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 480px){
+      .hero-content { padding: 1rem; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-content">
+    </div>
+  </section>
+</body>
+</html>
