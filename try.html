@@ -61,48 +61,62 @@
       .hero h1 { font-size: 2rem; }
       .hero p { font-size: 1rem; }
     }
-   .logo-container {
+.logo-container {
   position: relative;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: min(30vw, 180px); /* responsive size - scales but has a max limit */
+  margin: 0 auto;
+  margin-top: -10vh;
 }
 
 .logo {
-  width: 150px;
+  width: 100%;
+  height: auto;
   display: block;
-  margin: 0 auto;
-  margin-top: -15vh;
   position: relative;
-  z-index: 2; /* ensure it sits above glow */
-
-  filter:
-  
- 
-    drop-shadow(0 0 25px rgba(0, 0, 0, 0.8));     /* depth shadow */
+  z-index: 2; /* keeps it above the glow */
+  filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.8)); /* depth shadow */
 }
 
 /* gold glow centered around the stone */
 .logo-container::after {
   content: "";
   position: absolute;
-  top: 32%;     /* adjust this to match the stone’s vertical position */
-  left: 50%;    /* center horizontally */
+  top: 42%;        /* centers vertically */
+  left: 50%;       /* centers horizontally */
   transform: translate(-50%, -50%);
-  width: 40px;  /* size of the glow */
-  height: 70px;
-  border-radius: 50%; /* make it circular */
+  width: 45%;      /* proportional to logo width */
+  height: 35%;
+  border-radius: 50%;
   background: radial-gradient(
     circle,
     rgba(165, 140, 1, 0.8) 0%,
     rgba(148, 104, 1, 0.4) 40%,
     rgba(255, 140, 0, 0) 70%
   );
-  filter: blur(15px);
+  filter: blur(18px);
   z-index: 1;
+  pointer-events: none; /* ensures no interference */
 
-  filter:
-    drop-shadow(0 0 10px rgba(255, 215, 0, 0.8))   /* fine gold edge */
-    drop-shadow(0 0 12px rgba(255, 215, 0, 0.6))  /* softer glow */
-    drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));     /* faint outer dark shadow */
+  /* layered golden shadows for realistic depth */
+  box-shadow:
+    0 0 8px rgba(255, 215, 0, 0.8),
+    0 0 16px rgba(255, 215, 0, 0.6),
+    0 0 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Optional fine-tuning for smaller screens */
+@media (max-width: 600px) {
+  .logo-container {
+    width: min(45vw, 140px);
+    margin-top: -8vh;
+  }
+  .logo-container::after {
+    width: 50%;
+    height: 40%;
+  }
 }
     
   </style>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>La Obsidiané</title>
+
+  <style>
+    /* Reset + background */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: radial-gradient(circle, #3b010b 0%, #240007 50%, #0C0002 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Container to center logo + glow */
+    .logo-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeInOut 4s ease-in-out forwards;
+    }
+
+    /* Logo styling */
+    .logo {
+      width: min(35vw, 200px);
+      height: auto;
+      z-index: 2;
+      filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.8));
+      animation: popIn 2s ease-out;
+    }
+
+    /* Gold glow fixed to logo center */
+    .logo-container::after {
+      content: "";
+      position: absolute;
+      width: 40%;
+      aspect-ratio: 1 / 1;
+      background: radial-gradient(
+        circle,
+        rgba(165, 140, 1, 0.8) 0%,
+        rgba(148, 104, 1, 0.4) 40%,
+        rgba(255, 140, 0, 0) 70%
+      );
+      filter: blur(18px);
+      z-index: 1;
+      transform: translateY(4%);
+      animation: goldPulse 3s ease-in-out infinite;
+    }
+
+    /* Fade In → Fade Out animation */
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: scale(0.9); }
+      20% { opacity: 1; transform: scale(1); }
+      80% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.05); }
+    }
+
+    /* Subtle logo pop */
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Gold pulse (for stone glow) */
+    @keyframes goldPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="logo-container">
+    <img src="pixelcut-export.png" class="logo" alt="La Obsidiané">
+  </div>
+
+  <script>
+    // Redirect to home page after animation (3.5s)
+    setTimeout(() => {
+      window.location.href = "home.html"; // change this to your actual page
+    }, 3500);
