@@ -11,7 +11,7 @@
       height: 100%;
       margin: 0;
       overflow: hidden;
-      background: radial-gradient(circle, #4B000C 0%, #2C0008 50%, #0C0002 100%);
+      background: radial-gradient(circle, #3b010b 0%, #240007 50%, #0C0002 100%);
       background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
@@ -61,11 +61,57 @@
       .hero h1 { font-size: 2rem; }
       .hero p { font-size: 1rem; }
     }
+   .logo-container {
+  position: relative;
+  display: inline-block;
+}
+
+.logo {
+  width: 150px;
+  display: block;
+  margin: 0 auto;
+  margin-top: -15vh;
+  position: relative;
+  z-index: 2; /* ensure it sits above glow */
+
+  filter:
+  
+ 
+    drop-shadow(0 0 25px rgba(0, 0, 0, 0.8));     /* depth shadow */
+}
+
+/* gold glow centered around the stone */
+.logo-container::after {
+  content: "";
+  position: absolute;
+  top: 32%;     /* adjust this to match the stone’s vertical position */
+  left: 50%;    /* center horizontally */
+  transform: translate(-50%, -50%);
+  width: 40px;  /* size of the glow */
+  height: 70px;
+  border-radius: 50%; /* make it circular */
+  background: radial-gradient(
+    circle,
+    rgba(165, 140, 1, 0.8) 0%,
+    rgba(148, 104, 1, 0.4) 40%,
+    rgba(255, 140, 0, 0) 70%
+  );
+  filter: blur(15px);
+  z-index: 1;
+
+  filter:
+    drop-shadow(0 0 10px rgba(255, 215, 0, 0.8))   /* fine gold edge */
+    drop-shadow(0 0 12px rgba(255, 215, 0, 0.6))  /* softer glow */
+    drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));     /* faint outer dark shadow */
+}
+    
   </style>
 </head>
 <body>
   <section class="hero">
-    <img src="pixelcut-export.png" alt="La Obsidiané Logo">
+    <div class="logo-container">
+    <img src="pixelcut-export.png" class="logo">
+  </div>
   </section>
 </body>
 </html>
