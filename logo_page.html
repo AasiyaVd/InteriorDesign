@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>La Obsidiané</title>
+
+  <style>
+    /* Reset & fullscreen setup */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: radial-gradient(circle, #3b010b 0%, #240007 50%, #0C0002 100%);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Hero section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      color: #d8c18a;
+      padding-top: 100px; /* adjust vertical position of logo */
+      box-sizing: border-box;
+    }
+
+    .hero img {
+      width: 600px;
+      height: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin: 0;
+      letter-spacing: 2px;
+      color: #d8c18a;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #f6f1eb;
+      opacity: 0.9;
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding-top: 60px;
+      }
+      .hero img { width: 160px; }
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 1rem; }
+    }
+.logo-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: min(30vw, 180px); /* responsive scaling */
+  margin: 0 auto;
+
+  /* Center vertically in viewport */
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logo {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.8));
+}
+
+/* gold glow centered around the stone */
+.logo-container::after {
+  content: "";
+  position: absolute;
+  top: 42%;       
+  left: 50%;      
+  transform: translate(-50%, -50%);
+  width: 30%;
+  height: 25%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(165, 140, 1, 0.8) 0%,
+    rgba(148, 104, 1, 0.4) 40%,
+    rgba(255, 140, 0, 0) 70%
+  );
+  filter: blur(15px);
+  z-index: 1;
+  pointer-events: none;
+
+  box-shadow:
+    0 0 8px rgba(255, 215, 0, 0.8),
+    0 0 16px rgba(255, 215, 0, 0.6),
+    0 0 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Optional fine-tuning for smaller screens */
+@media (max-width: 600px) {
+  .logo-container {
+    width: min(45vw, 140px);
+  }
+  .logo-container::after {
+    width: 50%;
+    height: 40%;
+  }
+}
+
+
+/* Optional fine-tuning for smaller screens */
+@media (max-width: 600px) {
+  .logo-container {
+    width: min(45vw, 140px);
+    margin-top: -8vh;
+  }
+  .logo-container::after {
+    width: 50%;
+    height: 40%;
+  }
+}
+    
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="logo-container">
+    <img src="pixelcut-export.png" class="logo">
+  </div>
+  </section>
+</body>
+</html>
