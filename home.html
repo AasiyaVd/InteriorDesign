@@ -4,13 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Boca do Lobo Style Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: "Playfair Display", serif;
@@ -20,67 +17,91 @@
     }
 
     /* NAVBAR */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start; /* keep on left side */
-  align-items: center;
-  gap: 60px; /* space between crown & label */
-  padding: 15px 60px; /* moved slightly inward */
-  background: none;
-  color: black;
-  z-index: 1000;
-  transition: background 0.4s ease, padding 0.3s ease, gap 0.3s ease;
-}
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 15px 60px;
+      background: none;
+      color: black;
+      z-index: 1000;
+      transition: background 0.4s ease, padding 0.3s ease;
+      gap: 0; /* we'll control gap inside logo-group */
+    }
 
-.navbar.scrolled {
-  background: #4b0007;
-  color: #d0b75b;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 12px 50px; /* still balanced after scroll */
-  gap: 10px; /* keeps crown & label close */
-  justify-content: flex-start;
-}
+    .navbar.scrolled {
+      background: #4b0007;
+      color: #d0b75b;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 12px 50px;
+      justify-content: flex-start;
+      height: 60px;
+    }
 
+    body, p { font-family: 'Poppins', sans-serif; }
 
+    /* LOGO GROUP - keeps crown & label together */
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;           /* small gap between crown & label */
+      margin-right: 60px; /* space between logo-group and menu */
+    }
 
-    /* ✅ Responsive logo images */
-    .logo img {
-      height: 65px;
-      width: auto;
+    /* Explicit classes for the two logos — use !important so nothing else overrides */
+    .logo-group .crown-img {
+      display: block;
+      height: 110px !important;    /* larger crown on desktop */
+      max-height: 110px !important;
+      width: auto !important;
       object-fit: contain;
-      transition: height 0.3s ease;
+      transition: height 0.25s ease;
     }
 
-    /* Slightly smaller when scrolled */
-    .navbar.scrolled .logo img {
-      height: 38px;
+    .logo-group .label-img {
+      display: block;
+      height: 40px !important;    /* smaller label */
+      max-height: 48px !important;
+      width: auto !important;
+      object-fit: contain;
+      transition: height 0.25s ease;
     }
 
+    /* On scroll: shrink proportionally (still crown > label) */
+    .navbar.scrolled .crown-img {
+      height: 55px !important;
+      max-height: 65px !important;
+    }
+    .navbar.scrolled .label-img {
+      height: 30px !important;
+      max-height: 36px !important;
+    }
+
+    /* MENU */
     .menu {
       list-style: none;
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
       gap: 25px;
-      padding-left: 300px;
-      
+      margin-left: 250px; /* push menu to the right */
+      padding-left: 0;   /* removed hard padding-left to avoid shifting */
     }
 
     .menu a {
       color: inherit;
       text-decoration: none;
-      font-size: 13px;
+      font-size: 15px;
       transition: color 0.3s ease;
       white-space: nowrap;
+      font-family: 'Cormorant Garamond', serif;
     }
 
-    .menu a:hover {
-      color: #c0a062;
-    }
+    .menu a:hover { color: #c0a062; }
 
     /* HERO SECTION */
     .hero {
@@ -112,21 +133,10 @@
       z-index: 1;
     }
 
-    .hero-text {
-      position: relative;
-      z-index: 2;
-    }
+    .hero-text { position: relative; z-index: 2; }
 
-    .hero-text h1 {
-      font-size: 42px;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-    }
-
-    .hero-text p {
-      font-size: 20px;
-      color: #d5b57b;
-    }
+    .hero-text h1 { font-size: 42px; letter-spacing: 2px; margin-bottom: 10px; }
+    .hero-text p { font-size: 20px; color: #d5b57b; }
 
     /* GRID SECTIONS */
     .rooms-section {
@@ -134,97 +144,43 @@
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       margin-top: 0;
     }
+    .room { position: relative; height: 90vh; overflow: hidden; }
+    .room img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .room:hover img { transform: scale(1.05); }
+    .room-overlay { position: absolute; bottom: 40px; left: 30px; color: white; z-index: 2; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+    .room-overlay h2 { font-size: 22px; letter-spacing: 1px; }
+    .room-overlay a { display: inline-block; margin-top: 5px; font-size: 13px; color: #fff; text-decoration: none; border-bottom: 1px solid #fff; padding-bottom: 2px; transition: color 0.3s, border-color 0.3s; }
+    .room-overlay a:hover { color: #d5b57b; border-color: #d5b57b; }
 
-    .room {
-      position: relative;
-      height: 90vh;
-      overflow: hidden;
+    /* RESPONSIVE TWEAKS */
+    @media (max-width: 1200px) {
+      .logo-group { margin-right: 45px; }
+      .logo-group .crown-img { height: 80px !important; max-height: 80px !important; }
+      .logo-group .label-img { height: 44px !important; max-height: 44px !important; }
     }
 
-    .room img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-
-    .room:hover img {
-      transform: scale(1.05);
-    }
-
-    .room-overlay {
-      position: absolute;
-      bottom: 40px;
-      left: 30px;
-      color: white;
-      z-index: 2;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    }
-
-    .room-overlay h2 {
-      font-size: 22px;
-      letter-spacing: 1px;
-    }
-
-    .room-overlay a {
-      display: inline-block;
-      margin-top: 5px;
-      font-size: 13px;
-      color: #fff;
-      text-decoration: none;
-      border-bottom: 1px solid #fff;
-      padding-bottom: 2px;
-      transition: color 0.3s, border-color 0.3s;
-    }
-
-    .room-overlay a:hover {
-      color: #d5b57b;
-      border-color: #d5b57b;
-    }
-
-    /* ✅ RESPONSIVE DESIGN */
     @media (max-width: 992px) {
-      .navbar {
-        padding: 15px 30px;
-      }
-      .logo img {
-        height: 40px;
-      }
-      .menu {
-        gap: 15px;
-      }
+      .navbar { padding: 15px 30px; }
+      .logo-group { margin-right: 35px; }
+      .logo-group .crown-img { height: 70px !important; max-height: 70px !important; }
+      .logo-group .label-img { height: 40px !important; max-height: 40px !important; }
+      .menu { gap: 15px; }
     }
 
     @media (max-width: 768px) {
-      .navbar {
-        padding: 12px 20px;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-      .logo img {
-        height: 35px;
-      }
-      .menu {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-      }
-      .hero-text h1 {
-        font-size: 28px;
-      }
-      .room-overlay h2 {
-        font-size: 18px;
-      }
+      .navbar { padding: 12px 20px; flex-direction: column; align-items: center; text-align: center; }
+      .logo-group { margin-right: 0; margin-bottom: 8px; }
+      .logo-group .crown-img { height: 56px !important; max-height: 56px !important; }
+      .logo-group .label-img { height: 36px !important; max-height: 36px !important; }
+      .menu { justify-content: center; gap: 10px; margin-left: 0; }
+      .hero-text h1 { font-size: 28px; }
+      .room-overlay h2 { font-size: 18px; }
     }
 
     @media (max-width: 480px) {
-      .logo img {
-        height: 30px;
-      }
-      .menu a {
-        font-size: 11px;
-      }
+      .logo-group .crown-img { height: 48px !important; max-height: 48px !important; }
+      .logo-group .label-img { height: 32px !important; max-height: 32px !important; }
+      .menu a { font-size: 11px; }
     }
   </style>
 </head>
@@ -233,8 +189,13 @@
 
   <!-- NAVIGATION BAR -->
   <nav class="navbar" id="navbar">
-    <div class="logo"><img src="crown.png" alt="Crown Logo"></div>
-    <div class="logo"><img src="label.png" alt="Label Logo"></div>
+    <div class="logo-group">
+      <!-- Crown (bigger) -->
+      <div class="logo"><img class="crown-img" src="crown.png" alt="Crown Logo"></div>
+      <!-- Label (smaller) -->
+      <div class="logo"><img class="label-img" src="label.png" alt="Label Logo"></div>
+    </div>
+
     <ul class="menu">
       <li><a href="#">ALL PRODUCTS</a></li>
       <li><a href="#">CATALOGUES</a></li>
