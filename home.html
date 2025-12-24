@@ -3,7 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boca do Lobo Style Page</title>
+  <title>La Obsidiané </title>
+
+  <!-- Standard favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<!-- Apple iOS -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<!-- Android / Chrome -->
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+
+<!-- Microsoft -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/mstile-150x150.png">
+
+<!-- Theme color for mobile browsers -->
+<meta name="theme-color" content="#ffffff">
 
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
@@ -70,13 +88,14 @@
     }
 
     .navbar.scrolled {
-      background: #4b0007;
-      color: #d0b75b;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      padding: 12px 50px;
-      height: 60px;
+  background: rgba(75, 0, 7, 0.4); /* semi-transparent red */
+  color: #d0b75b;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 12px 50px;
+  height: 60px;
+  backdrop-filter: blur(6px); /* optional luxury glass effect */
+}
 
-    }
     
 /* Add extra space between logo and menu ONLY when scrolled */
 .navbar.scrolled .menu {
