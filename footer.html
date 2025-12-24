@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Luxury Login</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  height: 100vh;
+}
+
+/* OVERLAY */
+.overlay {
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* MODAL */
+.modal {
+  width: 900px;
+  height: 520px;
+  background: #ffffff;
+  display: flex;
+  position: relative;
+}
+
+/* LEFT PANEL */
+.modal-left {
+  width: 45%;
+  background: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+/* IMAGE FRAME */
+.image-frame {
+  width: 100%;
+  height: 100%;
+  background: #111;
+  padding: 18px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+/* IMAGE */
+.image-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+}
+
+/* RIGHT FORM */
+.modal-right {
+  width: 55%;
+  padding: 60px;
+}
+
+.modal-right h1 {
+  font-size: 26px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+/* INPUTS */
+.input-group {
+  margin-bottom: 22px;
+}
+
+.input-group label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #777;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.input-group input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #000;
+  padding: 8px 0;
+  font-size: 14px;
+  outline: none;
+}
+
+/* OPTIONS */
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  margin: 20px 0;
+}
+
+.options a {
+  text-decoration: none;
+  color: #000;
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  letter-spacing: 2px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #222;
+}
+
+/* REGISTER */
+.register {
+  margin-top: 25px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.register a {
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* CLOSE ICON */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #999;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .modal {
+    flex-direction: column;
+    width: 90%;
+    height: auto;
+  }
+
+  .modal-left {
+    width: 100%;
+    height: 260px;
+  }
+
+  .modal-right {
+    width: 100%;
+    padding: 40px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+  <div class="modal">
+
+    <!-- LEFT IMAGE WITH BORDER + SHADOW -->
+    <div class="modal-left">
+      <div class="image-frame">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="Luxury Interior">
+      </div>
+    </div>
+
+    <!-- RIGHT LOGIN -->
+    <div class="modal-right">
+      <h1>WELCOME BACK</h1>
+      <p class="subtitle">Login to continue your experience</p>
+
+      <form>
+        <div class="input-group">
+          <label>EMAIL</label>
+          <input type="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="input-group">
+          <label>PASSWORD</label>
+          <input type="password" placeholder="Enter your password" required>
+        </div>
+
+        <div class="options">
+          <label><input type="checkbox"> Remember me</label>
+          <a href="#">Forgot password?</a>
+        </div>
+
+        <button type="submit">LOGIN</button>
+
+        <p class="register">
+          Don’t have an account? <a href="#">Sign up</a>
+        </p>
+      </form>
+    </div>
+
+    <span class="close">&times;</span>
+
+  </div>
+</div>
+
+</body>
+</html>
