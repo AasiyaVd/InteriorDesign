@@ -88,7 +88,7 @@
     }
 
     .navbar.scrolled {
-  background: rgba(75, 0, 7, 0.4); /* semi-transparent red */
+  background: rgba(75, 0, 7); /* semi-transparent red */
   color: #d0b75b;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 12px 50px;
@@ -209,6 +209,162 @@
       text-decoration: none;
       border-bottom: 1px solid #fff;
     }
+   
+       /* ================= FOOTER BACKGROUND BAND ================= */
+    .footer-bg {
+      background: #f5f4f2; /* footer bg (separate band) */
+      width: 100%;
+      border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
+      margin-top: 150px;
+      margin-bottom: 50px;
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 90px 80px 35px;
+      color: #1A1A1A;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
+      gap: 80px;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      font-size: 12px;
+      color: #666;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+    }
+
+    .footer-col ul li a:hover {
+      color: #000;
+    }
+
+    /* Brand text */
+    .footer-brand {
+      font-size: 12px;
+      color: #444;
+      line-height: 1.7;
+      letter-spacing: 0.6px;
+      max-width: 280px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Newsletter */
+    .newsletter-text {
+      font-size: 12px;
+      color: #444;
+      letter-spacing: 0.6px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+            font-family: 'Cormorant Garamond', serif;
+
+    }
+
+    .newsletter-form {
+      display: flex;
+      margin-bottom: 30px;
+            font-family: 'Cormorant Garamond', serif;
+
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #000;
+      font-size: 11px;
+      letter-spacing: 1px;
+      outline: none;
+      background: transparent;
+            font-family: 'Cormorant Garamond', serif;
+
+    }
+
+    .newsletter-form button {
+      padding: 14px 24px;
+      border: 1px solid #000;
+      background: transparent;
+      font-size: 11px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .newsletter-form button:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* Social */
+    .footer-newsletter h5 {
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 18px;
+    }
+
+    .social-icons a {
+      color: #000;
+      font-size: 14px;
+      transition: opacity 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      opacity: 0.6;
+    }
+
+    /* Bottom */
+    .footer-bottom {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 0.5px;
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 900px) {
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      footer {
+        padding: 60px 30px 25px;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 45px;
+      }
+    }
+
   </style>
 </head>
 
@@ -242,32 +398,73 @@
     </video>
   </section>
 
-  <!-- ROOMS -->
-  <section class="rooms-section">
-    <div class="room">
-      <img src="https://www.bocadolobo.com/en/wp-content/uploads/2022/11/Kensington-Mansion-Living-Room-1.jpg">
-      <div class="room-overlay">
-        <h2>LIVING ROOMS</h2>
-        <a href="#">SEE MORE</a>
+
+
+  <!-- FOOTER WITH SEPARATE BACKGROUND -->
+<section class="footer-bg">
+  <footer>
+    <div class="footer-container">
+
+      <!-- BRAND -->
+      <div class="footer-col">
+        <h4>YOUR BRAND</h4>
+        <p class="footer-brand">
+          An AI-powered room design platform that helps you visualize, design,
+          and transform your space effortlessly. Upload your room, experiment
+          with layouts, and get smart design recommendations in minutes.
+        </p>
       </div>
+
+      <!-- QUICK LINKS -->
+      <div class="footer-col">
+        <h4>QUICK LINKS</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Design Your Room</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- FEATURES -->
+      <div class="footer-col">
+        <h4>FEATURES</h4>
+        <ul>
+          <li><a href="#ai">AI Room Design</a></li>
+          <li><a href="#drag">Drag & Drop Furniture</a></li>
+          <li><a href="#recommend">Smart Recommendations</a></li>
+          <li><a href="#beforeafter">Before & After Views</a></li>
+        </ul>
+      </div>
+
+      <!-- NEWSLETTER -->
+      <div class="footer-col footer-newsletter">
+        <p class="newsletter-text">
+          RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
+        </p>
+
+        <form class="newsletter-form">
+          <input type="email" placeholder="ENTER YOUR EMAIL*" required />
+          <button type="submit">SUBSCRIBE</button>
+        </form>
+
+        <h5>FOLLOW US</h5>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-pinterest-p"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
     </div>
 
-    <div class="room">
-      <img src="https://www.bocadolobo.com/en/wp-content/uploads/2022/11/Kensington-Mansion-Dining-Room.jpg">
-      <div class="room-overlay">
-        <h2>DINING ROOMS</h2>
-        <a href="#">SEE MORE</a>
-      </div>
+    <div class="footer-bottom">
+      © La Obsidiané 2025. ALL RIGHTS RESERVED
     </div>
+  </footer>
+</section>
 
-    <div class="room">
-      <img src="https://www.bocadolobo.com/en/wp-content/uploads/2022/11/Kensington-Mansion-Entryway.jpg">
-      <div class="room-overlay">
-        <h2>ENTRYWAYS</h2>
-        <a href="#">SEE MORE</a>
-      </div>
-    </div>
-  </section>
 
   <script>
     /* INTRO EXIT */
