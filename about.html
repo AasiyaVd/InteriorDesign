@@ -1,0 +1,515 @@
+<!doctype html>
+<html>
+<head>
+<title>About</title>
+<style>
+       .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 15px 60px;
+      background: none;
+      color: black;
+      z-index: 1000;
+      transition: background 0.4s ease, padding 0.3s ease;
+    }
+
+    .navbar.scrolled {
+  background: rgba(75, 0, 7); /* semi-transparent red */
+  color: #d0b75b;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 12px 50px;
+  height: 60px;
+  backdrop-filter: blur(6px); /* optional luxury glass effect */
+}
+
+    
+/* Add extra space between logo and menu ONLY when scrolled */
+.navbar.scrolled .menu {
+  margin-left: 400px; /* increase space */
+  transition: margin-left 0.3s ease;
+}
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: 60px;
+    }
+
+    .logo-group .crown-img {
+      height: 110px !important;
+      transition: height 0.25s ease;
+    }
+
+    .logo-group .label-img {
+      height: 40px !important;
+      transition: height 0.25s ease;
+    }
+
+    .navbar.scrolled .crown-img {
+      height: 55px !important;
+    }
+
+    .navbar.scrolled .label-img {
+      height: 30px !important;
+    }
+
+    .menu {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin-left: 250px;
+    }
+
+    .menu a {
+      color: inherit;
+      text-decoration: none;
+      font-size: 15px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .menu a:hover { color: #c0a062; }
+
+       .banner{
+            height: 650px !important;
+            background: #E7E7E7
+        }
+
+        .flex{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flex h2{
+            font-family: 'Figtree';
+            letter-spacing: 1.5px;
+            color: white;
+            text-align: center
+        }
+
+        #our-story-body p{
+            font-family: 'Playfair Display',serif;
+            text-align: justify;
+            font-size: 18px;
+            letter-spacing: 1px;
+            line-height: 25px;
+            margin-bottom: 30px;
+            margin-top:0;
+        }
+
+        #our-story-body p:first-of-type{
+            margin-top:80px;
+        }
+        #our-story-body p:last-of-type{
+            margin-bottom:80px;
+        }
+
+         /* ================= FOOTER BACKGROUND BAND ================= */
+    .footer-bg {
+      background: #f5f4f2; /* footer bg (separate band) */
+      width: 100%;
+      border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
+      margin-top: 150px;
+      margin-bottom: 50px;
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 90px 80px 35px;
+      color: #1A1A1A;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
+      gap: 80px;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      font-size: 12px;
+      color: #666;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+    }
+
+    .footer-col ul li a:hover {
+      color: #000;
+    }
+
+    /* Brand text */
+    .footer-brand {
+      font-size: 12px;
+      color: #444;
+      line-height: 1.7;
+      letter-spacing: 0.6px;
+      max-width: 280px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Newsletter */
+    .newsletter-text {
+      font-size: 12px;
+      color: #444;
+      letter-spacing: 0.6px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+            font-family: 'Cormorant Garamond', serif;
+
+    }
+
+    .newsletter-form {
+      display: flex;
+      margin-bottom: 30px;
+            font-family: 'Cormorant Garamond', serif;
+
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #000;
+      font-size: 11px;
+      letter-spacing: 1px;
+      outline: none;
+      background: transparent;
+            font-family: 'Cormorant Garamond', serif;
+
+    }
+
+    .newsletter-form button {
+      padding: 14px 24px;
+      border: 1px solid #000;
+      background: transparent;
+      font-size: 11px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .newsletter-form button:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* Social */
+    .footer-newsletter h5 {
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 18px;
+    }
+
+    .social-icons a {
+      color: #000;
+      font-size: 14px;
+      transition: opacity 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      opacity: 0.6;
+    }
+
+    /* Bottom */
+    .footer-bottom {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 0.5px;
+    }
+
+        #banner-1{
+            background-image: url("image1.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: #E7E7E7;
+    background-attachment: fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+        }
+
+        #banner-1 .flex{
+            height: 75%
+        }
+        #banner-2{
+            background-image: url("image2.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+        }
+        #banner-3{
+            background-image: url("image3.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+        }
+        #banner-4{
+            background-image: url("image4.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+        }
+
+        @media (max-width:767px) {
+            #our-story-body p:first-of-type{
+                margin-top:60px;
+            }
+            #our-story-body p:last-of-type{
+                margin-bottom:60px;
+            }
+
+            .banner{
+                height: 200px !important;
+
+            }
+
+            #banner-1 .flex{
+                background-size: contain;
+        background-position: center;
+        background-attachment: scroll;
+            }
+
+            #banner-1 img{
+                max-width: 767px;
+            }
+
+            .more-padding{
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+
+        #banner-1{
+            background-image: url("image1.jpg");
+            margin-top: 70px;
+        }
+       #banner-2 {
+        background-image: url("image2.jpg");
+    }
+    #banner-3 {
+        background-image: url("image3.jpg");
+    }
+    #banner-4 {
+        background-image: url("image4.jpg");
+    }
+
+            
+        }
+    </style>
+    <body>
+        <!-- NAVIGATION BAR -->
+  <nav class="navbar" id="navbar">
+    <div class="logo-group">
+      <img class="crown-img" src="crown.png" alt="Crown Logo">
+      <img class="label-img" src="label.png" alt="Label Logo">
+    </div>
+
+    <ul class="menu">
+      <li><a href="#">HOME</a></li>
+      <li><a href="#">DESIGN YOUR ROOM</a></li>
+      <li><a href="#">ABOUT US</a></li>
+      <li><a href="#">CONTACT</a></li>
+    </ul>
+  </nav>
+    <section id="our-story-body">
+        <div class="container-fluid">
+            <div class="row banner" id="banner-1">
+                <div class="flex">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 more-padding">
+                    <p>
+                        La Obsidiané was conceived as a modern design intelligence platform — a space where form, proportion, and technology converge with refined purpose. Rooted in contemporary luxury and guided 
+                        by architectural restraint, we challenge the notion that interiors are merely decorative.
+                        We believe a space should communicate identity, intention, 
+                        and balance.<br> Every line, surface, and volume carries meaning. Our role is to translate imagination into clarity — offering a structured 
+                        yet fluid environment where ideas evolve into 
+                        <br>composed visual expressions.
+                        By bridging artistic intuition with intelligent systems, La Obsidiané transforms raw inspiration into spaces that feel deliberate, confident, and timeless.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row banner" id="banner-2">
+                
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 more-padding">
+                    <p>
+                        Design without logic is chaos. Logic without emotion is empty. La Obsidiané exists precisely at the intersection of the two.
+                        Our platform integrates artificial intelligence with curated design principles to analyze spatial relationships, proportions, lighting, and material harmony. Each recommendation is generated with intention — not to dictate creativity, 
+                        but to <br>guide it with clarity and confidence.
+                        Rather than overwhelming users with choices, we prioritize balance and structure. The result is a design experience that feels informed, <br>composed, and distinctly personal.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row banner" id="banner-3">
+                <div class="flex">
+                    
+                </div>
+                
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 more-padding">
+                    <p>
+                        Luxury is not loud. It is precise, quiet, and confident. Every aspect of La Obsidiané has been designed to reflect this philosophy.
+                        From the interface to the interactions, the platform removes distraction and visual noise, allowing focus to remain on what matters — spatial harmony and design flow. Each decision is supported, yet never forced.
+                        The experience <br>invites exploration without urgency, encouraging users to design with patience, awareness, and purpose. This calm intentionality transforms the act of designing into a thoughtful creative ritual.
+                        </p>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row banner" id="banner-4">
+                <div class="flex">
+                    
+                </div>
+                
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 more-padding">
+                    <p>
+                        True design transcends trends. It endures.<br>
+                        La Obsidiané is built upon research-driven insights, global design intelligence, and respect for craftsmanship traditions. Our vision extends beyond the present moment — 
+                        <br>shaping interiors that remain relevant, expressive, and refined over time.
+                        For designers, architects, and individuals with a discerning eye, La Obsidiané is not merely a tool. 
+                        <br>It is a design philosophy rooted in balance, longevity, and meaning.
+                        </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- FOOTER WITH SEPARATE BACKGROUND -->
+<section class="footer-bg">
+  <footer>
+    <div class="footer-container">
+
+      <!-- BRAND -->
+      <div class="footer-col">
+        <h4>YOUR BRAND</h4>
+        <p class="footer-brand">
+          An AI-powered room design platform that helps you visualize, design,
+          and transform your space effortlessly. Upload your room, experiment
+          with layouts, and get smart design recommendations in minutes.
+        </p>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="footer-col">
+        <h4>QUICK LINKS</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Design Your Room</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- FEATURES -->
+      <div class="footer-col">
+        <h4>FEATURES</h4>
+        <ul>
+          <li><a href="#ai">AI Room Design</a></li>
+          <li><a href="#drag">Drag & Drop Furniture</a></li>
+          <li><a href="#recommend">Smart Recommendations</a></li>
+          <li><a href="#beforeafter">Before & After Views</a></li>
+        </ul>
+      </div>
+
+      <!-- NEWSLETTER -->
+      <div class="footer-col footer-newsletter">
+        <p class="newsletter-text">
+          RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
+        </p>
+
+        <form class="newsletter-form">
+          <input type="email" placeholder="ENTER YOUR EMAIL*" required />
+          <button type="submit">SUBSCRIBE</button>
+        </form>
+
+        <h5>FOLLOW US</h5>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-pinterest-p"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      © La Obsidiané 2025. ALL RIGHTS RESERVED
+    </div>
+  </footer>
+</section>
+    <script>
+    /* NAVBAR SCROLL — UNCHANGED */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+</head>
+</body>
+</html>
+    
