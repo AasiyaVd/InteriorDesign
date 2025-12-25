@@ -29,7 +29,12 @@
   referrerpolicy="no-referrer"
 />
 <style>
- /* ================= YOUR ORIGINAL NAVBAR ================= */
+  *,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+   /* ================= YOUR ORIGINAL NAVBAR ================= */
     .navbar {
       position: fixed;
       top: 0;
@@ -56,7 +61,7 @@
 
     
 .navbar.scrolled .menu {
-  margin-left: 520px; 
+  margin-left: 600px; 
   transition: margin-left 0.3s ease;
 }
     .logo-group {
@@ -88,7 +93,7 @@
       list-style: none;
       display: flex;
       gap: 25px;
-      margin-left: 430px;
+      margin-left: 500px;
     }
 
     .menu a {
@@ -128,30 +133,34 @@
 .navbar.scrolled .user-icon {
   stroke: currentColor; /* GOLD tone from navbar */
 }
+.main-content {
+  margin-top: 90px; /* same as navbar height */
+}
+
        .banner{
-            height: 650px !important;
+            height: 650px;
             background: #E7E7E7
         }
 
         .flex{
             width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
         }
 
         .flex h2{
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Poppins', sans-serif;
             letter-spacing: 1.5px;
             color: white;
             text-align: center
         }
 
         #our-story-body p{
-  font-family: 'Cormorant Garamond', serif;
+  font-family: Poppins,sans-serif;
             text-align: justify;
-            font-size: 18px;
+            font-size: 15px;
             letter-spacing: 1px;
             line-height: 25px;
             margin-bottom: 30px;
@@ -159,12 +168,11 @@
         }
 
         #our-story-body p:first-of-type{
-            margin-top:80px;
+            margin-top:25px;
         }
         #our-story-body p:last-of-type{
-            margin-bottom:80px;
+            margin-bottom:25px;
         }
-
 
         #banner-1{
             background-image: url("image1.jpg");
@@ -184,7 +192,7 @@
         #banner-2{
             background-image: url("image2.jpg");
             background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-attachment: scroll;
             background-position: center;
             background-size: cover;
             -webkit-background-size: cover;
@@ -194,7 +202,7 @@
         #banner-3{
             background-image: url("image3.jpg");
             background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-attachment: scroll;
             background-position: center;
             background-size: cover;
             -webkit-background-size: cover;
@@ -204,7 +212,7 @@
         #banner-4{
             background-image: url("image4.jpg");
             background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-attachment: scroll;
             background-position: center;
             background-size: cover;
             -webkit-background-size: cover;
@@ -214,21 +222,21 @@
 
         @media (max-width:767px) {
             #our-story-body p:first-of-type{
-                margin-top:60px;
+                margin-top:30px;
             }
             #our-story-body p:last-of-type{
-                margin-bottom:60px;
+                margin-bottom:30px;
             }
 
             .banner{
-                height: 200px !important;
+                height: 200px;
 
             }
 
             #banner-1 .flex{
                 background-size: contain;
         background-position: center;
-        background-attachment: scroll;
+        
             }
 
             #banner-1 img{
@@ -256,186 +264,209 @@
 
             
         }
+/* ================= FOOTER BACKGROUND BAND ================= */
+         .footer-bg {
+        background: #f5f4f2; /* footer bg (separate band) */
+        width: 100%;
+        border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
+        margin-top: 150px;
+        margin-bottom: 50px;
+      }
 
-            /* ================= FOOTER BACKGROUND BAND ================= */
-    .footer-bg {
-      background: #f5f4f2; /* footer bg (separate band) */
-      width: 100%;
-      border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
-      margin-top: 150px;
-      margin-bottom: 50px;
-    }
-
-    /* ================= FOOTER ================= */
-    footer {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 90px 80px 35px;
-      color: #1A1A1A;
-    }
-
-    .footer-container {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
-      gap: 80px;
-    }
-
-    .footer-col h4 {
-      font-size: 13px;
-      letter-spacing: 2px;
-      font-weight: 600;
-      margin-bottom: 18px;
-      
-    }
-
-    .footer-col ul {
-      list-style: none;
-    }
-
-    .footer-col ul li {
-      margin-bottom: 10px;
-      margin-right: 150px;
-    }
-
-    .footer-col ul li a {
-      text-decoration: none;
-      font-size: 12px;
-      color: #666;
-      letter-spacing: 0.5px;
-      transition: color 0.3s ease;
-    }
-
-    .footer-col ul li a:hover {
-      color: #000;
-    }
-
-    /* Brand text */
-    .footer-brand {
-      font-size: 12px;
-      color: #444;
-      line-height: 1.7;
-      letter-spacing: 0.6px;
-      max-width: 280px;
-    }
-
-    /* Newsletter */
-    .newsletter-text {
-      font-size: 12px;
-      color: #444;
-      letter-spacing: 0.6px;
-      margin-bottom: 20px;
-      line-height: 1.6;
-
-    }
-
-    .newsletter-form {
-      display: flex;
-      margin-bottom: 30px;
-
-    }
-
-    .newsletter-form input {
-      flex: 1;
-      padding: 14px;
-      border: 1px solid #000;
-      font-size: 11px;
-      letter-spacing: 1px;
-      outline: none;
-      background: transparent;
-
-    }
-
-    .newsletter-form button {
-      padding: 14px 24px;
-      border: 1px solid #000;
-      background: transparent;
-      font-size: 11px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .newsletter-form button:hover {
-      background: #000;
-      color: #fff;
-    }
-
-    /* Social */
-    .footer-newsletter h5 {
-      font-size: 12px;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
-    }
-
-   .social-icons {
-  display: flex;
-  gap: 18px;
+      /* ================= FOOTER ================= */
+      footer {
+  width: 100%;
+  background: #f6f4f1;
 }
 
-.social-icons a {
-      color: #000;
-      font-size: 14px;
-      transition: opacity 0.3s ease;
-    }
-
-      .social-icons a:hover {
-      opacity: 0.6;
-    }
-    /* Bottom */
-    .footer-bottom {
-      margin-top: 60px;
-      text-align: center;
-      font-size: 11px;
-      color: #666;
-      letter-spacing: 0.5px;
-    }
-
-
-    /* ================= RESPONSIVE ================= */
-    @media (max-width: 900px) {
-      .footer-container {
-        grid-template-columns: 1fr 1fr;
-        gap: 50px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      footer {
-        padding: 60px 30px 25px;
-      }
+.footer-wrapper {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 90px 48px 35px;
+}
+      
 
       .footer-container {
-        grid-template-columns: 1fr;
-        gap: 45px;
+        display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.6fr;
+  gap: 80px;
+  align-items: start;
       }
-    }
+
+      .footer-col h4 {
+        font-size: 13px;
+        font-family: 'Poppins',sans-serif ;
+        letter-spacing: 2px;
+        font-weight: 600;
+        margin-bottom: 18px;
+        
+        
+      }
+
+      .footer-col ul {
+        list-style: none;
+        padding: 0;
+  margin: 0;
+      }
+
+      .footer-col ul li {
+        margin-bottom: 10px;
+      }
+
+      .footer-col ul li a {
+        text-decoration: none;
+        font-size: 13px;
+        font-family: 'Poppins',sans-serif;
+        color: #666;
+        letter-spacing: 0.5px;
+        line-height: 1.6;
+        transition: color 0.3s ease;
+      }
+
+      .footer-col ul li a:hover {
+        color: #000;
+      }
+
+      /* Brand text */
+      .footer-brand {
+        font-size: 12px;
+        font-family: 'Poppins',sans-serif ;
+        color: #444;
+        line-height: 1.7;
+        letter-spacing: 0.6px;
+        max-width: 280px;
+      }
+
+      /* Newsletter */
+      .newsletter-text {
+        font-size: 12px;
+        color: #444;
+        letter-spacing: 0.6px;
+        margin-bottom: 20px;
+        line-height: 1.6;
+        margin-bottom: 18px;
+        margin: 0 0 18px 0;
+
+  font-family: 'Poppins',sans-serif ;
+
+      }
+
+      .newsletter-form {
+        display: flex;
+        margin-bottom: 30px;
+
+      }
+
+      .newsletter-form input {
+        flex: 1;
+        padding: 14px;
+        border: 1px solid #000;
+        font-size: 11px;
+        letter-spacing: 1px;
+        outline: none;
+        background: transparent;
+
+      }
+
+      .newsletter-form button {
+        padding: 14px 24px;
+        border: 1px solid #000;
+        background: transparent;
+        font-size: 11px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .newsletter-form button:hover {
+        background: #000;
+        color: #fff;
+      }
+
+      /* Social */
+      .footer-newsletter h5 {
+        font-size: 12px;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+      }
+
+    .social-icons {
+    display: flex;
+    gap: 18px;
+  }
+
+  .social-icons a {
+        color: #000;
+        font-size: 14px;
+        transition: opacity 0.3s ease;
+      }
+
+        .social-icons a:hover {
+        opacity: 0.6;
+      }
+      /* Bottom */
+      .footer-bottom {
+        margin-top: 70px;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  color: #666;
+      }
+
+
+      /* ================= RESPONSIVE ================= */
+      @media (max-width: 900px) {
+        .footer-container {
+          grid-template-columns: 1fr 1fr;
+          gap: 50px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        footer {
+          padding: 60px 30px 25px;
+        }
+
+        .footer-container {
+          grid-template-columns: 1fr;
+          gap: 45px;
+        }
+      }
+      @media (max-width: 600px) {
+  .footer-wrapper {
+    padding: 60px 24px 25px;
+  }
+}
 
     </style>
     <body>
  <!-- NAVIGATION BAR -->
-  <nav class="navbar" id="navbar">
-    <div class="logo-group">
-      <a href="home.html"> <img class="crown-img" src="crown.png" alt="Crown Logo"></a>
-      <a href="home.html"><img class="label-img" src="label.png" alt="Label Logo"></a>
-    </div>
+<nav class="navbar" id="navbar">
+  <div class="logo-group">
+    <a href="home.html">
+      <img class="crown-img" src="crown.png" alt="Crown Logo">
+    </a>
+    <a href="home.html">
+      <img class="label-img" src="label.png" alt="Label Logo">
+    </a>
+  </div>
 
-    <ul class="menu">
-      <li><a href="#">AI INSIGHTS </a></li>
-      <li><a href="#">DESIGN</a></li>
-      <li><a href="about.html">ABOUT</a></li>
-      <li><a href="#">CONTACT</a></li>
-      <li><a href="signup.html">SIGN UP</a></li>
-      <li class="user-dashboard">
-  <a href="dashboard.html" aria-label="User Dashboard">
-    <svg class="user-icon" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
-    </svg>
-  </a>
-</li>
-
-    </ul>
-  </nav>
+  <ul class="menu">
+    <li><a href="#">AI INSIGHTS</a></li>
+    <li><a href="#">DESIGN</a></li>
+    <li><a href="about.html">ABOUT</a></li>
+    <li><a href="#">CONTACT</a></li>
+    <li><a href="signup.html">SIGN UP</a></li>
+    <li class="user-dashboard">
+      <a href="dashboard.html">
+        <svg class="user-icon" viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+        </svg>
+      </a>
+    </li>
+  </ul>
+</nav>
 
     <section id="our-story-body">
         <div class="container-fluid">
@@ -521,68 +552,73 @@
   <!-- FOOTER WITH SEPARATE BACKGROUND -->
 <section class="footer-bg">
   <footer>
-    <div class="footer-container">
 
-      <!-- BRAND -->
-      <div class="footer-col">
-        <h4>La Obsidiané</h4>
-        <p class="footer-brand">
-          An AI-powered room design platform that helps you visualize, design,
-          and transform your space effortlessly. Upload your room, experiment
-          with layouts, and get smart design recommendations in minutes.
-        </p>
-      </div>
+    <div class="footer-wrapper">
 
-      <!-- QUICK LINKS -->
-      <div class="footer-col">
-        <h4>QUICK LINKS</h4>
-        <ul>
-          <li><a href="#">AI Insights</a></li>
-          <li><a href="#">Design Your Room</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </div>
+      <div class="footer-container">
+        <!-- BRAND -->
+        <div class="footer-col">
+          <h4>La Obsidiané</h4>
+          <p class="footer-brand">
+            An AI-powered room design platform that helps you visualize, design,
+            and transform your space effortlessly. Upload your room, experiment
+            with layouts, and get smart design recommendations in minutes.
+          </p>
+        </div>
 
-      <!-- FEATURES -->
-      <div class="footer-col">
-        <h4>FEATURES</h4>
-        <ul>
-          <li><a href="#ai">AI Room Design</a></li>
-          <li><a href="#drag">Drag & Drop Furniture</a></li>
-          <li><a href="#recommend">Smart Recommendations</a></li>
-          <li><a href="#beforeafter">Before & After Views</a></li>
-        </ul>
-      </div>
+        <!-- QUICK LINKS -->
+        <div class="footer-col">
+          <h4>QUICK LINKS</h4>
+          <ul>
+            <li><a href="#">AI Insights</a></li>
+            <li><a href="#">Design Your Room</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
 
-      <!-- NEWSLETTER -->
-      <div class="footer-col footer-newsletter">
-        <p class="newsletter-text">
-          RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
-        </p>
+        <!-- FEATURES -->
+        <div class="footer-col">
+          <h4>FEATURES</h4>
+          <ul>
+            <li><a href="#ai">AI Room Design</a></li>
+            <li><a href="#drag">Drag & Drop Furniture</a></li>
+            <li><a href="#recommend">Smart Recommendations</a></li>
+            <li><a href="#beforeafter">Before & After Views</a></li>
+          </ul>
+        </div>
 
-        <form class="newsletter-form">
-          <input type="email" placeholder="ENTER YOUR EMAIL*" required />
-          <button type="submit">SUBSCRIBE</button>
-        </form>
+        <!-- NEWSLETTER -->
+        <div class="footer-col footer-newsletter">
+          <p class="newsletter-text">
+            RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
+          </p>
 
-        <h5>FOLLOW US</h5>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-pinterest-p"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <form class="newsletter-form">
+            <input type="email" placeholder="ENTER YOUR EMAIL*" required />
+            <button type="submit">SUBSCRIBE</button>
+          </form>
+
+          <h5>FOLLOW US</h5>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest-p"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
         </div>
       </div>
 
-    </div>
+      <!-- 🔥 MOVE THIS HERE -->
+      <div class="footer-bottom">
+        © La Obsidiané 2025. ALL RIGHTS RESERVED
+      </div>
 
-    <div class="footer-bottom">
-      © La Obsidiané 2025. ALL RIGHTS RESERVED
     </div>
 
   </footer>
 </section>
+
 
   <script>
 
