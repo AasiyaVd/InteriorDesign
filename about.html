@@ -1,7 +1,26 @@
 <!doctype html>
 <html>
 <head>
-<title>About</title>
+<title>La Obsidiané | About</title>
+ <!-- Standard favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<!-- Apple iOS -->
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<!-- Android / Chrome -->
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+
+<!-- Microsoft -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/mstile-150x150.png">
+
+<!-- Theme color for mobile browsers -->
+<meta name="theme-color" content="#ffffff">
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -9,10 +28,9 @@
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-
 <style>
-       .navbar {
+ /* ================= YOUR ORIGINAL NAVBAR ================= */
+    .navbar {
       position: fixed;
       top: 0;
       left: 0;
@@ -35,8 +53,10 @@
   height: 60px;
   backdrop-filter: blur(6px); 
 }
+
+    
 .navbar.scrolled .menu {
-  margin-left: 400px; 
+  margin-left: 520px; 
   transition: margin-left 0.3s ease;
 }
     .logo-group {
@@ -68,7 +88,7 @@
       list-style: none;
       display: flex;
       gap: 25px;
-      margin-left: 400px;
+      margin-left: 430px;
     }
 
     .menu a {
@@ -80,6 +100,34 @@
 
     .menu a:hover { color: #c0a062; }
 
+    /* USER DASHBOARD ICON */
+.user-dashboard a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 25px;
+}
+
+/* SVG ICON */
+.user-icon {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;   /* INHERITS NAVBAR COLOR */
+  stroke-width: 1.4;
+  fill: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover */
+.user-dashboard a:hover .user-icon {
+  opacity: 0.75;
+  transform: translateY(-1px);
+}
+
+/* When navbar is scrolled (auto color change) */
+.navbar.scrolled .user-icon {
+  stroke: currentColor; /* GOLD tone from navbar */
+}
        .banner{
             height: 650px !important;
             background: #E7E7E7
@@ -101,11 +149,9 @@
         }
 
         #our-story-body p{
-            font-family: 'Poppins',sans-serif;
-
   font-family: 'Cormorant Garamond', serif;
             text-align: justify;
-            font-size: 16px;
+            font-size: 18px;
             letter-spacing: 1px;
             line-height: 25px;
             margin-bottom: 30px;
@@ -113,168 +159,12 @@
         }
 
         #our-story-body p:first-of-type{
-            margin-top:40px;
+            margin-top:80px;
         }
         #our-story-body p:last-of-type{
-            margin-bottom:40px;
+            margin-bottom:80px;
         }
 
-         /* ================= FOOTER BACKGROUND BAND ================= */
-    .footer-bg {
-      background: #f5f4f2; /* footer bg (separate band) */
-      width: 100%;
-      border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
-      margin-top: 150px;
-      margin-bottom: 50px;
-    }
-
-    /* ================= FOOTER ================= */
-    footer {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 90px 80px 35px;
-      color: #1A1A1A;
-    }
-
-    .footer-container {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
-      gap: 80px;
-    }
-
-    .footer-col h4 {
-      font-size: 13px;
-      letter-spacing: 2px;
-      font-weight: 600;
-      margin-bottom: 18px;
-      
-    }
-
-    .footer-col ul {
-      list-style: none;
-    }
-
-    .footer-col ul li {
-      margin-bottom: 10px;
-    }
-
-    .footer-col ul li a {
-      text-decoration: none;
-      font-size: 12px;
-      color: #666;
-      letter-spacing: 0.5px;
-      transition: color 0.3s ease;
-    }
-
-    .footer-col ul li a:hover {
-      color: #000;
-    }
-
-    /* Brand text */
-    .footer-brand {
-      font-size: 12px;
-      color: #444;
-      line-height: 1.7;
-      letter-spacing: 0.6px;
-      max-width: 280px;
-
-      font-family: 'Cormorant Garamond';
-    }
-
-    /* Newsletter */
-    .newsletter-text {
-      font-size: 12px;
-      color: #444;
-      letter-spacing: 0.6px;
-      margin-bottom: 20px;
-      line-height: 1.6;
-
-            font-family: 'Cormorant Garamond';
-
-    }
-
-    .newsletter-form {
-      display: flex;
-      margin-bottom: 30px;
-
-    }
-
-    .newsletter-form input {
-      flex: 1;
-      padding: 14px;
-      border: 1px solid #000;
-      font-size: 11px;
-      letter-spacing: 1px;
-      outline: none;
-      background: transparent;
-
-    }
-
-    .newsletter-form button {
-      padding: 14px 24px;
-      border: 1px solid #000;
-      background: transparent;
-      font-size: 11px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .newsletter-form button:hover {
-      background: #000;
-      color: #fff;
-    }
-
-    /* Social */
-    .footer-newsletter h5 {
-      font-size: 12px;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
-    }
-
-    .social-icons {
-      display: flex;
-      gap: 18px;
-    }
-
-    .social-icons a {
-      color: #000;
-      font-size: 14px;
-      transition: opacity 0.3s ease;
-    }
-
-    .social-icons a:hover {
-      opacity: 0.6;
-    }
-
-    /* Bottom */
-    .footer-bottom {
-      margin-top: 60px;
-      text-align: center;
-      font-size: 11px;
-      color: #666;
-      letter-spacing: 0.5px;
-    }
-
-
-    /* ================= RESPONSIVE ================= */
-    @media (max-width: 900px) {
-      .footer-container {
-        grid-template-columns: 1fr 1fr;
-        gap: 50px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      footer {
-        padding: 60px 30px 25px;
-      }
-
-      .footer-container {
-        grid-template-columns: 1fr;
-        gap: 45px;
-      }
-    }
 
         #banner-1{
             background-image: url("image1.jpg");
@@ -366,22 +256,187 @@
 
             
         }
+
+            /* ================= FOOTER BACKGROUND BAND ================= */
+    .footer-bg {
+      background: #f5f4f2; /* footer bg (separate band) */
+      width: 100%;
+      border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
+      margin-top: 150px;
+      margin-bottom: 50px;
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 90px 80px 35px;
+      color: #1A1A1A;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
+      gap: 80px;
+    }
+
+    .footer-col h4 {
+      font-size: 13px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      margin-bottom: 18px;
+      
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+      margin-right: 150px;
+    }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      font-size: 12px;
+      color: #666;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+    }
+
+    .footer-col ul li a:hover {
+      color: #000;
+    }
+
+    /* Brand text */
+    .footer-brand {
+      font-size: 12px;
+      color: #444;
+      line-height: 1.7;
+      letter-spacing: 0.6px;
+      max-width: 280px;
+    }
+
+    /* Newsletter */
+    .newsletter-text {
+      font-size: 12px;
+      color: #444;
+      letter-spacing: 0.6px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+
+    }
+
+    .newsletter-form {
+      display: flex;
+      margin-bottom: 30px;
+
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #000;
+      font-size: 11px;
+      letter-spacing: 1px;
+      outline: none;
+      background: transparent;
+
+    }
+
+    .newsletter-form button {
+      padding: 14px 24px;
+      border: 1px solid #000;
+      background: transparent;
+      font-size: 11px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .newsletter-form button:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* Social */
+    .footer-newsletter h5 {
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+
+   .social-icons {
+  display: flex;
+  gap: 18px;
+}
+
+.social-icons a {
+      color: #000;
+      font-size: 14px;
+      transition: opacity 0.3s ease;
+    }
+
+      .social-icons a:hover {
+      opacity: 0.6;
+    }
+    /* Bottom */
+    .footer-bottom {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 0.5px;
+    }
+
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 900px) {
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      footer {
+        padding: 60px 30px 25px;
+      }
+
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 45px;
+      }
+    }
+
     </style>
     <body>
-        <!-- NAVIGATION BAR -->
+ <!-- NAVIGATION BAR -->
   <nav class="navbar" id="navbar">
     <div class="logo-group">
-      <img class="crown-img" src="crown.png" alt="Crown Logo">
-      <img class="label-img" src="label.png" alt="Label Logo">
+      <a href="home.html"> <img class="crown-img" src="crown.png" alt="Crown Logo"></a>
+      <a href="home.html"><img class="label-img" src="label.png" alt="Label Logo"></a>
     </div>
 
     <ul class="menu">
-      <li><a href="#">HOME</a></li>
-      <li><a href="#">DESIGN YOUR ROOM</a></li>
-      <li><a href="#">ABOUT US</a></li>
+      <li><a href="#">AI INSIGHTS </a></li>
+      <li><a href="#">DESIGN</a></li>
+      <li><a href="about.html">ABOUT</a></li>
       <li><a href="#">CONTACT</a></li>
+      <li><a href="signup.html">SIGN UP</a></li>
+      <li class="user-dashboard">
+  <a href="dashboard.html" aria-label="User Dashboard">
+    <svg class="user-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+    </svg>
+  </a>
+</li>
+
     </ul>
   </nav>
+
     <section id="our-story-body">
         <div class="container-fluid">
             <div class="row banner" id="banner-1">
@@ -434,10 +489,9 @@
             <div class="row">
                 <div class="col-xs-12 more-padding">
                     <p>
-                        Luxury is not defined by excess. It is defined by intention, restraint, and precision. At La Obsidiané, every interaction is designed to feel calm, composed, and purposeful.
-                        Our<br>platform removes visual noise and unnecessary complexity, allowing focus to remain on spatial harmony, balance, and proportion. The interface is intuitive by design — guiding<br>without interrupting, assisting without overwhelming.
-                        Design becomes a thoughtful process rather than a rushed decision. Users are encouraged to explore layouts, materials, and<br>lighting with patience and clarity, creating environments that feel deliberate and naturally refined.
-                        This calm, intentional experience transforms design from a task into a creative ritual <br>— measured, confident, and deeply personal.
+                        Luxury is not loud. It is precise, quiet, and confident. Every aspect of La Obsidiané has been designed to reflect this philosophy.
+                        From the interface to the interactions, the platform removes distraction and visual noise, allowing focus to remain on what matters — spatial harmony and design flow. Each decision is supported, yet never forced.
+                        The experience <br>invites exploration without urgency, encouraging users to design with patience, awareness, and purpose. This calm intentionality transforms the act of designing into a thoughtful creative ritual.
                         </p>
                 </div>
             </div>
@@ -464,14 +518,14 @@
             </div>
         </div>
     </section>
-    <!-- FOOTER WITH SEPARATE BACKGROUND -->
+  <!-- FOOTER WITH SEPARATE BACKGROUND -->
 <section class="footer-bg">
   <footer>
     <div class="footer-container">
 
       <!-- BRAND -->
       <div class="footer-col">
-        <h4>YOUR BRAND</h4>
+        <h4>La Obsidiané</h4>
         <p class="footer-brand">
           An AI-powered room design platform that helps you visualize, design,
           and transform your space effortlessly. Upload your room, experiment
@@ -483,9 +537,9 @@
       <div class="footer-col">
         <h4>QUICK LINKS</h4>
         <ul>
-          <li><a href="#">Home</a></li>
+          <li><a href="#">AI Insights</a></li>
           <li><a href="#">Design Your Room</a></li>
-          <li><a href="#">About Us</a></li>
+          <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
       </div>
@@ -526,9 +580,12 @@
     <div class="footer-bottom">
       © La Obsidiané 2025. ALL RIGHTS RESERVED
     </div>
+
   </footer>
 </section>
-    <script>
+
+  <script>
+
     /* NAVBAR SCROLL — UNCHANGED */
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
