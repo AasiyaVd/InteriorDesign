@@ -6,21 +6,31 @@
 
 <title>La Obsidiané | Sign Up</title>
 
-<!-- Favicons -->
+<!-- Standard favicon -->
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<!-- Apple iOS -->
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<!-- Android / Chrome -->
 <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+
+<!-- Microsoft -->
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/mstile-150x150.png">
+
+<!-- Theme color for mobile browsers -->
 <meta name="theme-color" content="#ffffff">
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-
-<!-- Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
 />
 
 <style>
@@ -38,71 +48,105 @@ body {
 }
 
 
-/* ================= NAVBAR ================= */
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  padding: 15px 60px;
-  background: none;
-  color: black;
-  z-index: 1000;
-  transition: all 0.4s ease;
-}
+ /* ================= YOUR ORIGINAL NAVBAR ================= */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 15px 60px;
+      background: none;
+      color: #0c0800;
+      z-index: 1000;
+      transition: background 0.4s ease, padding 0.3s ease;
+    }
 
-.navbar.scrolled {
-  background: rgba(75, 0, 7, 0.95);
+    .navbar.scrolled {
+  background: rgba(75, 0, 7); 
   color: #d0b75b;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 12px 50px;
   height: 60px;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px); 
 }
 
-.logo-group {
+    
+.navbar.scrolled .menu {
+  margin-left: 520px; 
+  transition: margin-left 0.3s ease;
+}
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: 60px;
+    }
+
+    .logo-group .crown-img {
+      height: 110px !important;
+      transition: height 0.25s ease;
+    }
+
+    .logo-group .label-img {
+      height: 40px !important;
+      transition: height 0.25s ease;
+    }
+
+    .navbar.scrolled .crown-img {
+      height: 55px !important;
+    }
+
+    .navbar.scrolled .label-img {
+      height: 30px !important;
+    }
+
+    .menu {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin-left: 430px;
+    }
+
+    .menu a {
+      color: inherit;
+      text-decoration: none;
+      font-size: 15px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .menu a:hover { color: #c0a062; }
+
+    /* USER DASHBOARD ICON */
+.user-dashboard a {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-right: 60px;
+  justify-content: center;
+  margin-left: 25px;
 }
 
-.logo-group .crown-img {
-  height: 110px;
-  transition: height 0.25s ease;
+/* SVG ICON */
+.user-icon {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;   /* INHERITS NAVBAR COLOR */
+  stroke-width: 1.4;
+  fill: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.logo-group .label-img {
-  height: 40px;
-  transition: height 0.25s ease;
+/* Hover */
+.user-dashboard a:hover .user-icon {
+  opacity: 0.75;
+  transform: translateY(-1px);
 }
 
-.navbar.scrolled .crown-img { height: 55px; }
-.navbar.scrolled .label-img { height: 30px; }
-
-.menu {
-  list-style: none;
-  display: flex;
-  gap: 25px;
-  margin-left: 250px;
+/* When navbar is scrolled (auto color change) */
+.navbar.scrolled .user-icon {
+  stroke: currentColor; /* GOLD tone from navbar */
 }
-
-.navbar.scrolled .menu {
-  margin-left: 400px;
-}
-
-.menu a {
-  text-decoration: none;
-  font-size: 15px;
-  font-family: 'Cormorant Garamond', serif;
-  color: inherit;
-}
-
-.menu a:hover { color: #c0a062; }
-
-
 /* ================= SIGNUP SECTION ================= */
 .overlay {
   min-height: 100vh;
@@ -139,14 +183,6 @@ body {
   background: #f4f1ed;
   padding: 50px 45px;
   position: relative;
-}
-
-.close {
-  position: absolute;
-  top: 20px;
-  right: 25px;
-  font-size: 22px;
-  cursor: pointer;
 }
 
 .modal-content h1 {
@@ -195,105 +231,158 @@ form input:focus { outline: none; }
 
 .formbutton:hover { opacity: 0.9; }
 
-/* ================= FOOTER ================= */
-.footer-bg {
-  background: #f5f4f2;
-  border-top: 1px solid rgba(0,0,0,0.08);
-  margin-top: 100px;
-}
+/* ================= FOOTER BACKGROUND BAND ================= */
+      .footer-bg {
+        background: #f5f4f2; /* footer bg (separate band) */
+        width: 100%;
+        border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
+        margin-top: 150px;
+        margin-bottom: 50px;
+      }
 
-footer {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 90px 80px 35px;
-}
+      /* ================= FOOTER ================= */
+      footer {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 90px 80px 35px;
+        color: #1A1A1A;
+      }
 
-.footer-container {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
-  gap: 80px;
-}
+      .footer-container {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
+        gap: 80px;
+      }
 
-.footer-col h4 {
-  font-size: 13px;
-  letter-spacing: 2px;
-  margin-bottom: 18px;
-}
+      .footer-col h4 {
+        font-size: 13px;
+        letter-spacing: 2px;
+        font-weight: 600;
+        margin-bottom: 18px;
+        
+      }
 
-.footer-col ul {
-  list-style: none;
-}
+      .footer-col ul {
+        list-style: none;
+      }
 
-.footer-col ul li {
-  margin-bottom: 10px;
-}
+      .footer-col ul li {
+        margin-bottom: 10px;
+      }
 
-.footer-col ul li a {
-  text-decoration: none;
-  font-size: 12px;
-  color: #666;
-}
+      .footer-col ul li a {
+        text-decoration: none;
+        font-size: 12px;
+        color: #666;
+        letter-spacing: 0.5px;
+        transition: color 0.3s ease;
+      }
 
-.footer-brand,
-.newsletter-text {
-  font-size: 12px;
-  color: #444;
-  line-height: 1.7;
-  letter-spacing: 0.6px;
-}
+      .footer-col ul li a:hover {
+        color: #000;
+      }
 
-.newsletter-form {
-  display: flex;
-  margin-bottom: 30px;
-}
+      /* Brand text */
+      .footer-brand {
+        font-size: 12px;
+        color: #444;
+        line-height: 1.7;
+        letter-spacing: 0.6px;
+        max-width: 280px;
+      }
 
-.newsletter-form input {
-  flex: 1;
-  padding: 14px;
-  border: 1px solid #000;
-  font-size: 11px;
-}
+      /* Newsletter */
+      .newsletter-text {
+        font-size: 12px;
+        color: #444;
+        letter-spacing: 0.6px;
+        margin-bottom: 20px;
+        line-height: 1.6;
 
-.newsletter-form button {
-  padding: 14px 24px;
-  border: 1px solid #000;
-  background: transparent;
-  font-size: 11px;
-  cursor: pointer;
-  height: 42px;
-}
+      }
 
-.newsletter-form button:hover {
-  background: #000;
-  color: #fff;
-}
+      .newsletter-form {
+        display: flex;
+        margin-bottom: 30px;
 
-.footer-newsletter h5 {
-  font-size: 12px;
-  letter-spacing: 2px;
-  margin-bottom: 15px;
-}
+      }
 
-.social-icons {
-  display: flex;
-  gap: 18px;
-}
+      .newsletter-form input {
+        flex: 1;
+        padding: 14px;
+        border: 1px solid #000;
+        font-size: 11px;
+        letter-spacing: 1px;
+        outline: none;
+        background: transparent;
 
-.social-icons a {
-      color: #000;
-      font-size: 14px;
-      transition: opacity 0.3s ease;
-    }
+      }
 
-      .social-icons a:hover {
-      opacity: 0.6;
-    }
-.footer-bottom {
-  margin-top: 60px;
-  text-align: center;
-  font-size: 11px;
-  color: #666;
-}
+      .newsletter-form button {
+        height: fit-content;
+        padding: 14px;
+        border: 1px solid #000;
+        background: transparent;
+        font-size: 11px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .newsletter-form button:hover {
+        background: #000;
+        color: #fff;
+      }
+
+      /* Social */
+      .footer-newsletter h5 {
+        font-size: 12px;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+      }
+
+    .social-icons {
+    display: flex;
+    gap: 18px;
+  }
+
+  .social-icons a {
+        color: #000;
+        font-size: 14px;
+        transition: opacity 0.3s ease;
+      }
+
+        .social-icons a:hover {
+        opacity: 0.6;
+      }
+      /* Bottom */
+      .footer-bottom {
+        margin-top: 60px;
+        text-align: center;
+        font-size: 11px;
+        color: #666;
+        letter-spacing: 0.5px;
+      }
+
+
+      /* ================= RESPONSIVE ================= */
+      @media (max-width: 900px) {
+        .footer-container {
+          grid-template-columns: 1fr 1fr;
+          gap: 50px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        footer {
+          padding: 60px 30px 25px;
+        }
+
+        .footer-container {
+          grid-template-columns: 1fr;
+          gap: 45px;
+        }
+      }
 
 
 </style>
@@ -301,20 +390,31 @@ footer {
 
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar" id="navbar">
-  <div class="logo-group">
-    <img class="crown-img" src="crown.png">
-    <img class="label-img" src="label.png">
-  </div>
-  <ul class="menu">
-    <li><a href="#">ALL PRODUCTS</a></li>
-    <li><a href="#">CATALOGUES</a></li>
-    <li><a href="#">ABOUT</a></li>
-    <li><a href="#">FIND US</a></li>
-    <li><a href="#">IN STOCK</a></li>
-  </ul>
-</nav>
+<!-- NAVIGATION BAR -->
+  <nav class="navbar" id="navbar">
+    <div class="logo-group">
+      <a href="home.html"> <img class="crown-img" src="crown.png" alt="Crown Logo"></a>
+      <a href="home.html"><img class="label-img" src="label.png" alt="Label Logo"></a>
+    </div>
+
+    <ul class="menu">
+      <li><a href="#">AI INSIGHTS </a></li>
+      <li><a href="#">DESIGN</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="#">CONTACT</a></li>
+      <li><a href="signup.html">SIGN UP</a></li>
+      <li class="user-dashboard">
+  <a href="dashboard.html" aria-label="User Dashboard">
+    <svg class="user-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+    </svg>
+  </a>
+</li>
+
+    </ul>
+  </nav>
+
 
 <!-- SIGNUP -->
 <div class="overlay">
@@ -323,8 +423,7 @@ footer {
       <img src="aa1.jpg">
     </div>
     <div class="modal-content">
-      <span class="close">&times;</span>
-      <h1>SIGNUP</h1>
+            <h1>SIGNUP</h1>
       <p class="subtitle">
         DISCOVER THE ART OF DESIGNING<br>
         AND CRAFTING EXCLUSIVE PIECES.
@@ -344,45 +443,51 @@ footer {
   </div>
 </div>
 
-<!-- FOOTER -->
+<!-- FOOTER WITH SEPARATE BACKGROUND -->
 <section class="footer-bg">
   <footer>
     <div class="footer-container">
 
+      <!-- BRAND -->
       <div class="footer-col">
-        <h4>YOUR BRAND</h4>
+        <h4>La Obsidiané</h4>
         <p class="footer-brand">
           An AI-powered room design platform that helps you visualize, design,
-          and transform your space effortlessly.
+          and transform your space effortlessly. Upload your room, experiment
+          with layouts, and get smart design recommendations in minutes.
         </p>
       </div>
 
+      <!-- QUICK LINKS -->
       <div class="footer-col">
         <h4>QUICK LINKS</h4>
         <ul>
-          <li><a href="#">Home</a></li>
+          <li><a href="#">AI Insights</a></li>
           <li><a href="#">Design Your Room</a></li>
-          <li><a href="#">About Us</a></li>
+          <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
       </div>
 
+      <!-- FEATURES -->
       <div class="footer-col">
         <h4>FEATURES</h4>
         <ul>
-          <li><a href="#">AI Room Design</a></li>
-          <li><a href="#">Drag & Drop</a></li>
-          <li><a href="#">Smart Suggestions</a></li>
+          <li><a href="#ai">AI Room Design</a></li>
+          <li><a href="#drag">Drag & Drop Furniture</a></li>
+          <li><a href="#recommend">Smart Recommendations</a></li>
+          <li><a href="#beforeafter">Before & After Views</a></li>
         </ul>
       </div>
 
+      <!-- NEWSLETTER -->
       <div class="footer-col footer-newsletter">
         <p class="newsletter-text">
-          RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES.
+          RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
         </p>
 
         <form class="newsletter-form">
-          <input type="email" placeholder="ENTER YOUR EMAIL*" required>
+          <input type="email" placeholder="ENTER YOUR EMAIL*" required />
           <button type="submit">SUBSCRIBE</button>
         </form>
 
@@ -400,17 +505,22 @@ footer {
     <div class="footer-bottom">
       © La Obsidiané 2025. ALL RIGHTS RESERVED
     </div>
+
   </footer>
 </section>
 
 <script>
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  window.scrollY > 50
-    ? navbar.classList.add('scrolled')
-    : navbar.classList.remove('scrolled');
-});
-</script>
+
+    /* NAVBAR SCROLL — UNCHANGED */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
 
 </body>
 </html>
