@@ -354,12 +354,218 @@ position: relative;
 }
 
 
+/*------ BEFORE AFTER------*/
+        :root {
+            --bg-dark: #fff;
+            --card-white: #f5f4f2;
+            --border-radius: 12px;
+        }
+
+        .bbody {
+   padding: 60px 0;
+  background-color: var(--bg-dark);
+}
+
+
+        .cont {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1200px;
+            width: 90%;
+          margin: 0 auto;
+        }
+
+        .txt{
+          font-size: 44px;
+  font-weight: 500;
+  margin-bottom: 40px;
+  letter-spacing: 0.5px;
+  font-family: 'Cormorant Garamond', serif;
+  color: rgba(75, 0, 7); ;
+  text-align: center;
+        }
+
+        /* Left Side: Original Image */
+        .main-frame {
+            max-width: 450px;
+        }
+
+        .main-frame img {
+           width: 100%;
+  max-height: 340px;        /* 👈 control height */
+  object-fit: cover;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 50px rgba(75, 0, 7,0.5);
+            display: block;
+        }
+
+        .arrow-box {
+    width: 100px; /* Adjust width based on your image size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.arrow-img {
+    width: 100%;
+    height: auto;
+    /* Optional: If your image is black, this makes it white */
+    /* filter: brightness(0) invert(1); */
+    
+    /* Optional: Subtle float animation to make it look dynamic */
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+        /* Right Side: The Stacked Gallery */
+        .stack-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            perspective: 1000px;
+        }
+
+        .photo-card {
+            background: var(--card-white);
+            padding: 8px; /* The white photo border */
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(75, 0, 7);
+            width: 260px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height:auto;
+            display: block;
+            border-radius: 4px;
+        }
+
+        /* Exact Rotations and Offsets */
+        .card-1 {
+            transform: rotate(-7deg) translateX(30px);
+            z-index: 3;
+        }
+
+        .card-2 {
+            transform: rotate(4deg) translateX(-10px);
+            z-index: 2;
+        }
+
+        .card-3 {
+            transform: rotate(-5deg) translateX(40px);
+            z-index: 1;
+        }
+
+        /* Interaction */
+        .photo-card:hover {
+            transform: rotate(0deg) scale(1.05);
+            z-index: 10;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.9);
+        }
+
+        /* Responsive Logic */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                padding: 40px 0;
+            }
+            .arrow-box {
+                transform: rotate(90deg);
+                margin: 20px 0;
+            }
+            .photo-card {
+                width: 90vw;
+                transform: rotate(0) translateX(0) !important;
+            }
+        }
+
+
+
+        /*-------grid------*/
+ /* ================= EDITORIAL GRID ================= */
+
+.editorial-section {
+  padding: 20px 6%;
+  background: #f5f4f2;
+  
+}
+
+/* TITLE */
+.editorial-title {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  margin-bottom: 80px;
+  color: #111;
+}
+
+/* GRID */
+.three-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width:100%
+}
+
+/* GRID ITEMS */
+.grid-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.grid-item img {
+  width: 100%;
+  height: 80vh;              /* premium tall panels */
+  object-fit: cover;
+  transition: transform 1.2s ease;
+}
+
+/* SUBTLE LUXURY HOVER */
+.grid-item:hover img {
+  transform: scale(1.05);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .three-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-item img {
+    height: 60vh;
+  }
+
+  .editorial-title {
+    font-size: 30px;
+    letter-spacing: 3px;
+  }
+}
+/* VIDEO */
+.grid-item video {
+  width: 100%;
+  height: 80vh;
+  object-fit: cover;
+}
+
+
+
+
       /* ================= FOOTER BACKGROUND BAND ================= */
       .footer-bg {
         background: #f5f4f2; /* footer bg (separate band) */
         width: 100%;
         border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
-        margin-top: 150px;
         margin-bottom: 50px;
       }
 
@@ -619,6 +825,72 @@ position: relative;
 
   </div>
 </section>
+
+
+
+
+
+<!--------- BEFORE AFTER-------->
+    <div class="bbody">
+        <h2 class="txt">Take a photo and redesign your interior in seconds</h2>
+
+    <div class="cont">
+        <div class="main-frame">
+            <img src="chng.avif" alt="Original Room">
+        </div>
+
+       <div class="arrow-box">
+    <img src="arrow.png" alt="Transformation Arrow" class="arrow-img">
+</div>
+
+        <div class="stack-gallery">
+            <div class="photo-card card-1">
+                <img src="chng1.webp" alt="Modern Style">
+            </div>
+            <div class="photo-card card-2">
+                <img src="chng2.webp" alt="Boho Style">
+            </div>
+            <div class="photo-card card-3">
+                <img src="chng3.webp" alt="Minimalist Style">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-----grid-->
+<section class="editorial-section">
+
+  <h2 class="txt">
+    Timeless Designs
+  </h2>
+
+  <div class="three-grid">
+
+    <div class="grid-item">
+      <img src="grid1.jpg" alt="Luxury Interior">
+    </div>
+
+   <!-- CENTER VIDEO -->
+    <div class="grid-item video-item">
+      <video autoplay muted loop playsinline>
+        <source src="timeless-mansion (1).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <div class="grid-item">
+      <img src="grid2.jpg" alt="Luxury Living">
+    </div>
+
+  </div>
+
+</section>
+
+
+
 
 
 
