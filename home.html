@@ -104,7 +104,7 @@
 
     
 .navbar.scrolled .menu {
-  margin-left: 400px; 
+  margin-left: 520px; 
   transition: margin-left 0.3s ease;
 }
     .logo-group {
@@ -136,7 +136,7 @@
       list-style: none;
       display: flex;
       gap: 25px;
-      margin-left: 400px;
+      margin-left: 430px;
     }
 
     .menu a {
@@ -147,6 +147,35 @@
     }
 
     .menu a:hover { color: #c0a062; }
+
+    /* USER DASHBOARD ICON */
+.user-dashboard a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 25px;
+}
+
+/* SVG ICON */
+.user-icon {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;   /* INHERITS NAVBAR COLOR */
+  stroke-width: 1.4;
+  fill: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover */
+.user-dashboard a:hover .user-icon {
+  opacity: 0.75;
+  transform: translateY(-1px);
+}
+
+/* When navbar is scrolled (auto color change) */
+.navbar.scrolled .user-icon {
+  stroke: currentColor; /* GOLD tone from navbar */
+}
 
     /* ================= video ================= */
     .hero {
@@ -184,6 +213,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
 }
 
 .hero-content {
@@ -257,7 +287,7 @@
   padding: 80px 8%;
   background: #f5f4f2;
   text-align: center;
-  margin-top: 30px;
+
 }
 
 .steps-section h2 {
@@ -324,7 +354,7 @@ position: relative;
 }
 
 
-       /* ================= FOOTER BACKGROUND BAND ================= */
+     /* ================= FOOTER BACKGROUND BAND ================= */
     .footer-bg {
       background: #f5f4f2; /* footer bg (separate band) */
       width: 100%;
@@ -489,16 +519,25 @@ position: relative;
   <!-- NAVIGATION BAR -->
   <nav class="navbar" id="navbar">
     <div class="logo-group">
-      <img class="crown-img" src="crown.png" alt="Crown Logo">
-      <img class="label-img" src="label.png" alt="Label Logo">
+      <a href="home.html"> <img class="crown-img" src="crown.png" alt="Crown Logo"></a>
+      <a href="home.html"><img class="label-img" src="label.png" alt="Label Logo"></a>
     </div>
 
     <ul class="menu">
-      <li><a href="#">ALL PRODUCTS</a></li>
-      <li><a href="#">CATALOGUES</a></li>
+      <li><a href="#">AI INSIGHTS </a></li>
+      <li><a href="#">DESIGN</a></li>
       <li><a href="about.html">ABOUT</a></li>
-      <li><a href="#">FIND US</a></li>
-      <li><a href="#">IN STOCK</a></li>
+      <li><a href="#">CONTACT</a></li>
+      <li><a href="signup.html">SIGN UP</a></li>
+      <li class="user-dashboard">
+  <a href="dashboard.html" aria-label="User Dashboard">
+    <svg class="user-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+    </svg>
+  </a>
+</li>
+
     </ul>
   </nav>
 
@@ -589,7 +628,7 @@ position: relative;
 
       <!-- BRAND -->
       <div class="footer-col">
-        <h4>YOUR BRAND</h4>
+        <h4>La Obsidiané</h4>
         <p class="footer-brand">
           An AI-powered room design platform that helps you visualize, design,
           and transform your space effortlessly. Upload your room, experiment
@@ -601,12 +640,12 @@ position: relative;
       <div class="footer-col">
         <h4>QUICK LINKS</h4>
         <ul>
-          <li><a href="#">Home</a></li>
+          <li><a href="#">AI Insights</a></li>
           <li><a href="#">Design Your Room</a></li>
-          <li><a href="#">About Us</a></li>
+          <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
-      </div>
+      </div>/
 
       <!-- FEATURES -->
       <div class="footer-col">
