@@ -354,28 +354,7 @@ position: relative;
 }
 
 
-/*------ BEFORE AFTER------*/
-        :root {
-            --bg-dark: #fff;
-            --card-white: #f5f4f2;
-            --border-radius: 12px;
-        }
 
-        .bbody {
-   padding: 60px 0;
-  background-color: var(--bg-dark);
-}
-
-
-        .cont {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 40px;
-            max-width: 1200px;
-            width: 90%;
-          margin: 0 auto;
-        }
 
         .txt{
           font-size: 44px;
@@ -383,112 +362,19 @@ position: relative;
   margin-bottom: 40px;
   letter-spacing: 0.5px;
   font-family: 'Cormorant Garamond', serif;
-  color: rgba(75, 0, 7); ;
+  color: rgba(75, 0, 7) ;
   text-align: center;
         }
-
-        /* Left Side: Original Image */
-        .main-frame {
-            max-width: 450px;
+        .txt1{
+          font-size: 44px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-family: 'Cormorant Garamond', serif;
+  color: rgba(75, 0, 7) ;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 10px;
         }
-
-        .main-frame img {
-           width: 100%;
-  max-height: 340px;        /* 👈 control height */
-  object-fit: cover;
-            border-radius: var(--border-radius);
-            box-shadow: 0 20px 50px rgba(75, 0, 7,0.5);
-            display: block;
-        }
-
-        .arrow-box {
-    width: 100px; /* Adjust width based on your image size */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 10px;
-}
-
-.arrow-img {
-    width: 100%;
-    height: auto;
-    /* Optional: If your image is black, this makes it white */
-    /* filter: brightness(0) invert(1); */
-    
-    /* Optional: Subtle float animation to make it look dynamic */
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-5px) rotate(2deg); }
-}
-
-        /* Right Side: The Stacked Gallery */
-        .stack-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            perspective: 1000px;
-        }
-
-        .photo-card {
-            background: var(--card-white);
-            padding: 8px; /* The white photo border */
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(75, 0, 7);
-            width: 260px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-        }
-
-        .photo-card img {
-            width: 100%;
-            height:auto;
-            display: block;
-            border-radius: 4px;
-        }
-
-        /* Exact Rotations and Offsets */
-        .card-1 {
-            transform: rotate(-7deg) translateX(30px);
-            z-index: 3;
-        }
-
-        .card-2 {
-            transform: rotate(4deg) translateX(-10px);
-            z-index: 2;
-        }
-
-        .card-3 {
-            transform: rotate(-5deg) translateX(40px);
-            z-index: 1;
-        }
-
-        /* Interaction */
-        .photo-card:hover {
-            transform: rotate(0deg) scale(1.05);
-            z-index: 10;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.9);
-        }
-
-        /* Responsive Logic */
-        @media (max-width: 900px) {
-            .container {
-                flex-direction: column;
-                padding: 40px 0;
-            }
-            .arrow-box {
-                transform: rotate(90deg);
-                margin: 20px 0;
-            }
-            .photo-card {
-                width: 90vw;
-                transform: rotate(0) translateX(0) !important;
-            }
-        }
-
-
 
         /*-------grid------*/
 
@@ -567,6 +453,90 @@ position: relative;
 }
 
 
+/*----------WHY US-----*/
+.compare-section {
+  height: 100vh;                /* 👈 exactly one screen */
+  padding: 60px 8%;
+  background: #f5f4f2;
+  color: #1A1A1A;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.compare-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+
+.compare-header p {
+  font-size: 16px;
+  color: #1A1A1A;
+  font-family: poppins;
+}
+
+.compare-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+/* CARD */
+.compare-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 20px 50px rgba(75, 0, 7, 0.45); /* 👈 MAROON SHADOW */
+  transition: transform 0.4s ease;
+}
+
+.compare-card:hover {
+  transform: translateY(-6px);
+}
+
+.compare-card img {
+  width: 100%;
+  height: 240px;          /* 👈 FORCE SAME HEIGHT */
+  object-fit: cover; 
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.compare-card h4 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  font-family: cormorant garamond;
+}
+
+/* LIST */
+.compare-card ul {
+  list-style: none;
+}
+
+.compare-card li {
+  font-size: 13px;
+  margin-bottom: 8px;
+  font-family: poppins;
+}
+
+/* GOOD / BAD */
+.good::before {
+  content: "✔ ";
+  color: #c0a062;
+}
+
+.bad::before {
+  content: "✖ ";
+  color: #a44;
+}
+
+/* CENTER HIGHLIGHT */
+.compare-card.highlight {
+  border: 2px solid #c0a062;
+  box-shadow: 0 30px 70px rgba(192, 160, 98, 0.35);
+  transform:e
+}
 
 
 
@@ -575,7 +545,6 @@ position: relative;
         background: #f5f4f2; /* footer bg (separate band) */
         width: 100%;
         border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
-        margin-top: 7px;
       }
 
       /* ================= FOOTER ================= */
@@ -846,7 +815,7 @@ position: relative;
 <section class="editorial-sequence">
 
   <!-- TITLE -->
-  <h2 class="txt">Timeless Designs</h2>
+  <h2 class="txt" style="margin-top: 50px;">Timeless Designs</h2>
 
   <!-- GRID 1 : 3 COLUMNS -->
   <div class="grid grid-three">
@@ -878,7 +847,56 @@ position: relative;
 </section>
 
 
+<!------WHY US ------>
+<section class="compare-section">
 
+  <div class="compare-header">
+    <h2 class="txt1">Why La Obsidiané AI feels real?</h2>
+    <p>
+      Same input. Realistic results. Designs you can actually build.
+    </p>
+  </div>
+
+  <div class="compare-row">
+
+    <!-- OTHER AI -->
+    <div class="compare-card">
+      <img src="compare1.png" alt="Other AI">
+      <h4>Generic AI Tools</h4>
+      <ul>
+        <li class="bad">Imaginary furniture</li>
+        <li class="bad">Low realism</li>
+        <li class="bad">Structural distortion</li>
+      </ul>
+    </div>
+
+    <!-- YOUR AI -->
+     <a href="signup.html" style="text-decoration: none;color: #1A1A1A;">
+    <div class="compare-card highlight">
+
+      <img src="compare4.jpg" alt="La Obsidiané AI" ">
+      <h4>La Obsidiané AI</h4>
+      <ul>
+        <li class="good">High photorealism</li>
+        <li class="good">Keeps construction intact</li>
+        <li class="good">Designs you can execute</li>
+      </ul>
+    </div>
+</a>
+    <!-- ROOM PLANNERS -->
+    <div class="compare-card">
+      <img src="compare2.jpg" alt="Room Planner">
+      <h4>Room Planner Apps</h4>
+      <ul>
+        <li class="bad">Flat results</li>
+        <li class="bad">Limited styles</li>
+        <li class="bad">Low resolution</li>
+      </ul>
+    </div>
+
+  </div>
+
+</section>
 
 
 
