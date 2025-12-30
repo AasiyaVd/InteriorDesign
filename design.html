@@ -457,9 +457,7 @@ const decorLibrary = {
     { id: "rug2", src: "r2.png" },
     { id: "rug3", src: "r3.png" },
     { id: "rug4", src: "r4.png" },
-    { id: "rug5", src: "r5.png" },
     { id: "rug6", src: "r6.png" },
-    { id: "rug7", src: "r7.png" },
     { id: "rug8", src: "r8.png" }
   ]
 };
@@ -780,20 +778,25 @@ function openFurnitureCategories(){
   `;
 }
 
-function openDecorCategories(){
-  panel.classList.add("active");
-  panelState = "decor-categories";
-  panelTitle.innerText = "Decor";
 
-  panelContent.innerHTML = `
-    <div class="category-item" onclick="openDecorCategory('plants')">Plants</div>
-    <div class="category-item" onclick="openDecorCategory('lamps')">Wall-Lamps</div>
-    <div class="category-item" onclick="openDecorCategory('tablelamps')">Table-Lamps</div>
-    <div class="category-item" onclick="openDecorCategory('chandeliers')">Chandeliers</div>
-    <div class="category-item" onclick="openDecorCategory('wallart')">Wall Art</div>
-    <div class="category-item" onclick="openDecorCategory('rugs')">Rugs</div>
-  `;
+
+
+function openDecorCategory(type){
+  panelState = "decor-items";
+  panelTitle.innerText = type.toUpperCase();
+
+  panelContent.innerHTML = decorLibrary[type]
+    .map(i => `
+      <div class="furniture-card" onclick="addFurniture('${i.src}')">
+        <img src="${i.src}">
+        <div class="furniture-name">${type.slice(0,1).toUpperCase() + type.slice(1)}</div>
+      </div>
+    `)
+    .join("");
 }
+
+
+
 
 
 function openFurnitureCategory(type){
@@ -807,14 +810,29 @@ function openFurnitureCategory(type){
 
 }
 
-function openDecorCategory(type){
-  panelState = "decor-items";
-  panelTitle.innerText = type.toUpperCase();
 
-  panelContent.innerHTML = decorLibrary[type]
-    .map(i => `<img src="${i.src}" class="furniture-thumb">`)
-    .join("");
+
+
+
+function openDecorCategories(){
+  panel.classList.add("active");
+  panelState = "decor-categories";
+  panelTitle.innerText = "Decor";
+
+  panelContent.innerHTML = `
+    <div class="category-item" onclick="openDecorCategory('plants')">Plants</div>
+    <div class="category-item" onclick="openDecorCategory('lamps')">Wall Lamps</div>
+    <div class="category-item" onclick="openDecorCategory('tablelamps')">Table Lamps</div>
+    <div class="category-item" onclick="openDecorCategory('chandeliers')">Chandeliers</div>
+    <div class="category-item" onclick="openDecorCategory('wallart')">Wall Art</div>
+    <div class="category-item" onclick="openDecorCategory('rugs')">Rugs</div>
+  `;
 }
+
+
+
+
+
 
 
 function panelBack(){
@@ -823,7 +841,8 @@ function panelBack(){
     return;
   }
   if(panelState === "decor-items"){
-  openDecorCategories();
+panel.classList.remove("active");
+panelState = "root";
   return;
 }
 
