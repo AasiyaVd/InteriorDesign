@@ -410,19 +410,57 @@ const decorLibrary = {
   plants: [
     { id: "plant1", src: "p1.png" },
     { id: "plant2", src: "p2.png" },
-    { id: "plant3", src: "p3.png" }
+    { id: "plant3", src: "p3.png" },
+    { id: "plant4", src: "p4.png" },
+    { id: "plant5", src: "p5.png" },
+    { id: "plant6", src: "p6.png" },
+    { id: "plant7", src: "p7.png" },
+    { id: "plant8", src: "p8.png" }
   ],
   lamps: [
-    { id: "lamp1", src: "l1.png" },
-    { id: "lamp2", src: "l2.png" }
+    { id: "lamp1", src: "lamp1.png" },
+    { id: "lamp2", src: "lamp2.png" },
+    { id: "lamp3", src: "lamp3.png" },
+    { id: "lamp4", src: "lamp4.png" },
+    { id: "lamp5", src: "lamp5.png" },
+    { id: "lamp6", src: "lamp6.png" }
+  ],
+  tablelamps: [
+    { id: "tablelamp1", src: "tblam1.png" },
+    { id: "tablelamp2", src: "tblam2.png" },
+    { id: "tablelamp3", src: "tblam3.png" },
+    { id: "tablelamp4", src: "tblam4.png" },
+    { id: "tablelamp5", src: "tblam5.png" },
+    { id: "tablelamp6", src: "tblam6.png" },
+    { id: "tablelamp7", src: "tblam7.png" },
+  ],
+  chandeliers: [
+    { id: "chandelier1", src: "chan1.png" },
+    { id: "chandelier2", src: "chan2.png" },
+    { id: "chandelier3", src: "chan3.png" },
+    { id: "chandelier4", src: "chan4.png" },
+    { id: "chandelier5", src: "chan5.png" },
+    { id: "chandelier6", src: "chan6.png" },
+    { id: "chandelier7", src: "chan7.png" }
   ],
   wallart: [
     { id: "art1", src: "w1.png" },
-    { id: "art2", src: "w2.png" }
+    { id: "art2", src: "w2.png" },
+    { id: "art3", src: "w3.png" },
+    { id: "art4", src: "w4.png" },
+    { id: "art5", src: "w5.png" },
+    { id: "art6", src: "w6.png" },
+    { id: "art7", src: "w7.png" }
   ],
   rugs: [
     { id: "rug1", src: "r1.png" },
-    { id: "rug2", src: "r2.png" }
+    { id: "rug2", src: "r2.png" },
+    { id: "rug3", src: "r3.png" },
+    { id: "rug4", src: "r4.png" },
+    { id: "rug5", src: "r5.png" },
+    { id: "rug6", src: "r6.png" },
+    { id: "rug7", src: "r7.png" },
+    { id: "rug8", src: "r8.png" }
   ]
 };
 
@@ -749,7 +787,9 @@ function openDecorCategories(){
 
   panelContent.innerHTML = `
     <div class="category-item" onclick="openDecorCategory('plants')">Plants</div>
-    <div class="category-item" onclick="openDecorCategory('lamps')">Lamps</div>
+    <div class="category-item" onclick="openDecorCategory('lamps')">Wall-Lamps</div>
+    <div class="category-item" onclick="openDecorCategory('tablelamps')">Table-Lamps</div>
+    <div class="category-item" onclick="openDecorCategory('chandeliers')">Chandeliers</div>
     <div class="category-item" onclick="openDecorCategory('wallart')">Wall Art</div>
     <div class="category-item" onclick="openDecorCategory('rugs')">Rugs</div>
   `;
