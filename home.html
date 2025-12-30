@@ -428,6 +428,162 @@ position: relative;
   height:100%;
 }
 
+/* ================= INSPIRATION BRIDGE (GRID-TWO ONLY) ================= */
+
+.grid-two .cell {
+  position: relative;
+}
+
+/* TEXT ON LEFT IMAGE */
+.grid-two .cell:first-child .inspo-text {
+  position: absolute;
+  top: 50%;
+  left: 70px;
+  transform: translateY(-50%);
+  color: #f5f4f2;
+  max-width: 420px;
+  z-index: 3;
+  
+}
+
+
+.inspo-text span {
+  font-size: 22px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.inspo-text h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 62px;
+  font-weight: 400;
+  margin-top: 10px;
+  line-height: 1.2;
+}
+
+/* CTA ON RIGHT IMAGE */
+.grid-two .cell:last-child .inspo-cta {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  padding: 14px 34px;
+  border: 1px solid #c0a062;
+  color: #f5f4f2;
+  font-size: 52px;
+  letter-spacing: 2px;
+  text-decoration: none;
+  background: transparent;
+  transition: all 0.4s ease;
+  z-index: 2;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.grid-two .cell:last-child .inspo-cta:hover {
+  background: #c0a062;
+  color: #2a0006;
+}
+
+/* SUBTLE DARK GRADIENT (ONLY GRID-TWO) */
+.grid-two .cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.55),
+    rgba(0,0,0,0.1)
+  );
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ARROW CTA ON RIGHT IMAGE */
+/* EXPLORE INSPO — UNDERLINE LINE ONLY */
+
+.inspo-arrow {
+  position: absolute;
+  top: 45%;
+  left: 70px;
+  font-size: 54px;
+  letter-spacing: 2px;
+  color: #f5f4f2;
+  text-decoration: none;
+  font-family: 'Cormorant Garamond', serif;
+  z-index: 3;
+}
+
+/* hidden underline */
+.inspo-arrow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -14px;
+  width: 0;
+  height: 3px;
+  background: #f5f4f2;
+  transition: width 0.6s ease;
+}
+
+/* reveal underline on hover of RIGHT GRID */
+.grid-two .cell:last-child:hover .inspo-arrow::after {
+  width: 55%;
+}
+
+
+.inspo-arrow span {
+  display: inline-block;
+  transition: transform 0.4s ease;
+}
+
+.inspo-arrow:hover span {
+  transform: translateX(6px);
+}
+
+.inspo-arrow:hover {
+  opacity: 0.85;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .inspo-text {
+    left: 30px;
+    bottom: 40px;
+  }
+
+  .inspo-text h3 {
+    font-size: 32px;
+  }
+
+  .grid-two .cell:last-child .inspo-cta {
+    right: 30px;
+    bottom: 30px;
+  }
+}
+/* EDITORIAL LINE UNDER TEXT */
+.inspo-text h3 {
+  position: relative;
+  display: inline-block;
+}
+
+/* hidden line */
+.inspo-text h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -14px;
+  width: 0;
+  height: 3px;
+  background: #c0a062;
+  transition: width 0.6s ease;
+}
+
+/* reveal on hover of LEFT IMAGE */
+.grid-two .cell:first-child:hover .inspo-text h3::after {
+  width: 80%;
+}
+
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 900px) {
 
@@ -710,7 +866,7 @@ position: relative;
 
     <ul class="menu">
       <li><a href="#">AI INSIGHTS </a></li>
-      <li><a href="#">DESIGN</a></li>
+      <li><a href="design.html">DESIGN</a></li>
       <li><a href="about.html">ABOUT</a></li>
       <li><a href="contact.html">CONTACT</a></li>
       <li><a href="signup.html">SIGN UP</a></li>
@@ -835,16 +991,31 @@ position: relative;
   </div>
 
   <!-- GRID 3 : 2 COLUMNS -->
-  <div class="grid grid-two">
-    <div class="cell">
-      <img src="grid4.jpg" alt="">
-    </div>
-    <div class="cell">
-      <img src="grid5.jpg" alt="">
+<div class="grid grid-two">
+
+  <!-- LEFT IMAGE WITH TEXT -->
+  <div class="cell">
+    <img src="grid4.jpg" alt="">
+
+    <div class="inspo-text">
+      <span>Curated for refined living</span>
+      <h3>Want more inspiration?</h3>
     </div>
   </div>
 
-</section>
+  <!-- RIGHT IMAGE WITH ARROW CTA -->
+  <div class="cell">
+    <img src="grid5.jpg" alt="">
+
+    <a href="inspiration-gallery.html" class="inspo-arrow">
+      Explore Insights
+      <span>→</span>
+    </a>
+  </div>
+
+</div>
+
+
 
 
 <!------WHY US ------>
@@ -922,7 +1093,7 @@ position: relative;
         <h4>QUICK LINKS</h4>
         <ul>
           <li><a href="#">AI Insights</a></li>
-          <li><a href="#">Design Your Room</a></li>
+          <li><a href="design.html">Design Your Room</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>

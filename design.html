@@ -120,6 +120,145 @@ overflow-y: visible; /* allow child scrollbar */
 }
 .category-item:hover{background:#ddd}
 .furniture-thumb{width:100%;border-radius:10px}
+
+.furniture-card{
+  background:#f5f4f2;
+  border-radius:14px;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+.furniture-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 25px rgba(0,0,0,.08);
+}
+
+.furniture-card img{
+  width:100%;
+  border-radius:12px;
+}
+
+.furniture-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;
+  color:#4b0007;
+  letter-spacing:.3px;
+}
+
+#room{
+  pointer-events:none;
+    z-index:1;
+
+}
+
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+
+}
+.canvas {
+  user-select: none;
+}
+.canvas-item{
+  height:auto;
+  max-width:none;  
+  transition: width .05s linear;
+}
+
+.canvas-item.selected{
+  outline:2px solid #c0a062;
+  outline-offset:4px;
+}
+.resize-handle{
+  width:12px;
+  height:12px;
+  background:#c0a062;
+  border-radius:50%;
+  position:absolute;
+  right:-6px;
+  bottom:-6px;
+  cursor:nwse-resize;
+}
+.rotate-btn{
+  position:absolute;
+  top:-12px;
+  left:-12px;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:#c0a062;
+  color:#4b0007;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:30;
+  font-size:13px;
+}
+
+.rotate-btn:hover{
+  background:#d6bb6e;
+}
+
+
+.canvas-wrapper{
+  position:absolute;
+  z-index:10;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:2px;
+  box-sizing:content-box;
+}
+
+.canvas-wrapper.selected{
+  outline:2px solid #c0a062;
+}
+
+.delete-btn{
+  position:absolute;
+  top:-11px;
+  right:-11px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#6b0008;
+  color:#fff;
+  font-size:16px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:20;
+}
+
+.canvas-wrapper.selected .delete-btn{
+  display:flex;
+}
+
+
+
+.canvas-wrapper img{
+  display:block;              /* removes inline gap */
+  max-width:100%;
+  height:auto;
+    position:relative;
+  z-index:1;
+}
+
+
+
+
+
+
 </style>
 </head>
 
@@ -202,43 +341,69 @@ overflow-y: visible; /* allow child scrollbar */
 
 </div>
 
+
 <script>
-const furnitureLibrary={
+  let selectedWrapper = null;
+let selectedItem = null; // image
+let offsetX = 0;
+let offsetY = 0;
+
+const furnitureLibrary = {
   sofa:[
-    {id:"sofa1",src:"s1.png"},
-    {id:"sofa2",src:"s2.png"},
-    {id:"sofa3",src:"s3.png"},
-    {id:"sofa4",src:"s4.png"},
-    {id:"sofa5",src:"s5.png"},
-    {id:"sofa6",src:"s6.png"},
-    {id:"sofa7",src:"s7.png"},
-        {id:"sofa8",src:"s8.png"},
-
-
-
+    {id:"sofa1", name:"Obsidian Crest Sofa", src:"sofa1.png"},
+    {id:"sofa2", name:"Aurum Royale Sofa", src:"sofa2.png"},
+    {id:"sofa3", name:"Noir Empress Sofa", src:"sofa3.png"},
+    {id:"sofa6", name:"Velour Monarch Sofa", src:"sofa6.png"},
+    {id:"sofa5", name:"Imperial Curve Sofa", src:"sofa5.png"},
+    {id:"sofa4", name:"Ébène Luxe Sofa", src:"sofa4.png"},
+    {id:"sofa7", name:"Gilded Obsidian Sofa", src:"sofa7.png"},
+    {id:"sofa8", name:"Midnight Throne Sofa", src:"sofa8.png"},
+    {id:"sofa9", name:"Velvet Dominion Sofa", src:"sofa9.png"},
+    {id:"sofa10", name:"Crownstone Signature Sofa", src:"sofa10.png"}
   ],
-  chair:[
-    {id:"chair1",src:"ch1.png"},
-    {id:"chair2",src:"ch2.png"},
-    {id:"chair3",src:"ch3.png"},
-    {id:"chair4",src:"ch4.png"},
-    {id:"chair5",src:"ch5.png"},
-    {id:"chair6",src:"ch6.png"},
-    {id:"chair7",src:"ch7.png"},
-   {id:"chair8",src:"ch8.png"}
-],
-  table:[{id:"table1",src:"tb1.png"}],
-  bed:[
-    {id:"bed1",src:"Bed1.png"},
-    {id:"bed2",src:"Bed2.png"},
-    {id:"bed3",src:"Bed3.png"},
-    {id:"bed4",src:"Bed4.png"},
-    {id:"bed5",src:"Bed5.png"},
-    {id:"bed6",src:"Bed6.png"},
-    {id:"bed7",src:"Bed7.png"},
-    {id:"bed8",src:"Bed8.png"}
 
-  ]
+
+  armchair:[
+  {id:"chair1", name:"Obsidian Throne Chair", src:"chair1.png"},
+  {id:"chair2", name:"Aurum Accent Chair", src:"chair2.png"},
+  {id:"chair3", name:"Velour Empress Chair", src:"chair3.png"},
+  {id:"chair4", name:"Noir Sculpt Chair", src:"chair4.png"},
+  {id:"chair5", name:"Gilded Halo Armchair", src:"chair5.png"},
+  {id:"chair6", name:"Midnight Crown Chair", src:"chair6.png"},
+  {id:"chair7", name:"Ébène Royale Chair", src:"chair7.png"},
+  {id:"chair8", name:"Imperial Curve Armchair", src:"chair8.png"}
+],
+
+  table1:[
+ {id:"console1", name:"Aurum Obsidian Console", src:"con1.png"},
+  {id:"console2", name:"Noir Royale Console", src:"con2.png"},
+  {id:"console3", name:"Gilded Crest Console", src:"con3.png"},
+  {id:"console4", name:"Ébène Sculpt Console", src:"con4.png"},
+  {id:"console5", name:"Imperial Vein Console", src:"con5.png"}
+],
+  table2:[
+{id:"dining1", name:"Aurum Monarch Dining Table", src:"d1.png"},
+  {id:"dining2", name:"Noir Empress Dining Table", src:"d2.png"},
+  {id:"dining3", name:"Ébène Royale Dining Table", src:"d3.png"},
+  {id:"dining4", name:"Gilded Vein Dining Table", src:"d4.png"},
+  {id:"dining5", name:"Imperial Obsidian Dining Table", src:"d5.png"} 
+ ],
+
+  bed:[
+{id:"bed1", name:"Obsidian Crown Bed", src:"bed1.png"},
+  {id:"bed2", name:"Aurum Royale Bed", src:"bed2.png"},
+  {id:"bed3", name:"Velour Empress Bed", src:"bed3.png"},
+  {id:"bed4", name:"Noir Canopy Bed", src:"bed4.png"},
+  {id:"bed5", name:"Ébène Sovereign Bed", src:"bed5.png"} 
+ ],
+
+ sideboard:[
+  {id:"sideboard1", name:"Aurum Crest Sideboard", src:"sd1.png"},
+  {id:"sideboard2", name:"Noir Obsidian Sideboard", src:"sd2.png"},
+  {id:"sideboard3", name:"Ébène Royale Sideboard", src:"sd3.png"},
+  {id:"sideboard4", name:"Gilded Monarch Sideboard", src:"sd4.png"},
+  {id:"sideboard5", name:"Imperial Vein Sideboard", src:"sd5.png"}
+]
 };
 
 const decorLibrary = {
@@ -266,6 +431,249 @@ const canvas=document.getElementById("canvas");
 const panel=document.getElementById("toolPanel");
 const panelTitle=document.getElementById("panelTitle");
 const panelContent=document.getElementById("panelContent");
+
+
+
+
+
+function addFurniture(src){
+
+  const empty = canvas.querySelector(".empty-state");
+  if (empty) empty.remove();
+
+  // WRAPPER
+  const wrapper = document.createElement("div");
+  wrapper.className = "canvas-wrapper";
+  wrapper.style.left = "440px";
+  wrapper.style.top = "220px";
+
+  // IMAGE BOX (THIS CLIPS THE COLOR)
+  const imageBox = document.createElement("div");
+  imageBox.className = "image-box";
+
+  // IMAGE
+  const img = document.createElement("img");
+  img.src = src;
+  img.className = "canvas-item";
+  img.style.width = "220px";
+  img.style.cursor = "move";
+
+  // COLOR OVERLAY (ONLY IMAGE SIZE)
+  const overlay = document.createElement("div");
+  overlay.className = "color-overlay";
+
+  // DELETE BUTTON
+  const del = document.createElement("div");
+  del.className = "delete-btn";
+  del.innerHTML = "&times;";
+  del.onclick = (e)=>{
+    e.stopPropagation();
+    wrapper.remove();
+    selectedWrapper = null;
+    selectedItem = null;
+    hideColorPalette();
+  };
+
+  // BUILD STRUCTURE
+  imageBox.appendChild(img);
+  imageBox.appendChild(overlay);
+  wrapper.appendChild(imageBox);
+  wrapper.appendChild(del);
+  canvas.appendChild(wrapper);
+
+  selectItem(wrapper);
+
+  // DRAG
+  img.addEventListener("mousedown", e=>{
+    e.stopPropagation();
+    selectItem(wrapper);
+
+    const rect = canvas.getBoundingClientRect();
+    offsetX = e.clientX - rect.left - wrapper.offsetLeft;
+    offsetY = e.clientY - rect.top  - wrapper.offsetTop;
+
+    document.addEventListener("mousemove", dragItem);
+    document.addEventListener("mouseup", stopDrag);
+  });
+}
+
+
+
+
+
+
+
+function dragItem(e){
+  if(!selectedWrapper) return;
+
+  const rect = canvas.getBoundingClientRect();
+
+  selectedWrapper.style.left =
+    `${e.clientX - rect.left - offsetX}px`;
+
+  selectedWrapper.style.top =
+    `${e.clientY - rect.top - offsetY}px`;
+}
+
+
+
+
+function stopDrag(){
+  document.removeEventListener("mousemove", dragItem);
+  document.removeEventListener("mouseup", stopDrag);
+}
+
+
+
+
+
+
+function selectItem(wrapper){
+  document.querySelectorAll(".canvas-wrapper").forEach(w=>{
+    w.classList.remove("selected");
+    w.querySelectorAll(".resize-handle, .rotate-btn").forEach(el=>el.remove());
+  });
+
+  selectedWrapper = wrapper;
+  selectedItem = wrapper.querySelector("img");
+
+  wrapper.classList.add("selected");
+
+  /* Resize handle */
+  const resize = document.createElement("div");
+  resize.className = "resize-handle";
+  resize.addEventListener("mousedown", startResize);
+  wrapper.appendChild(resize);
+
+  /* Rotate button (undo icon) */
+  const rotate = document.createElement("div");
+  rotate.className = "rotate-btn";
+  rotate.innerHTML = `<i class="fa-solid fa-rotate-right"></i>`;
+  rotate.addEventListener("mousedown", startRotate);
+  wrapper.appendChild(rotate);
+
+}
+
+
+
+
+
+
+let startX, startWidth;
+
+function startResize(e){
+  e.stopPropagation();
+  startX = e.clientX;
+  startWidth = selectedItem.getBoundingClientRect().width;
+
+  document.addEventListener("mousemove", resizeItem);
+  document.addEventListener("mouseup", stopResize);
+}
+function resizeItem(e){
+  if(!selectedItem) return;
+
+  const dx = e.clientX - startX;
+  let newWidth = startWidth + dx;
+
+  // 🔒 limits (tweak freely)
+  const MIN = 80;
+  const MAX = 900;
+
+  newWidth = Math.max(MIN, Math.min(MAX, newWidth));
+
+  selectedItem.style.width = newWidth + "px";
+}
+function stopResize(){
+  document.removeEventListener("mousemove", resizeItem);
+  document.removeEventListener("mouseup", stopResize);
+}
+
+
+
+
+
+
+let startAngle = 0;
+let centerX, centerY;
+
+function startRotate(e){
+  e.stopPropagation();
+
+  const rect = selectedItem.getBoundingClientRect();
+  centerX = rect.left + rect.width / 2;
+  centerY = rect.top + rect.height / 2;
+
+  startAngle = Math.atan2(
+    e.clientY - centerY,
+    e.clientX - centerX
+  );
+
+  document.addEventListener("mousemove", rotateItem);
+  document.addEventListener("mouseup", stopRotate);
+}
+
+function rotateItem(e){
+  if(!selectedItem) return;
+
+  const angle = Math.atan2(
+    e.clientY - centerY,
+    e.clientX - centerX
+  );
+
+  const deg = (angle - startAngle) * (180 / Math.PI);
+  const current = selectedItem.dataset.rotate
+    ? parseFloat(selectedItem.dataset.rotate)
+    : 0;
+
+  const total = current + deg;
+  selectedItem.style.transform = `rotate(${total}deg)`;
+  selectedItem.dataset.rotate = total;
+
+  startAngle = angle;
+}
+
+function stopRotate(){
+  document.removeEventListener("mousemove", rotateItem);
+  document.removeEventListener("mouseup", stopRotate);
+}
+
+
+
+
+
+function deleteSelected(){
+  if(selectedWrapper){
+    selectedWrapper.remove();
+    selectedWrapper = null;
+    selectedItem = null;
+  }
+}
+
+
+canvas.addEventListener("mousedown", e => {
+  if(e.target === canvas){
+    clearSelection();
+  }
+});
+
+
+
+function clearSelection(){
+  document.querySelectorAll(".canvas-wrapper").forEach(w=>{
+    w.classList.remove("selected");
+
+    w.querySelectorAll(".resize-handle, .rotate-btn").forEach(el=>{
+      el.remove();
+    });
+  });
+
+  selectedWrapper = null;
+  selectedItem = null;
+}
+
+
+
+
 
 let panelState="root"; 
 // root | templates | decor | wall | furniture-categories | furniture-items
@@ -326,11 +734,11 @@ function openFurnitureCategories(){
   panelTitle.innerText="Furniture";
   panelContent.innerHTML=`
     <div class="category-item" onclick="openFurnitureCategory('sofa')">Sofa</div>
-
-    <div class="category-item" onclick="openFurnitureCategory('chair')">Chair</div>
-    <div class="category-item" onclick="openFurnitureCategory('table1')">Table</div>
+    <div class="category-item" onclick="openFurnitureCategory('armchair')">Arm Chair</div>
+    <div class="category-item" onclick="openFurnitureCategory('table1')">Consoles Table</div>
+    <div class="category-item" onclick="openFurnitureCategory('table2')">Dinning Table</div>
     <div class="category-item" onclick="openFurnitureCategory('bed')">Bed</div>
-
+    <div class="category-item" onclick="openFurnitureCategory('sideboard')">Sidebaord</div>
   `;
 }
 
@@ -349,10 +757,14 @@ function openDecorCategories(){
 
 
 function openFurnitureCategory(type){
-  panelState="furniture-items";
-  panelTitle.innerText=type.toUpperCase();
-  panelContent.innerHTML=furnitureLibrary[type]
-    .map(i=>`<img src="${i.src}" class="furniture-thumb">`).join("");
+ panelContent.innerHTML = furnitureLibrary[type]
+  .map(i => `
+    <div class="furniture-card" onclick="addFurniture('${i.src}')">
+      <img src="${i.src}">
+      <div class="furniture-name">${i.name}</div>
+    </div>
+  `).join("");
+
 }
 
 function openDecorCategory(type){
@@ -390,11 +802,20 @@ function panelBack(){
 
 function saveDesign(btn){btn.classList.toggle("saved")}
 function undo(){}
-function deleteSelected(){}
 function resetCanvas(){
   canvas.innerHTML=`<div class="empty-state"><h3>Upload your room image</h3><p>Start designing with luxury precision</p><button onclick="uploadRoom()">Upload Image</button></div>`;
 }
 function shareDesign(){navigator.clipboard.writeText(location.href)}
+["dragstart","drag","dragend","dragover","drop"].forEach(evt=>{
+  document.addEventListener(evt, e => e.preventDefault());
+});
+
+
+
+
+
+
+
 </script>
 
 </body>
