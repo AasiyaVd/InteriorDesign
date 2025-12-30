@@ -162,7 +162,7 @@ overflow-y: visible; /* allow child scrollbar */
     <i class="fa-solid fa-couch"></i>
   </button>
 
-  <button class="side-btn" data-tooltip="Decor" onclick="openPanel('decor')">
+  <button class="side-btn" data-tooltip="Decor" onclick="openDecorCategories()">
     <i class="fa-solid fa-leaf"></i>
   </button>
 
@@ -227,9 +227,40 @@ const furnitureLibrary={
     {id:"chair7",src:"ch7.png"},
    {id:"chair8",src:"ch8.png"}
 ],
-  table:[{id:"table1",src:"assets/furniture/table1.png"}],
-  bed:[{id:"bed1",src:"assets/furniture/bed1.png"}]
+  table:[{id:"table1",src:"tb1.png"}],
+  bed:[
+    {id:"bed1",src:"Bed1.png"},
+    {id:"bed2",src:"Bed2.png"},
+    {id:"bed3",src:"Bed3.png"},
+    {id:"bed4",src:"Bed4.png"},
+    {id:"bed5",src:"Bed5.png"},
+    {id:"bed6",src:"Bed6.png"},
+    {id:"bed7",src:"Bed7.png"},
+    {id:"bed8",src:"Bed8.png"}
+
+  ]
 };
+
+const decorLibrary = {
+  plants: [
+    { id: "plant1", src: "p1.png" },
+    { id: "plant2", src: "p2.png" },
+    { id: "plant3", src: "p3.png" }
+  ],
+  lamps: [
+    { id: "lamp1", src: "l1.png" },
+    { id: "lamp2", src: "l2.png" }
+  ],
+  wallart: [
+    { id: "art1", src: "w1.png" },
+    { id: "art2", src: "w2.png" }
+  ],
+  rugs: [
+    { id: "rug1", src: "r1.png" },
+    { id: "rug2", src: "r2.png" }
+  ]
+};
+
 
 const canvas=document.getElementById("canvas");
 const panel=document.getElementById("toolPanel");
@@ -303,6 +334,20 @@ function openFurnitureCategories(){
   `;
 }
 
+function openDecorCategories(){
+  panel.classList.add("active");
+  panelState = "decor-categories";
+  panelTitle.innerText = "Decor";
+
+  panelContent.innerHTML = `
+    <div class="category-item" onclick="openDecorCategory('plants')">Plants</div>
+    <div class="category-item" onclick="openDecorCategory('lamps')">Lamps</div>
+    <div class="category-item" onclick="openDecorCategory('wallart')">Wall Art</div>
+    <div class="category-item" onclick="openDecorCategory('rugs')">Rugs</div>
+  `;
+}
+
+
 function openFurnitureCategory(type){
   panelState="furniture-items";
   panelTitle.innerText=type.toUpperCase();
@@ -310,16 +355,30 @@ function openFurnitureCategory(type){
     .map(i=>`<img src="${i.src}" class="furniture-thumb">`).join("");
 }
 
+function openDecorCategory(type){
+  panelState = "decor-items";
+  panelTitle.innerText = type.toUpperCase();
+
+  panelContent.innerHTML = decorLibrary[type]
+    .map(i => `<img src="${i.src}" class="furniture-thumb">`)
+    .join("");
+}
+
+
 function panelBack(){
   if(panelState==="furniture-items"){
     openFurnitureCategories();
     return;
   }
+  if(panelState === "decor-items"){
+  openDecorCategories();
+  return;
+}
 
   if(
     panelState==="furniture-categories" ||
     panelState==="templates" ||
-    panelState==="decor" ||
+    panelState==="decor-categories" ||
     panelState==="wall"
   ){
     panel.classList.remove("active");
