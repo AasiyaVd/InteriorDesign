@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Design Preview | La Obsidiané</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(180deg,#faf9f7,#f2f1ee);
+}
+
+/* ================= CONTAINER ================= */
+.preview-wrapper{
+  max-width:1200px;
+  margin:120px auto 80px;
+  padding:0 20px;
+  text-align:center;
+}
+
+.preview-title{
+  font-size:34px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+
+.preview-sub{
+  font-size:15px;
+  color:#777;
+  margin-bottom:50px;
+}
+
+/* ================= BEFORE AFTER ================= */
+.before-after-container{
+  position:relative;
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+  height:580px;
+  border-radius:24px;
+  overflow:hidden;
+
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(14px);
+
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.12),
+    inset 0 0 0 1px rgba(255,255,255,0.4);
+}
+
+/* images */
+.before-img,
+.after-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.after-img{
+  clip-path:inset(0 50% 0 0);
+}
+
+/* slider */
+.slider{
+  position:absolute;
+  top:0;
+  left:50%;
+  width:3px;
+  height:100%;
+  background:rgba(255,255,255,0.9);
+  cursor:ew-resize;
+  z-index:5;
+}
+
+.slider::before{
+  content:'⇆';
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:42px;
+  height:42px;
+  background:#000;
+  color:#fff;
+  font-size:14px;
+  font-weight:600;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:3px solid #fff;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* labels */
+.labels{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:0;
+  z-index:30; /* always above images */
+}
+.label{
+  position:absolute;
+  top:24px;
+  padding:10px 22px;
+  font-size:13px;
+  font-weight:600;
+  background:rgba(0,0,0,0.65);
+  color:#fff;
+  border-radius:40px;
+  white-space:nowrap;   /* 🔥 prevents BAforee issue */
+  pointer-events: none;
+  user-select: none;
+}
+
+.label.before{ 
+left:24px; 
+}
+.label.after{ 
+right:24px; 
+left:auto; /* ✅ FIX */
+background:linear-gradient(135deg,#000,#333); 
+}
+
+/* buttons */
+.preview-actions{
+  margin-top:40px;
+  display:flex;
+  justify-content:center;
+  gap:20px;
+}
+
+.preview-actions button{
+  padding:14px 28px;
+  border:none;
+  border-radius:30px;
+  font-size:14px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.btn-primary{ background:#000; color:#fff; }
+.btn-outline{ background:transparent; border:1px solid #000; }
+
+.preview-actions button:hover{
+  transform:translateY(-2px);
+}
+
+/* NAVBAR */
+.navbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:70px;
+  background:rgba(75,0,7);
+  color:#d0b75b;
+  display:flex;
+  align-items:center;
+  padding:0 60px;
+  z-index:1000;
+  font-family:'Cormorant Garamond', serif;
+}
+
+.logo-group{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.crown-img{
+  height:48px;
+}
+
+.label-img{
+  height:30px;
+}
+
+    .menu {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin-left: 580px;
+
+    }
+.menu a{
+  color:#d0b75b;
+  font-size:16px;
+  text-decoration:none;
+}
+
+.menu a:hover{
+  opacity:0.7;
+}
+
+.user-icon{
+  width:22px;
+  height:22px;
+  stroke:#d0b75b;
+  stroke-width:1.4;
+  fill:none;
+}
+/* SVG ICON */
+.user-icon {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;   /* INHERITS NAVBAR COLOR */
+  stroke-width: 1.4;
+  fill: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+</style>
+</head>
+
+</style>
+</head>
+
+<body>
+  <nav class="navbar">
+  <div class="logo-group">
+    <img class="crown-img" src="crown.png" alt="Crown Logo">
+    <img class="label-img" src="label.png" alt="La Obsidiané">
+  </div>
+
+  <ul class="menu">
+      <li><a href="#">AI INSIGHTS </a></li>
+      <li><a href="design.html">DESIGN</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="contact.html">CONTACT</a></li>
+      <li><a href="signup.html">SIGN UP</a></li>
+      <li class="user-dashboard">
+  <a href="dashboard.html" aria-label="User Dashboard">
+    <svg class="user-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+    </svg>
+  </a>
+</li>
+
+    </ul>
+  </ul>
+</nav>
+
+<div class="preview-wrapper">
+  <div class="preview-title">Design Preview</div>
+  <div class="preview-sub">Drag the slider to compare before & after</div>
+
+  <div class="before-after-container" id="container">
+    <div class="labels">
+    <span class="label before">Before</span>
+    <span class="label after">After</span>
+  </div>
+
+    <img id="beforeImg" class="before-img">
+    <img id="afterImg" class="after-img">
+
+    <div class="slider" id="slider"></div>
+  </div>
+
+  <div class="preview-actions">
+    <button class="btn-outline" onclick="goBack()">Go Back</button>
+    <button class="btn-primary">Download Design</button>
+  </div>
+</div>
+
+<script>
+/* ================= INIT ================= */
+const params    = new URLSearchParams(window.location.search);
+const beforeImg = document.getElementById("beforeImg");
+const afterImg  = document.getElementById("afterImg");
+const slider    = document.getElementById("slider");
+const container = document.getElementById("container");
+
+/* ================= LOAD IMAGES SAFELY ================= */
+const beforeSrc = params.get("before");
+const afterSrc  = params.get("after");
+
+if (!beforeSrc || !afterSrc) {
+  console.error("Missing image parameters");
+  slider.style.display = "none";
+} else {
+  beforeImg.src = decodeURIComponent(beforeSrc);
+  afterImg.src  = decodeURIComponent(afterSrc);
+}
+
+/* ================= INITIALIZE AFTER LOAD ================= */
+beforeImg.onload = () => {
+  beforeImg.style.display = "block";
+};
+afterImg.onload = () => {
+  afterImg.style.display = "block";
+  slider.style.left = "50%";
+  afterImg.style.clipPath = "inset(0 50% 0 0)";
+};
+
+/* ================= SLIDER LOGIC ================= */
+let dragging = false;
+
+slider.addEventListener("mousedown", () => dragging = true);
+window.addEventListener("mouseup", () => dragging = false);
+
+window.addEventListener("mousemove", (e) => {
+  if (!dragging) return;
+
+  const rect = container.getBoundingClientRect();
+  let x = e.clientX - rect.left;
+  x = Math.max(0, Math.min(x, rect.width));
+
+  const percent = (x / rect.width) * 100;
+  slider.style.left = percent + "%";
+  afterImg.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+});
+</script>
+
+<script>
+const labels = document.querySelectorAll(".label");
+if (labels.length > 2) {
+  labels.forEach((el, i) => {
+    if (i >= 2) el.remove();
+  });
+}
+</script>
+
+<script>
+  function goBack() {
+  window.history.back();
+}
+</script>
+
+</body>
+</html>
