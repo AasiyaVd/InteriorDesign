@@ -255,6 +255,35 @@ img {
 }
 
 
+/* ================= PREVIEW BUTTON ================= */
+.preview-btn {
+  position: fixed;
+  bottom: 35px;
+  right: 35px;
+  z-index: 1200;
+
+  padding: 16px 36px;
+  background: rgba(75, 0, 7, 0.95);
+  color: #f5f4f2;
+
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-decoration: none;
+  font-family: poppins;
+
+  border: 1px solid #c0a062;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+border-radius: 11px;
+  transition: all 0.35s ease;
+}
+
+/* Hover effect */
+.preview-btn:hover {
+  background: #c0a062;
+  color: #2a0006;
+  transform: translateY(-3px);
+}
 
 
 
@@ -340,6 +369,10 @@ img {
 </div>
 
 </div>
+<!-- PREVIEW BUTTON -->
+<a href="preview.html" class="preview-btn">
+  Preview Design
+</a>
 
 
 <script>
