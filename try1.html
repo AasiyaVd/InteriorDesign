@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Obsidiané | AI Interior Design</title>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Three.js -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-panel: #1e1e1e;
+            --accent: #a8a8a8; /* Obsidian Grey */
+            --highlight: #ffffff;
+            --text-main: #e0e0e0;
+            --border: #333333;
+            --gold: #d4af37; /* Luxury accent */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header --- */
+        header {
+            height: 60px;
+            background-color: var(--bg-panel);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+        }
+
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--highlight);
+            letter-spacing: 1px;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            border-color: var(--highlight);
+            background: #2a2a2a;
+        }
+
+        button.primary {
+            background: var(--text-main);
+            color: var(--bg-dark);
+            border: none;
+            font-weight: 600;
+        }
+
+        button.primary:hover {
+            background: #ffffff;
+        }
+
+        /* --- Main Layout --- */
+        main {
+            flex: 1;
+            display: flex;
+            position: relative;
+            height: calc(100vh - 60px);
+        }
+
+        /* --- Upload View --- */
+        .upload-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #1e1e1e 0%, #121212 100%);
+            z-index: 50;
+            transition: opacity 0.5s ease;
+        }
+
+        .upload-box {
+            width: 500px;
+            height: 300px;
+            border: 2px dashed var(--accent);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.02);
+            transition: 0.3s;
+        }
+
+        .upload-box:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        /* --- Processing Overlay --- */
+        .processing-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 60;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            display: none; /* Hidden by default */
+        }
+
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: var(--gold);
+            box-shadow: 0 0 10px var(--gold);
+            animation: scan 2s infinite ease-in-out;
+            margin-bottom: 20px;
+            opacity: 0.5;
+            position: absolute;
+            top: 0;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* --- Editor Interface --- */
+        .editor-interface {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            opacity: 0.2; /* Dimmed until loaded */
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .editor-interface.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 250px;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+
+        .panel-section {
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .grid-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .item-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .item-btn i { font-size: 1.2rem; margin-bottom: 5px; }
+        .item-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* 3D Canvas */
+        #canvas-container {
+            flex: 1;
+            position: relative;
+            background: #000;
+            cursor: grab;
+        }
+        
+        #canvas-container:active {
+            cursor: grabbing;
+        }
+
+        /* Bottom Toolbar */
+        .bottom-toolbar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 10px 20px;
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .tool-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .tool-btn.active {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+
+        /* Properties Panel (Floating) */
+        .properties-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 250px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            display: none; /* Hidden unless object selected */
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .prop-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        input[type="color"] {
+            background: none;
+            border: 1px solid var(--border);
+            width: 40px;
+            height: 30px;
+            cursor: pointer;
+            padding: 0;
+        }
+        
+        input[type="range"] {
+            width: 100px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        const { useState, useEffect, useRef } = React;
+
+        // --- COMPONENT: 3D SCENE MANAGER ---
+        const Scene3D = ({ isActive, selectedId, onSelectObject, onDeleteObject, onUpdateColor }) => {
+            const mountRef = useRef(null);
+            const sceneRef = useRef(null);
+            const raycasterRef = useRef(new THREE.Raycaster());
+            const mouseRef = useRef(new THREE.Vector2());
+            
+            // Initialize Scene
+            useEffect(() => {
+                const width = mountRef.current.clientWidth;
+                const height = mountRef.current.clientHeight;
+
+                // Scene setup
+                const scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x111111);
+                scene.fog = new THREE.Fog(0x111111, 10, 50);
+
+                // Camera
+                const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+                camera.position.set(8, 8, 8);
+
+                // Renderer
+                const renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(width, height);
+                renderer.shadowMap.enabled = true;
+                renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+                mountRef.current.appendChild(renderer.domElement);
+
+                // Controls
+                const controls = new OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+                controls.maxPolarAngle = Math.PI / 2 - 0.05; // Don't go below floor
+
+                // Lights
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+                scene.add(ambientLight);
+
+                const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+                dirLight.position.set(5, 10, 5);
+                dirLight.castShadow = true;
+                dirLight.shadow.mapSize.width = 1024;
+                dirLight.shadow.mapSize.height = 1024;
+                scene.add(dirLight);
+
+                // Grid Helper
+                const gridHelper = new THREE.GridHelper(20, 20, 0x444444, 0x222222);
+                scene.add(gridHelper);
+
+                // Store refs
+                sceneRef.current = { scene, camera, renderer, controls, objects: [] };
+
+                // Animation Loop
+                const animate = () => {
+                    requestAnimationFrame(animate);
+                    controls.update();
+                    renderer.render(scene, camera);
+                };
+                animate();
+
+                // Resize handler
+                const handleResize = () => {
+                    const newWidth = mountRef.current.clientWidth;
+                    const newHeight = mountRef.current.clientHeight;
+                    camera.aspect = newWidth / newHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(newWidth, newHeight);
+                };
+                window.addEventListener('resize', handleResize);
+
+                // Click Handler (Raycasting)
+                const onMouseClick = (event) => {
+                    // Calculate mouse position in normalized device coordinates
+                    const rect = mountRef.current.getBoundingClientRect();
+                    mouseRef.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                    mouseRef.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+                    raycasterRef.current.setFromCamera(mouseRef.current, camera);
+                    const intersects = raycasterRef.current.intersectObjects(sceneRef.current.objects);
+
+                    if (intersects.length > 0) {
+                        const selectedObject = intersects[0].object;
+                        onSelectObject(selectedObject.userData.id);
+                        
+                        // Visual feedback: Emissive flash
+                        const oldHex = selectedObject.material.emissive.getHex();
+                        selectedObject.material.emissive.setHex(0x333333);
+                        setTimeout(() => {
+                            selectedObject.material.emissive.setHex(oldHex);
+                        }, 150);
+                    } else {
+                        // Clicked on empty space
+                        onSelectObject(null);
+                    }
+                };
+
+                mountRef.current.addEventListener('pointerdown', onMouseClick);
+
+                return () => {
+                    window.removeEventListener('resize', handleResize);
+                    mountRef.current.removeEventListener('pointerdown', onMouseClick);
+                    mountRef.current.removeChild(renderer.domElement);
+                };
+            }, []);
+
+            // Handle Selection Highlighting
+            useEffect(() => {
+                if (sceneRef.current) {
+                    sceneRef.current.objects.forEach(obj => {
+                        if (obj.userData.id === selectedId) {
+                            // Add selection box logic or outline here (simplified: change emission)
+                            obj.material.emissive.setHex(0x444444);
+                        } else {
+                            obj.material.emissive.setHex(0x000000);
+                        }
+                    });
+                }
+            }, [selectedId]);
+
+            // Handle Color Update
+            useEffect(() => {
+                 if (selectedId && sceneRef.current) {
+                     const obj = sceneRef.current.objects.find(o => o.userData.id === selectedId);
+                     // This requires the parent to pass the color, we'll implement via global ref for simplicity in this file structure
+                 }
+            }, []);
+
+            // Function to add furniture
+            window.addFurnitureToScene = (type) => {
+                if (!sceneRef.current) return;
+                const { scene } = sceneRef.current;
+                let geometry, material, mesh;
+                const id = Date.now(); // Unique ID
+
+                if (type === 'sofa') {
+                    geometry = new THREE.BoxGeometry(2, 0.8, 0.8);
+                    material = new THREE.MeshStandardMaterial({ color: 0x555555 });
+                    mesh = new THREE.Mesh(geometry, material);
+                    mesh.position.y = 0.4;
+                } else if (type === 'table') {
+                    geometry = new THREE.CylinderGeometry(0.5, 0.5, 0.6, 32);
+                    material = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+                    mesh = new THREE.Mesh(geometry, material);
+                    mesh.position.y = 0.3;
+                } else if (type === 'lamp') {
+                    geometry = new THREE.CylinderGeometry(0.1, 0.3, 1.5, 16);
+                    material = new THREE.MeshStandardMaterial({ color: 0xffd700 });
+                    mesh = new THREE.Mesh(geometry, material);
+                    mesh.position.y = 0.75;
+                }
+
+                if(mesh) {
+                    mesh.castShadow = true;
+                    mesh.receiveShadow = true;
+                    mesh.userData = { id: id, type: type }; // Store metadata
+                    mesh.position.x = (Math.random() - 0.5) * 4;
+                    mesh.position.z = (Math.random() - 0.5) * 4;
+                    scene.add(mesh);
+                    sceneRef.current.objects.push(mesh);
+                }
+            };
+
+            // Exposed function for color changing
+            window.updateSelectedColor = (colorHex) => {
+                if (!sceneRef.current || !selectedId) return;
+                const obj = sceneRef.current.objects.find(o => o.userData.id === selectedId);
+                if (obj) {
+                    obj.material.color.set(colorHex);
+                }
+            };
+            
+            // Exposed function for deletion
+            window.deleteSelectedObject = () => {
+                 if (!sceneRef.current || !selectedId) return;
+                 const { scene, objects } = sceneRef.current;
+                 const index = objects.findIndex(o => o.userData.id === selectedId);
+                 if (index > -1) {
+                     scene.remove(objects[index]);
+                     objects.splice(index, 1);
+                     onDeleteObject(null); // Clear selection
+                 }
+            };
+
+            // Auto-generate room simulation
+            useEffect(() => {
+                if (isActive && sceneRef.current) {
+                    const { scene } = sceneRef.current;
+                    
+                    // Create Floor
+                    const floorGeo = new THREE.PlaneGeometry(10, 10);
+                    const floorMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.8 });
+                    const floor = new THREE.Mesh(floorGeo, floorMat);
+                    floor.rotation.x = -Math.PI / 2;
+                    floor.receiveShadow = true;
+                    scene.add(floor);
+
+                    // Create Walls (Mocking the AI result)
+                    const wallMat = new THREE.MeshStandardMaterial({ color: 0xe0e0e0 });
+                    const createWall = (w, h, d, x, y, z, ry) => {
+                        const geo = new THREE.BoxGeometry(w, h, d);
+                        const mesh = new THREE.Mesh(geo, wallMat);
+                        mesh.position.set(x, y, z);
+                        mesh.rotation.y = ry;
+                        mesh.castShadow = true;
+                        mesh.receiveShadow = true;
+                        scene.add(mesh);
+                    };
+
+                    // Back Wall
+                    createWall(10, 3, 0.2, 0, 1.5, -5, 0);
+                    // Left Wall
+                    createWall(10, 3, 0.2, -5, 1.5, 0, Math.PI / 2);
+                    
+                    // Add a window
+                    const windowGeo = new THREE.BoxGeometry(3, 1.5, 0.1);
+                    const windowMat = new THREE.MeshBasicMaterial({ color: 0x87CEEB });
+                    const windowMesh = new THREE.Mesh(windowGeo, windowMat);
+                    windowMesh.position.set(0, 2, -4.9);
+                    scene.add(windowMesh);
+                }
+            }, [isActive]);
+
+            return <div ref={mountRef} id="canvas-container" style={{ width: '100%', height: '100%' }} />;
+        };
+
+        // --- MAIN APP COMPONENT ---
+        const App = () => {
+            const [view, setView] = useState('upload'); // upload | processing | editor
+            const [uploadedFile, setUploadedFile] = useState(null);
+            const [tool, setTool] = useState('select');
+            const [selectedId, setSelectedId] = useState(null);
+            const [colorVal, setColorVal] = useState("#ffffff");
+
+            const handleFileUpload = (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    setUploadedFile(e.target.files[0]);
+                    startProcessing();
+                }
+            };
+
+            const startProcessing = () => {
+                setView('processing');
+                setTimeout(() => {
+                    setView('editor');
+                }, 3000); // 3 seconds scan
+            };
+            
+            const handleColorChange = (e) => {
+                const newColor = e.target.value;
+                setColorVal(newColor);
+                window.updateSelectedColor(newColor);
+            };
+
+            const handleDelete = () => {
+                window.deleteSelectedObject();
+            };
+
+            return (
+                <React.Fragment>
+                    <header>
+                        <div className="brand">La Obsidiané</div>
+                        <div className="header-controls">
+                            <button><i className="fa-solid fa-undo"></i> Undo</button>
+                            <button><i className="fa-solid fa-redo"></i> Redo</button>
+                            <button className="primary" onClick={() => alert("Project exported!")}>
+                                <i className="fa-solid fa-download"></i> Export
+                            </button>
+                        </div>
+                    </header>
+
+                    <main>
+                        {/* VIEW 1: UPLOAD SCREEN */}
+                        {view === 'upload' && (
+                            <div className="upload-container">
+                                <div className="brand" style={{marginBottom: 30, fontSize: '2rem'}}>La Obsidiané</div>
+                                <div className="upload-box" onClick={() => document.getElementById('fileInput').click()}>
+                                    <i className="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                    <h3>Upload Floor Plan</h3>
+                                    <p style={{color: '#888', marginTop: 10}}>Supports JPG, PNG, PDF</p>
+                                    <p style={{fontSize: '0.8rem', color: '#666', marginTop: 5}}>We'll convert it to 3D automatically</p>
+                                </div>
+                                <input 
+                                    type="file" 
+                                    id="fileInput" 
+                                    style={{display: 'none'}} 
+                                    accept="image/*,.pdf"
+                                    onChange={handleFileUpload}
+                                />
+                            </div>
+                        )}
+
+                        {/* VIEW 2: AI PROCESSING OVERLAY */}
+                        {view === 'processing' && (
+                            <div className="processing-overlay" style={{display: 'flex'}}>
+                                <div className="scan-line"></div>
+                                <h2 style={{letterSpacing: 2}}>ANALYZING STRUCTURE...</h2>
+                                <p style={{color: '#888', marginTop: 10}}>Detecting walls, windows, and rooms</p>
+                            </div>
+                        )}
+
+                        {/* VIEW 3: EDITOR INTERFACE */}
+                        <div className={`editor-interface ${view === 'editor' ? 'active' : ''}`}>
+                            
+                            {/* Left Sidebar */}
+                            <div className="sidebar">
+                                <div className="panel-section">
+                                    <div className="panel-title">Design Library</div>
+                                    <div className="grid-buttons">
+                                        <div className="item-btn" onClick={() => window.addFurnitureToScene('sofa')}>
+                                            <i className="fa-solid fa-couch"></i>
+                                            <span>Sofa</span>
+                                        </div>
+                                        <div className="item-btn" onClick={() => window.addFurnitureToScene('table')}>
+                                            <i className="fa-solid fa-table"></i>
+                                            <span>Table</span>
+                                        </div>
+                                        <div className="item-btn" onClick={() => window.addFurnitureToScene('lamp')}>
+                                            <i className="fa-solid fa-lightbulb"></i>
+                                            <span>Lamp</span>
+                                        </div>
+                                        <div className="item-btn">
+                                            <i className="fa-solid fa-chair"></i>
+                                            <span>Chair</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="panel-section">
+                                    <div className="panel-title">Materials</div>
+                                    <div className="grid-buttons">
+                                        <div className="item-btn">Wood</div>
+                                        <div className="item-btn">Tile</div>
+                                        <div className="item-btn">Carpet</div>
+                                    </div>
+                                </div>
+                                
+                                <div className="panel-section">
+                                    <div className="panel-title">Settings</div>
+                                    <div style={{fontSize: '0.8rem', color: '#888'}}>
+                                        Wall Height: 9ft<br/>
+                                        Scale: 1:50
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Center Canvas */}
+                            <div style={{flex: 1, position: 'relative'}}>
+                                <Scene3D 
+                                    isActive={view === 'editor'} 
+                                    selectedId={selectedId}
+                                    onSelectObject={setSelectedId}
+                                    onDeleteObject={setSelectedId}
+                                />
+                                
+                                {/* Floating Property Panel - Dynamic Display */}
+                                <div className="properties-panel" style={{ display: selectedId ? 'block' : 'none' }}>
+                                    <h4 style={{marginBottom: '15px', fontFamily: 'Playfair Display', color: '#d4af37'}}>Properties</h4>
+                                    <div className="prop-row">
+                                        <span>Material Color</span>
+                                        <input type="color" value={colorVal} onChange={handleColorChange} />
+                                    </div>
+                                    <div className="prop-row">
+                                        <span>Rotate</span>
+                                        <input type="range" min="0" max="360" />
+                                    </div>
+                                    <button 
+                                        style={{
+                                            width: '100%', 
+                                            marginTop: '10px', 
+                                            background: '#cf3838', 
+                                            border: 'none',
+                                            color: 'white'
+                                        }} 
+                                        onClick={handleDelete}
+                                    >
+                                        Delete Object
+                                    </button>
+                                </div>
+
+                                {/* Bottom Toolbar */}
+                                <div className="bottom-toolbar">
+                                    <button className={`tool-btn ${tool === 'select' ? 'active' : ''}`} onClick={() => setTool('select')} title="Select">
+                                        <i className="fa-solid fa-arrow-pointer"></i>
+                                    </button>
+                                    <button className={`tool-btn ${tool === 'move' ? 'active' : ''}`} onClick={() => setTool('move')} title="Move">
+                                        <i className="fa-solid fa-up-down-left-right"></i>
+                                    </button>
+                                    <button className={`tool-btn ${tool === 'draw' ? 'active' : ''}`} onClick={() => setTool('draw')} title="Draw Wall">
+                                        <i className="fa-solid fa-pencil"></i>
+                                    </button>
+                                    <div style={{width: '1px', background: '#333', margin: '0 5px'}}></div>
+                                    <button className="tool-btn" title="Walk Mode">
+                                        <i className="fa-solid fa-person-walking"></i>
+                                    </button>
+                                    <button className="tool-btn" title="3D View">
+                                        <i className="fa-solid fa-cube"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </React.Fragment>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
