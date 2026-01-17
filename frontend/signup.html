@@ -441,14 +441,14 @@ form input:focus { outline: none; }
         AND CRAFTING EXCLUSIVE PIECES.
       </p>
 
-      <form>
+      <form id="signupForm">
         <div class="row">
-          <input type="text" placeholder="FIRST NAME" required>
-          <input type="text" placeholder="LAST NAME" required>
+          <input type="text" id="firstName" placeholder="FIRST NAME" required>
+          <input type="text" id="lastName" placeholder="LAST NAME" required>
         </div>
-        <input type="email" placeholder="EMAIL" required>
-        <input type="tel" pattern="[0-9]{10}" maxlength="10" placeholder="CONTACT NUMBER" required>
-        <input type="password" pattern=".{8,}" placeholder="PASSWORD" required>
+        <input type="email" id="email" placeholder="EMAIL" required>
+        <input type="tel" id="phone" pattern="[0-9]{10}" maxlength="10" placeholder="CONTACT NUMBER" required>
+        <input type="password" id="password" pattern=".{8,}" placeholder="PASSWORD" required>
         <button type="submit" class="formbutton">CREATE</button>
         <br>
         <p class="login">
@@ -539,24 +539,35 @@ form input:focus { outline: none; }
     });
   </script>
 <script>
-document.querySelector("form").addEventListener("submit", async e => {
+document.getElementById("signupForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = document.querySelector("#name").value;
-  const email = document.querySelector("#email").value;
-  const password = document.querySelector("#password").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-  const res = await fetch("/api/auth/signup", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, password })
-  });
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
 
-  const data = await res.json();
-  alert(data.message);
+    const data = await res.json();
 
-  if (res.ok) window.location.href = "login.html";
+    if (!res.ok) {
+      alert(data.message || "Signup failed");
+      return;
+    }
+
+    alert("Signup successful!");
+    window.location.href = "login.html";
+
+  } catch (err) {
+    console.error(err);
+    alert("Backend not reachable");
+  }
 });
 </script>
+
 </body>
 </html>

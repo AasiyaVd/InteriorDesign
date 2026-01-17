@@ -302,28 +302,26 @@ body{
 
     .menu a:hover { color: #c0a062; }
 
-    /* USER DASHBOARD ICON */
-.user-dashboard a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 25px;
+   .logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
 }
 
-/* SVG ICON */
-.user-icon {
+.logout-icon {
   width: 22px;
   height: 22px;
-  stroke: currentColor;   /* INHERITS NAVBAR COLOR */
-  stroke-width: 1.4;
+  stroke: #000;
+  stroke-width: 1.6;
   fill: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Hover */
-.user-dashboard a:hover .user-icon {
-  opacity: 0.75;
-  transform: translateY(-1px);
+.logout-btn:hover .logout-icon {
+  opacity: 0.6;
+  color:#c0a062;
+  transform: translateX(2px);
 }
 
 /* When navbar is scrolled (auto color change) */
@@ -555,14 +553,14 @@ body{
       <li><a href="about.html">ABOUT</a></li>
       <li><a href="contact.html">CONTACT</a></li>
       <li><a href="signup.html">SIGN UP</a></li>
-      <li class="user-dashboard">
-  <a href="dashboard.html" aria-label="User Dashboard">
-    <svg class="user-icon" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
-    </svg>
-  </a>
-</li>
+      <button id="logoutBtn" class="logout-btn" title="Logout">
+  <svg class="logout-icon" viewBox="0 0 24 24" fill="none">
+    <path d="M16 17l5-5-5-5" />
+    <path d="M21 12H9" />
+    <path d="M13 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8" />
+  </svg>
+</button>
+
 
     </ul>
   </nav>
@@ -581,7 +579,7 @@ body{
           <li><a href="#">Dashboard</a></li>
           <li><a href="#">My Designs</a></li>
           <li><a href="#">Profile</a></li>
-<li><a href="#" id="logoutBtn">Logout</a></li>
+<li><a href="home.html" id="logoutBtn">Logout</a></li>
         </ul>
       </aside>
 
