@@ -1,13 +1,14 @@
+const prisma = require("../prisma");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const prisma = require("../prisma");
 
 exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ message: "All fields required" });
+    const { firstName, lastName, email, contact, password } = req.body;
+
+    if (!firstName || !lastName || !email || !contact || !password) {
+      return res.status(400).json({ message: "All fields are required" });
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -15,24 +16,26 @@ exports.register = async (req, res) => {
     });
 
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "Email already registered" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
       data: {
+        firstName,
+        lastName,
         email,
+        contact,
         password: hashedPassword,
       },
     });
 
-    res.status(201).json({
-      message: "User registered successfully",
-      userId: user.id,
-    });
+
+    res.status(201).json({ message: "User registered successfully" });
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -45,13 +48,13 @@ exports.login = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     const token = jwt.sign(
@@ -60,11 +63,10 @@ exports.login = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.json({
-      message: "Login successful",
-      token,
-    });
+    res.json({ token });
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("LOGIN ERROR:", err);
+    res.status(500).json({ message: err.message });
   }
 };
