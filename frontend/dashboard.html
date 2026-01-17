@@ -534,10 +534,13 @@ body{
 
 <body>
 <script>
-if (!localStorage.getItem("token")) {
-  window.location.href = "login.html";
-}
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    window.location.href = "login.html";
+  }
 </script>
+
 
     <!-- NAVIGATION BAR -->
   <nav class="navbar" id="navbar">

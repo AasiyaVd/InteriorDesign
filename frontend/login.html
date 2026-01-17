@@ -537,37 +537,23 @@ form input:focus { outline: none; }
   
 </script>
 <script>
-console.log("Login script loaded ✅");
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("loginForm");
 
-  if (!form) {
-    console.error("❌ Login form not found");
-    return;
-  }
-
-  console.log("Login form found ✅");
-
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    console.log("Login submit clicked ✅");
 
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    console.log("Email:", email);
-    console.log("Password length:", password.length);
-
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
       });
 
       const data = await res.json();
-      console.log("Response:", data);
 
       if (!res.ok) {
         alert(data.message || "Login failed");
@@ -575,13 +561,48 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       localStorage.setItem("token", data.token);
-      console.log("Token stored ✅", data.token);
-
       window.location.href = "dashboard.html";
 
     } catch (err) {
-      console.error("Fetch error ❌", err);
-      alert("Server error");
+      console.error(err);
+      alert("Backend not reachable");
+    }
+  });
+});
+</script>
+
+<script type="module">
+import API_BASE_URL from "./js/config.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("loginForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Login failed");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      window.location.href = "dashboard.html";
+
+    } catch (err) {
+      console.error(err);
+      alert("Backend not reachable");
     }
   });
 });
