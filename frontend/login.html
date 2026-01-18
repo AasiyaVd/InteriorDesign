@@ -401,6 +401,14 @@ form input:focus { outline: none; }
 </head>
 <body>
 
+<script src="auth.js"></script>
+<script>
+if (isLoggedIn()) {
+  location.replace("home.html");
+}
+</script>
+
+
 <!-- NAVIGATION BAR -->
   <nav class="navbar" id="navbar">
     <div class="logo-group">
@@ -559,16 +567,24 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
       return;
     }
 
-    localStorage.setItem("token", data.token);
-    window.location.href = "dashboard.html";
+    // ✅ SESSION-BASED LOGIN
+    sessionStorage.setItem("token", data.token);
+
+    // ✅ GO BACK TO ORIGINAL PAGE IF EXISTS
+   cconst redirectTo =
+  sessionStorage.getItem("redirectAfterAuth") || "home.html";
+
+
+sessionStorage.removeItem("redirectAfterAuth");
+location.replace(redirectTo);
 
   } catch (err) {
     console.error(err);
     alert("Backend not reachable");
   }
 });
-
 </script>
+
 
 
 

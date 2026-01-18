@@ -402,6 +402,14 @@ form input:focus { outline: none; }
 
 <body>
 
+    <script src="auth.js"></script>
+<script>
+if (sessionStorage.getItem("token")) {
+  location.replace("home.html");
+}
+
+</script>
+
 <!-- NAVIGATION BAR -->
   <nav class="navbar" id="navbar">
     <div class="logo-group">
@@ -564,8 +572,18 @@ document.getElementById("signupBtn").addEventListener("click", async () => {
       return;
     }
 
-    // 🚀 GUARANTEED REDIRECT
-    location.replace("home.html");
+/ Save token (AUTO LOGIN)
+sessionStorage.setItem("token", data.token);
+
+// Decide where to go next
+const redirectTo =
+  localStorage.getItem("redirectAfterAuth") || "home.html";
+
+localStorage.removeItem("redirectAfterAuth");
+/
+// Go there
+location.replace(redirectTo);
+
 
   } catch (err) {
     console.error(err);

@@ -33,7 +33,6 @@
 
 
 <style>
- /* ================= YOUR ORIGINAL NAVBAR ================= */
     .navbar {
       position: fixed;
       top: 0;
@@ -60,7 +59,7 @@
 
     
 .navbar.scrolled .menu {
-  margin-left: 520px; 
+  margin-left: 570px; 
   transition: margin-left 0.3s ease;
 }
     .logo-group {
@@ -92,7 +91,7 @@
       list-style: none;
       display: flex;
       gap: 25px;
-      margin-left: 430px;
+      margin-left: 490px;
     }
 
     .menu a {
@@ -102,14 +101,16 @@
       font-family: 'Cormorant Garamond', serif;
     }
 
-    .menu a:hover { color: #c0a062; }
-
+    .menu a:hover { color: #d0b75b }
+.navbar.scrolled a:hover{
+ opacity:0.7; ;
+}
+    /*
     /* USER DASHBOARD ICON */
 .user-dashboard a {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 25px;
 }
 
 /* SVG ICON */
@@ -464,9 +465,41 @@ body {
         }
       }
 
+
+
+      .logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-icon {
+  width: 22px;
+  height: 22px;
+  stroke: #fff;
+  stroke-width: 1.6;
+  fill: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.logout-btn:hover .logout-icon {
+  color:  #d0b75b ;
+  transform: translateX(2px);
+}
+.navbar.scrolled .logout-icon{
+  stroke: #d0b75b;/* GOLD tone from navbar */
+}
+
 </style>
 </head>
 </body>
+
+<script src="auth.js"></script>
+<script>
+  saveRedirectIfNotAuth();
+  document.addEventListener("DOMContentLoaded", setupNavbarAuth);
+</script>
+
 <!-- NAVIGATION BAR -->
   <nav class="navbar" id="navbar">
     <div class="logo-group">
@@ -479,14 +512,25 @@ body {
       <li><a href="design.html">DESIGN</a></li>
       <li><a href="about.html">ABOUT</a></li>
       <li><a href="contact.html">CONTACT</a></li>
-      <li><a href="signup.html">SIGN UP</a></li>
-      <li class="user-dashboard">
-  <a href="dashboard.html" aria-label="User Dashboard">
+      <li id="signupNav"><a href="signup.html">SIGN UP</a></li>
+
+<li class="user-dashboard" id="dashboardNav" style="display:none">
+  <a href="dashboard.html" aria-label="User Dashboard" title="User Dashboard">
     <svg class="user-icon" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
     </svg>
   </a>
+</li>
+
+<li id="logoutNav" style="display:none">
+  <button class="logout-btn" id="logoutBtn" title="Logout">
+    <svg class="logout-icon" viewBox="0 0 24 24" fill="none">
+      <path d="M16 17l5-5-5-5"/>
+      <path d="M21 12H9"/>
+      <path d="M13 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8"/>
+    </svg>
+  </button>
 </li>
 
     </ul>
