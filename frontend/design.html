@@ -711,6 +711,27 @@ function rotateItem(e){
 function stopRotate(){
   document.removeEventListener("mousemove", rotateItem);
   document.removeEventListener("mouseup", stopRotate);
+
+  if(!selectedItem) return;
+
+  // Allowed rotation angles
+  const allowedAngles = [0];
+
+  let currentRotation = parseFloat(selectedItem.dataset.rotate) || 0;
+
+  // Normalize angle between 0–360
+  currentRotation = ((currentRotation % 360) + 360) % 360;
+
+  // Find nearest allowed angle
+  let nearestAngle = allowedAngles.reduce((prev, curr) =>
+    Math.abs(curr - currentRotation) < Math.abs(prev - currentRotation)
+      ? curr
+      : prev
+  );
+
+  // 🔒 Snap back to valid angle
+  selectedItem.style.transform = `rotate(${nearestAngle}deg)`;
+  selectedItem.dataset.rotate = nearestAngle;
 }
 
 
