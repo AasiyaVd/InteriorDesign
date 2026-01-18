@@ -161,7 +161,7 @@ img {
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
+  -user-drag: none;
 
 }
 .canvas {
@@ -292,11 +292,7 @@ border-radius: 11px;
 </head>
 
 <body>
-<script>
-if (!localStorage.getItem("token")) {
-  window.location.href = "login.html";
-}
-</script>
+
 
 <nav class="navbar">
   <a href="home.html">
