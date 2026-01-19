@@ -17,3 +17,22 @@ model User {
   createdAt DateTime @default(now())
 }
 
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+model ContactMessage {
+  id            Int      @id @default(autoincrement())
+  category      String
+  occupation    String
+  firstName     String
+  lastName      String
+  email         String
+  company       String?
+  phone         String?
+  referral      String
+  country       String
+  message       String?
+  createdAt     DateTime @default(now())
+}

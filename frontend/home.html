@@ -1215,6 +1215,39 @@ function clearAuthRedirect() {
     });
   </script>
 
+<script>
+document.querySelector(".newsletter-form")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const emailInput = e.target.querySelector("input[type='email']");
+    const email = emailInput.value.trim();
+
+    if (!email) return;
+
+    try {
+      const res = await fetch("http://localhost:5000/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Subscription failed");
+        return;
+      }
+
+      alert("You're subscribed! ✨");
+      emailInput.value = "";
+
+    } catch (err) {
+      console.error(err);
+      alert("Server not reachable");
+    }
+  });
+</script>
 
 </body>
 </html>

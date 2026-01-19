@@ -139,7 +139,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Cormorant Garamond', sans-serif;
 }
 
 body {
@@ -538,7 +537,8 @@ body {
 
 <!-- HERO -->
 <section class="contact-hero">
-  <div class="hero-content">
+  <div class="hero-content" style="  font-family: 'Cormorant Garamond', sans-serif;
+">
     <h1>CONTACT<br>LA OBSIDIANE</h1>
     <div class="divider"></div>
   </div>
@@ -546,24 +546,25 @@ body {
 
 <!-- Contact details -->
 
-<section class="contact-form-section">
+<section class="contact-form-section" style="  font-family: 'Cormorant Garamond', sans-serif;
+">
   <h2>SEND US A MESSAGE</h2>
   <p class="subtitle">
     If you have questions or need any general information our customer service team will be happy to assist you.
   </p>
 
-  <form class="contact-form">
+<form class="contact-form" id="contactForm">
 
     <div class="row">
-      <select required>
-        <option value="">Question (required)</option>
+<select id="category" required>        
+  <option value="">Question (required)</option>
         <option>General Enquiry</option>
         <option>Support</option>
         <option>Business</option>
       </select>
 
-      <select required>
-        <option value="">Occupation (required)</option>
+<select id="occupation" required>
+          <option value="">Occupation (required)</option>
         <option>Student</option>
         <option>Professional</option>
         <option>Business Owner</option>
@@ -571,18 +572,18 @@ body {
     </div>
 
     <div class="row">
-      <input type="text" placeholder="First Name (required)" required>
-      <input type="text" placeholder="Last Name (required)" required>
+      <input type="text" placeholder="First Name (required)" required id="firstName">
+      <input type="text" placeholder="Last Name (required)" required id="lastName">
     </div>
 
     <div class="row">
-      <input type="email" placeholder="Email (required)" required>
-      <input type="text" placeholder="Company">
+      <input type="email" placeholder="Email (required)" required id="email">
+      <input type="text" placeholder="Company" id="company">
     </div>
 
     <div class="row">
-      <input type="tel" placeholder="Phone">
-      <select required>
+      <input type="tel" placeholder="Phone" id="phone" max="10">
+      <select required id="referral">
         <option value="">How did you hear about us?</option>
         <option>Google</option>
         <option>Social Media</option>
@@ -591,7 +592,7 @@ body {
     </div>
 
     <div class="row">
-      <select required>
+      <select required id="country">
         <option value="">Country (required)</option>
         <option>India</option>
         <option>United Kingdom</option>
@@ -599,21 +600,23 @@ body {
       </select>
     </div>
 
-    <textarea placeholder="Message"></textarea>
+    <textarea placeholder="Message" id="message"></textarea>
 
     <div class="form-footer">
       <div class="privacy-wrapper">
   <input type="checkbox" id="privacy" required>
   <label for="privacy"> </label>
 
-  <p class="privacy-text">
+  <p class="privacy-text" style="  font-family: poppins;
+">
     I HAVE READ AND ACCEPT YOUR <a href="#"><span>PRIVACY POLICY</span></a>*
   </p>
 </div>
 
 
 
-      <button type="submit">SEND</button>
+      <button type="submit" style="  font-family: 'Cormorant Garamond', sans-serif;
+">SEND</button>
     </div>
 
   </form>
@@ -625,7 +628,8 @@ body {
     <div class="footer-container">
 
       <!-- BRAND -->
-      <div class="footer-col">
+      <div class="footer-col" style="  font-family: poppins;
+">
         <h4>La Obsidiané</h4>
         <p class="footer-brand">
           An AI-powered room design platform that helps you visualize, design,
@@ -635,7 +639,8 @@ body {
       </div>
 
       <!-- QUICK LINKS -->
-      <div class="footer-col">
+      <div class="footer-col" style="  font-family: poppins;
+">
         <h4>QUICK LINKS</h4>
         <ul>
           <li><a href="AI.html">AI Insights</a></li>
@@ -646,7 +651,8 @@ body {
       </div>
 
       <!-- FEATURES -->
-      <div class="footer-col">
+      <div class="footer-col" style="  font-family: poppins;
+">
         <h4>FEATURES</h4>
         <ul>
           <li><a href="#ai">AI Room Design</a></li>
@@ -658,11 +664,13 @@ body {
 
       <!-- NEWSLETTER -->
       <div class="footer-col footer-newsletter">
-        <p class="newsletter-text">
+        <p class="newsletter-text" style="  font-family: poppins;
+">
           RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
         </p>
 
-        <form class="newsletter-form">
+        <form class="newsletter-form" style="  font-family: poppins;
+">
           <input type="email" placeholder="ENTER YOUR EMAIL*" required />
           <button type="submit">SUBSCRIBE</button>
         </form>
@@ -699,6 +707,84 @@ body {
       }
     });
   </script>
+
+  <script>
+document.querySelector(".newsletter-form")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const emailInput = e.target.querySelector("input[type='email']");
+    const email = emailInput.value.trim();
+
+    if (!email) return;
+
+    try {
+      const res = await fetch("http://localhost:5000/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Subscription failed");
+        return;
+      }
+
+      alert("You're subscribed! ✨");
+      emailInput.value = "";
+
+    } catch (err) {
+      console.error(err);
+      alert("Server not reachable");
+    }
+  });
+</script>
+
+
+<script>
+document.getElementById("contactForm")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      category: document.getElementById("category").value,
+      occupation: document.getElementById("occupation").value,
+      firstName: document.getElementById("firstName").value.trim(),
+      lastName: document.getElementById("lastName").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      company: document.getElementById("company").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      referral: document.getElementById("referral").value,
+      country: document.getElementById("country").value,
+      message: document.getElementById("message").value.trim()
+    };
+
+    try {
+      const res = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Failed to send message");
+        return;
+      }
+
+      alert("Message sent successfully ✨");
+      e.target.reset();
+
+    } catch (err) {
+      console.error(err);
+      alert("Server not reachable");
+    }
+  });
+</script>
+
 </body>
 </html>
 
