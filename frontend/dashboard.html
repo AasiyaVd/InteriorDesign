@@ -542,6 +542,49 @@ protectPage();
 document.addEventListener("DOMContentLoaded", setupNavbarAuth);
 </script>
 
+<script>
+async function loadMyDesigns() {
+  try {
+    const res = await fetch("http://localhost:5000/api/designs");
+    const designs = await res.json();
+
+    const grid = document.getElementById("designsGrid");
+    grid.innerHTML = "";
+
+    if (!designs.length) {
+      grid.innerHTML = "<p>No designs yet.</p>";
+      return;
+    }
+
+    designs.forEach(design => {
+      const card = document.createElement("div");
+      card.className = "design-card";
+
+      card.innerHTML = `
+        <img src="http://localhost:5000/${design.imagePath}" />
+        <div class="design-info">
+          <h5>${design.title}</h5>
+          <span>${new Date(design.createdAt).toDateString()}</span>
+        </div>
+      `;
+
+      // Lightbox support
+      card.querySelector("img").onclick = () => {
+        lightboxImg.src = card.querySelector("img").src;
+        lightbox.classList.add("active");
+      };
+
+      grid.appendChild(card);
+    });
+
+  } catch (err) {
+    console.error("Failed to load designs", err);
+  }
+}
+
+// Load on page open
+document.addEventListener("DOMContentLoaded", loadMyDesigns);
+</script>
 
 
     <!-- NAVIGATION BAR -->
@@ -633,14 +676,8 @@ document.addEventListener("DOMContentLoaded", setupNavbarAuth);
 
         <!-- DESIGNS -->
         <h2 class="section-title">My Designs</h2>
-        <div class="designs-grid">
-          <div class="design-card">
-            <img src="grid4.jpg">
-            <div class="design-info">
-              <h5>Living Room</h5>
-              <span>Feb 2, 2025</span>
-            </div>
-          </div>
+<div class="designs-grid" id="designsGrid">
+          
         </div>
 
         <!-- ACTIONS -->

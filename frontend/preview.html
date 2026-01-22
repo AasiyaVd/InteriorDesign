@@ -321,13 +321,7 @@ background:linear-gradient(135deg,#000,#333);
 
 <body>
 
-<script src="auth.js"></script>
 <script>
-  // 🔒 Preview is a protected page
-  protectPage();
-
-  // 🔁 Save this page so user returns after signup/login
-  saveRedirectIfNotAuth();
 
   // 🔄 Navbar auth state
   document.addEventListener("DOMContentLoaded", setupNavbarAuth);
@@ -372,8 +366,7 @@ background:linear-gradient(135deg,#000,#333);
 </nav>
 
 <div class="preview-wrapper">
-  <div class="preview-title">Design Preview</div>
-  <div class="preview-sub">Drag the slider to compare before & after</div>
+ 
 
   <div class="before-after-container" id="container">
     <div class="labels">
@@ -429,13 +422,15 @@ const slider    = document.getElementById("slider");
 const container = document.getElementById("container");
 
 /* ================= LOAD IMAGES ================= */
-const beforeSrc = params.get("before");
-const afterSrc  = params.get("after");
+const beforeSrc = sessionStorage.getItem("preview_before");
+const afterSrc  = sessionStorage.getItem("preview_after");
+
 
 if (!beforeSrc || !afterSrc) {
-  console.error("Missing image parameters");
-  slider.style.display = "none";
-} else {
+  alert("Preview data missing. Please generate preview again.");
+  window.location.href = "design.html";
+}
+ else {
   beforeImg.src = decodeURIComponent(beforeSrc);
   afterImg.src  = decodeURIComponent(afterSrc);
 }

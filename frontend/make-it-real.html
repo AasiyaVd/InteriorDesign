@@ -367,7 +367,7 @@ body{
 
     <!-- DESIGN -->
     <div class="design-preview">
-      <img id="finalDesign" src="grid5.jpg">
+<img id="finalDesign" alt="Final Design Preview">
       <div class="design-meta">
         <h4>Your Approved Design</h4>
         <p>Style: Modern • Estimated Budget: ₹8–12L</p>
@@ -483,6 +483,18 @@ function openDesigner(page){
 }
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const finalImg = sessionStorage.getItem("preview_after");
+
+  if (finalImg) {
+    document.getElementById("finalDesign").src = finalImg;
+  } else {
+    // fallback (optional)
+    document.getElementById("finalDesign").src = "grid5.jpg";
+  }
+});
+</script>
 
 
 </body>

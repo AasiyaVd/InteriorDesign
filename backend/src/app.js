@@ -18,3 +18,10 @@ app.get("/api/health", (req, res) => {
 });
 
 module.exports = app;
+
+const designRoutes = require("./routes/design");
+
+app.use("/uploads", express.static("uploads"));
+app.use("/api/designs", designRoutes);
+
+module.exports = app;

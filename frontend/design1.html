@@ -5,121 +5,287 @@
 <title>La Obsidiané | Design Studio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
 <script src="ai-room-check.js"></script>
-
 <style>
+/* RESET */
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Poppins',sans-serif;background:#e9e7e3;margin-top:70px}
+html,body{height:100%}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fff;
+  color:#f5f5f5;
+  overflow:hidden;
+}
 
 /* NAVBAR */
 .navbar{
-  position:fixed;top:0;left:0;width:100%;height:70px;
-  background:rgba(75,0,7);color:#d0b75b;
-  display:flex;align-items:center;padding:0 60px;z-index:1000;
+  height:60px;
+  background:rgba(75,0,7);
+  border-bottom:1px solid rgba(255,215,160,0.15);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
   font-family:'Cormorant Garamond',serif;
+  letter-spacing:1px;
+  font-size:20px;
 }
-.logo-group{display:flex;gap:10px}
-.crown-img{height:48px}
-.label-img{height:30px}
 
-.menu{list-style:none;display:flex;gap:22px;margin-left:auto}
-.menu a{color:#d0b75b;font-size:16px;text-decoration:none}
-.menu a:hover{opacity:.7}
+/* RIGHT ACTION GROUP */
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 
-.user-icon{width:22px;height:22px;stroke:#d0b75b;stroke-width:1.4;fill:none}
+/* RENDER BUTTON (PRIMARY) */
+.render-nav-btn{
+  background:rgba(75,0,7);
+  border:1px solid rgba(255,215,160,0.45);
+  color:#d4af37;
+  padding:8px 16px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:13px;
+  transition:0.3s;
+}
 
-/* APP */
-.app{display:flex;height:calc(100vh - 70px)}
+.render-nav-btn:hover{
+  background:#d4af37;
+  color:#000;
+}
+
+/* ICON BUTTONS */
+.nav-icon{
+  background:transparent;
+  border:1px solid rgba(255,215,160,0.25);
+  width:36px;
+  height:36px;
+  border-radius:8px;
+  color:#d4af37;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.nav-icon:hover{
+  background:#d4af37;
+  color:#000;
+}
+
+/* DANGER ACTION (DELETE) */
+.nav-icon.danger{
+  color:#d4af37;
+  border-color:rgba(178,58,58,0.5);
+}
+
+.nav-icon.danger:hover{
+  background:#b23a3a;
+  color:#fff;
+}
+
+
+/* APP LAYOUT */
+.app{
+  display:grid;
+  grid-template-columns:50px 0px 1fr; /* sidebar | toolpanel | canvas */
+  height:calc(100vh - 60px);
+  transition: grid-template-columns .35s ease;
+}
+
 
 /* SIDEBAR */
 .sidebar{
-  width:64px;background:#f5f4f2;padding-top:20px;position:relative;
+  background:rgba(75, 0, 7);
+  border-right:1px solid rgba(255,215,160,0.12);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:20px;
+  gap:26px;
+  width: 50px;
 }
+
 .side-btn{
-  width:100%;padding:18px;border:none;background:none;
-  cursor:pointer;color:rgba(75,0,7);position:relative;
+  font-size:20px;
+  color:#d4af37;
+  cursor:pointer;
+  transition:0.3s;
+  background:rgba(75, 0, 7);
+  border: none;
 }
-.side-btn i{font-size:18px}
-.side-btn:hover{background:#e4dede}
 
-.side-btn::after{
-  content:attr(data-tooltip);
-  position:absolute;left:70px;top:50%;
-  transform:translateY(-50%);
-  background:#111;color:#fff;font-size:12px;
-  padding:6px 10px;border-radius:6px;
-  opacity:0;white-space:nowrap;pointer-events:none;
+.sidebar i:hover{
+  color:#f5f4f2
 }
-.side-btn:hover::after{opacity:1}
 
-.sidebar-bottom{
-  position:absolute;bottom:10px;width:100%;
-}
-.sidebar-bottom .fa-bookmark{color:#6b0008;transition:.3s}
-.sidebar-bottom button:hover .fa-bookmark{color:#c0a062}
-.sidebar-bottom .saved .fa-bookmark{color:#c0a062}
-
-/* TOOL PANEL */
-.tool-panel{
-  width:0;
-  height: calc(100vh - 70px); /* navbar height */
+/* CANVAS */
+.canvas-area{
+  position:relative;
   background:#f5f4f2;
-overflow-x: hidden;   /* keep width animation clean */
-overflow-y: visible; /* allow child scrollbar */
-  transition:.35s;
-  border-right:1px solid rgba(0,0,0,.08);
-
-  /* ✅ CRITICAL */
-  display: flex;
-  flex-direction: column;
+  margin:15px;
+  border-radius:22px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+  height:95%;
+  transition: .35s ease; /* smooth resize */
 }
 
-.tool-panel.active{width:260px}
 
-.tool-panel-header{
-  padding:18px;font-size:14px;font-weight:500;
-  border-bottom:1px solid rgba(0,0,0,.1);
-  display:flex;align-items:center;gap:12px;
+
+
+
+
+/* FLOATING ACTION BAR */
+.action-bar{
+  position:absolute;
+  bottom:24px;
+  right:24px;
+  background:#111;
+  border:1px solid rgba(255,215,160,0.2);
+  border-radius:12px;
+  padding:8px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
 }
-.panel-back{background:none;border:none;cursor:pointer;color:rgba(75,0,7)}
-.panel-back:hover{opacity:.7}
 
-.tool-panel-content{
-  padding:16px;display:grid;gap:14px;
-  max-height:calc(100vh - 140px);overflow-y:auto;
+.action-bar button{
+  background:#0e0e0e;
+  border:1px solid rgba(255,215,160,0.25);
+  color:#f5f5f5;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
+  transition:0.3s;
 }
-.tool-panel-content img{width:100%;border-radius:10px;cursor:pointer}
 
-/* MAIN */
-.main{flex:1;
-  padding:24px;
-  display:flex;justify-content:center;align-items:center}
+.action-bar button:hover{
+  background:#d4af37;
+  color:#000;
+}
+
+.logo-group{display:flex;gap:10px}
+.crown-img{height:48px}
+.label-img{
+height:30px;
+margin-top: 10px;
+}
+
+
+
+
+/* PROJECT TITLE (CENTER) */
+.project-title-wrapper{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.project-title-input{
+  background:transparent;
+  border:none;
+  outline:none;
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px;
+  letter-spacing:1px;
+  color:#f5f5f5;
+  padding:4px 10px;
+  border-radius:6px;
+  transition:0.3s;
+  min-width:220px;
+}
+
+/* Hover & Focus */
+.project-title-input:hover{
+  background:rgba(255,255,255,0.06);
+}
+
+.project-title-input:focus{
+  background:rgba(255,255,255,0.1);
+  box-shadow:0 0 0 1px rgba(255,215,160,0.4);
+}
+
+
+
+
+
+.sidebar i.active{
+  color:#d4af37;
+}
+
+/* UPLOAD STATE */
+.empty-state{
+  position:absolute;
+  z-index:20;
+  border:2px dashed #bdbdbd;
+  padding:46px 60px;
+  text-align:center;
+  cursor:pointer;
+  background:#f8f7f5;
+  border-radius:18px;
+}
+
+
+.empty-state h2{
+  font-family:'Cormorant Garamond',serif;
+  margin-bottom:6px;
+  font-weight:600;
+  color:#000;
+}
+
+.empty-state p{
+  font-size:14px;
+  color:#555;
+  margin-bottom:14px;
+}
+
+.empty-state button{
+  display:inline-block;
+  background:#5b0f14;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
+  border: none;
+}
+
+
+.user-icon{width:22px;
+  stroke:#d0b75b;
+  stroke-width:1.4;
+  fill:none;
+  background:transparent;
+  border:1px solid rgba(255,215,160,0.25);
+  width:33px;
+  height:30px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.3s;}
+
+.user-icon:hover{
+    background:#d4af37;
+  stroke:#000;
+}
+
+
+
 .canvas{
-  width:100%;max-width:1100px;height:100%;
+  width:100%;height:100%;
   background:#f5f4f2;border-radius:20px;
   position:relative;display:flex;justify-content:center;align-items:center
 }
-.empty-state{
-  text-align:center;border:2px dashed #aaa;
-  padding:60px;border-radius:18px
-}
-.empty-state button{
-  margin-top:18px;
-  padding:12px 26px;
-  border:none;
-  border-radius:8px;
-  background:#6b1c1c;
-  color:#fff;cursor:pointer
-}
+
 #room{
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;border-radius:20px
@@ -264,106 +430,190 @@ img {
   z-index:1;
 }
 
-
-/* ================= PREVIEW BUTTON ================= */
-.preview-btn {
-  position: fixed;
-  bottom: 35px;
-  right: 35px;
-  z-index: 1200;
-
-  padding: 16px 36px;
-  background: rgba(75, 0, 7, 0.95);
-  color: #f5f4f2;
-
-  font-size: 13px;
-  letter-spacing: 2px;
-  text-decoration: none;
-  font-family: poppins;
-
-  border: 1px solid #c0a062;
-  box-shadow: 0 20px 45px rgba(0,0,0,0.35);
-  backdrop-filter: blur(6px);
-border-radius: 11px;
-  transition: all 0.35s ease;
+#room{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:20px;
+  z-index:1;
+  pointer-events:none;
 }
 
-/* Hover effect */
-.preview-btn:hover {
-  background: #c0a062;
-  color: #2a0006;
-  transform: translateY(-3px);
+#furniture-layer{
+  position:absolute;
+  inset:0;
+  z-index:5;
+}
+
+.empty-state{
+  z-index:10;
 }
 
 
+/* TOOL PANEL */
+.tool-panel{
+  background:#f5f4f2;
+  border-right:1px solid rgba(0,0,0,.08);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  display: flex;
+  flex-direction: column;
+}
 
+.tool-panel.active{width:260px}
+
+.tool-panel-header{
+  padding:18px;font-size:14px;font-weight:500;
+  border-bottom:1px solid rgba(0,0,0,.1);
+  display:flex;align-items:center;gap:12px;
+}
+.panel-back{background:none;border:none;cursor:pointer;color:rgba(75,0,7)}
+.panel-back:hover{opacity:.7}
+
+.tool-panel-content{
+  padding:16px;display:grid;gap:14px;color: black;
+  max-height:calc(100vh - 140px);overflow-y:auto;
+}
+.tool-panel-content img{width:100%;border-radius:10px;cursor:pointer}
+
+
+.canvas-error{
+  position:absolute;
+  top:24px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#6b0008;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:10px;
+  font-size:13px;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s ease;
+  z-index:30;
+}
+.canvas-error.show{
+  opacity:1;
+}
+
+#floor-layer{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:auto;   /* ✅ ALLOW INTERACTION */
+}
+
+
+#furniture-layer{
+  position:absolute;
+  inset:0;
+  z-index:5;
+}
+
+
+.rug-item{
+position:absolute;
+  cursor:grab;
+  pointer-events:auto;
+  touch-action:none;      /* 🔑 REQUIRED */
+  user-select:none;
+
+  /* 🔑 FLOOR ILLUSION */
+  transform-origin:center center;
+
+  /* 🔑 SHADOW = CONTACT WITH FLOOR */
+  filter: drop-shadow(0 18px 22px rgba(0,0,0,0.18));
+}
+.rug-item:active{
+  cursor:grabbing;
+}
 
 </style>
 </head>
 
 <body>
 
-  <script src="auth.js"></script>
-<script>
-protectPage();
-</script>
+<div class="navbar">
 
-
-<nav class="navbar">
-  <a href="home.html">
-  <div class="logo-group">
-    <img class="crown-img" src="crown.png">
-    <img class="label-img" src="label.png">
-  </div>
+  <!-- LEFT: LOGO -->
+  <a href="home.html" style="text-decoration:none;">
+    <div class="logo-group">
+      <img class="crown-img" src="crown.png">
+      <img class="label-img" src="label.png">
+    </div>
   </a>
-  <ul class="menu">
-    <li><a href="home.html"><i class="fa-solid fa-arrow-left"></i></a></li>
-    <li><a href="#" onclick="undo()"><i class="fa-solid fa-rotate-left"></i></a></li>
-    <li><a href="#" onclick="deleteSelected()"><i class="fa-regular fa-trash-can"></i></a></li>
-    <li><a href="#" onclick="resetCanvas()"><i class="fa-solid fa-arrow-rotate-right"></i></a></li>
-    <li><a href="#" onclick="shareDesign()"><i class="fa-solid fa-share-nodes"></i></a></li>
-    <li>
-      <a href="dashboard.html">
+
+  <!-- CENTER: PROJECT TITLE -->
+  <div class="project-title-wrapper">
+    <input 
+      type="text" 
+      class="project-title-input" 
+      value="Untitled Design"
+      spellcheck="false"
+    />
+  </div>
+
+  <!-- RIGHT: ACTIONS -->
+  <div class="nav-right">
+<button class="render-nav-btn" onclick="goToPreview()" type="button">Preview</button>
+
+   <button class="nav-icon" id="undoBtn" title="Undo" type="button">
+  <i class="fa-solid fa-rotate-left"></i>
+</button>
+
+<button class="nav-icon danger" id="deleteBtn" title="Delete" type="button">
+  <i class="fa-solid fa-trash"></i>
+</button>
+
+<button class="nav-icon" id="saveBtn" title="Save" type="button">
+  <i class="fa-solid fa-floppy-disk"></i>
+</button>
+
+
+<button class="nav-icon" id="shareBtn" title="Share" type="button">
+  <i class="fa-solid fa-share-nodes"></i>
+</button>
+<i>
+<a href="dashboard.html" >
         <svg class="user-icon" viewBox="0 0 24 24">
           <circle cx="12" cy="8" r="4"></circle>
           <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
         </svg>
       </a>
-    </li>
-  </ul>
-</nav>
+      </i>
+</div>
+
+</div>
+
+
+
 
 <div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
 
-<div class="sidebar">
-  <button class="side-btn" data-tooltip="Upload Image" onclick="uploadRoom()">
+      <button class="side-btn" data-tooltip="Upload Image" onclick="uploadRoom()" title="Upload">
     <i class="fa-solid fa-upload"></i>
   </button>
-
-  <button class="side-btn" data-tooltip="Templates" onclick="openPanel('Templates')">
+      <button class="side-btn" data-tooltip="Templates" onclick="openPanel('Templates')" title="Templates">
     <i class="fa-regular fa-image"></i>
   </button>
 
-  <button class="side-btn" data-tooltip="Furniture" onclick="openFurnitureCategories()">
+     <button class="side-btn" data-tooltip="Furniture" onclick="openFurnitureCategories()">
     <i class="fa-solid fa-couch"></i>
   </button>
 
-  <button class="side-btn" data-tooltip="Decor" onclick="openDecorCategories()">
+  <button class="side-btn" data-tooltip="Decor" onclick="openDecorCategories()" title="Decor">
     <i class="fa-solid fa-leaf"></i>
   </button>
 
-  <button class="side-btn" data-tooltip="Wall Color" onclick="openPanel('wall')">
+  <button class="side-btn" data-tooltip="Wall Color" onclick="openPanel('wall')" title="Wall Color">
     <i class="fa-solid fa-paint-roller"></i>
   </button>
 
-  <div class="sidebar-bottom">
-    <button class="side-btn" data-tooltip="Save Design" onclick="saveDesign(this)">
-      <i class="fa-regular fa-bookmark"></i>
-    </button>
-    <button class="side-btn" data-tooltip="Favourite">
-      <i class="fa-regular fa-heart"></i>
-    </button>
-  </div>
 </div>
 
 <div class="tool-panel" id="toolPanel">
@@ -375,22 +625,42 @@ protectPage();
   </div>
   <div class="tool-panel-content" id="panelContent"></div>
 </div>
-
-<div class="main">
+  <!-- CANVAS -->
+  <div class="canvas-area">
   <div class="canvas" id="canvas">
-    <div class="empty-state">
-      <h3>Upload your room image</h3>
-      <p>Start designing with luxury precision</p>
-      <button onclick="uploadRoom()">Upload Image</button>
-    </div>
-  </div>
+
+<img id="room" />
+<div id="floor-layer"></div>
+<div id="furniture-layer"></div>
+
+  <div class="empty-state" >
+  <h2>Upload your room image</h2>
+  <p>Start designing with luxury precision</p>
+  <button onclick="uploadRoom()" >
+        Upload Image
+      </button>
+</div>
+<div class="canvas-error" id="canvasError">
+  Please upload or select a room image first
 </div>
 
 </div>
-<!-- PREVIEW BUTTON -->
-<a href="preview.html" class="preview-btn">
-  Preview Design
-</a>
+</div>
+
+<div id="toast" style="
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  background:#1a7f37;
+  color:#fff;
+  padding:14px 20px;
+  border-radius:10px;
+  font-size:14px;
+  opacity:0;
+  transition:opacity .3s ease;
+  z-index:99999;
+">
+</div>
 
 
 <script>
@@ -398,6 +668,38 @@ protectPage();
 let selectedItem = null; // image
 let offsetX = 0;
 let offsetY = 0;
+let roomReady = false;
+let activeRug = null;
+let rugOffsetX = 0;
+let rugOffsetY = 0;
+let beforeRoomImage = null;
+
+let designState = {
+  roomImage: null,
+  furniture: [],
+  rugs: [],
+  title: "Untitled Design"
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  const draft = localStorage.getItem("design_draft");
+  if (!draft) return;
+
+  designState = JSON.parse(draft);
+  renderCanvas();
+});
+
+
+const historyStack = [];
+const MAX_HISTORY = 30;
+
+function saveHistory() {
+  historyStack.push(JSON.stringify(designState));
+  if (historyStack.length > MAX_HISTORY) {
+    historyStack.shift();
+  }
+}
+
 
 const furnitureLibrary = {
   sofa:[
@@ -524,9 +826,15 @@ const panelContent=document.getElementById("panelContent");
 
 
 function addFurniture(src){
+if(!roomReady){
+    showCanvasError("Please upload or select a room image first");
+    return;
+  }
 
   const empty = canvas.querySelector(".empty-state");
   if (empty) empty.remove();
+  saveHistory();
+
 
   // WRAPPER
   const wrapper = document.createElement("div");
@@ -534,6 +842,7 @@ function addFurniture(src){
   wrapper.style.left = "440px";
   wrapper.style.top = "220px";
 
+  
   // IMAGE BOX (THIS CLIPS THE COLOR)
   const imageBox = document.createElement("div");
   imageBox.className = "image-box";
@@ -559,6 +868,8 @@ function addFurniture(src){
     selectedWrapper = null;
     selectedItem = null;
     hideColorPalette();
+    saveHistory();
+
   };
 
   // BUILD STRUCTURE
@@ -581,11 +892,44 @@ function addFurniture(src){
 
     document.addEventListener("mousemove", dragItem);
     document.addEventListener("mouseup", stopDrag);
-  });
+
+designState.furniture.push({
+  src,
+  left: wrapper.style.left,
+  top: wrapper.style.top,
+  width: img.style.width,
+  rotate: 0
+});
+});
 }
 
+function createFurnitureFromState(item) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "canvas-wrapper";
+  wrapper.style.left = item.left;
+  wrapper.style.top = item.top;
 
+  const img = document.createElement("img");
+  img.src = item.src;
+  img.className = "canvas-item";
+  img.style.width = item.width;
+  img.style.transform = `rotate(${item.rotate}deg)`;
+  img.style.cursor = "move";
 
+  wrapper.appendChild(img);
+  canvas.appendChild(wrapper);
+
+  img.addEventListener("mousedown", e => {
+    e.stopPropagation();
+    selectItem(wrapper);
+    const rect = canvas.getBoundingClientRect();
+    offsetX = e.clientX - rect.left - wrapper.offsetLeft;
+    offsetY = e.clientY - rect.top - wrapper.offsetTop;
+
+    document.addEventListener("mousemove", dragItem);
+    document.addEventListener("mouseup", stopDrag);
+  });
+}
 
 
 
@@ -600,6 +944,7 @@ function dragItem(e){
 
   selectedWrapper.style.top =
     `${e.clientY - rect.top - offsetY}px`;
+
 }
 
 
@@ -669,10 +1014,12 @@ function resizeItem(e){
   newWidth = Math.max(MIN, Math.min(MAX, newWidth));
 
   selectedItem.style.width = newWidth + "px";
+
 }
 function stopResize(){
   document.removeEventListener("mousemove", resizeItem);
   document.removeEventListener("mouseup", stopResize);
+  
 }
 
 
@@ -743,19 +1090,10 @@ function stopRotate(){
   // 🔒 Snap back to valid angle
   selectedItem.style.transform = `rotate(${nearestAngle}deg)`;
   selectedItem.dataset.rotate = nearestAngle;
+
+
 }
 
-
-
-
-
-function deleteSelected(){
-  if(selectedWrapper){
-    selectedWrapper.remove();
-    selectedWrapper = null;
-    selectedItem = null;
-  }
-}
 
 
 canvas.addEventListener("mousedown", e => {
@@ -802,6 +1140,7 @@ function uploadRoom() {
 
     img.onload = async () => {
       const allowed = await checkIfRoom(img);
+      beforeRoomImage = img.src;
 
       if (!allowed) {
         alert("❌ This is not a room image.");
@@ -809,24 +1148,37 @@ function uploadRoom() {
       }
 
       const canvas = document.getElementById("canvas");
-      canvas.innerHTML = "";
       img.id = "room";
-      canvas.appendChild(img);
+designState.roomImage = img.src;
+renderCanvas();
+      roomReady = true;
+hideEmptyState();
     };
   };
 
   input.click();
+
 }
 
 function loadSample(src){
-  canvas.innerHTML="";
-  const img=document.createElement("img");
-  img.id="room";img.src=src;
+  canvas.innerHTML = "";
+
+  const img = document.createElement("img");
+  img.id = "room";
+  img.src = src;
+beforeRoomImage = src;
+
   canvas.appendChild(img);
+
+  roomReady = true;
+  hideEmptyState();
 }
 
+
 function openPanel(type){
-  panel.classList.add("active");
+openPanelGrid();
+panel.classList.add("active");
+
   panelContent.innerHTML="";
   panelTitle.innerText=type;
 
@@ -854,12 +1206,15 @@ function openPanel(type){
     panelState="wall";
     panelContent.innerHTML=`<p>Wall colors here</p>`;
   }
+
 }
 
 function openFurnitureCategories(){
+ openPanelGrid();
   panel.classList.add("active");
-  panelState="furniture-categories";
-  panelTitle.innerText="Furniture";
+
+  panelState = "furniture-categories";
+  panelTitle.innerText = "Furniture";
   panelContent.innerHTML=`
     <div class="category-item" onclick="openFurnitureCategory('sofa')">Sofa</div>
     <div class="category-item" onclick="openFurnitureCategory('armchair')">Arm Chair</div>
@@ -878,12 +1233,19 @@ function openDecorCategory(type){
   panelTitle.innerText = type.toUpperCase();
 
   panelContent.innerHTML = decorLibrary[type]
-    .map(i => `
-      <div class="furniture-card" onclick="addFurniture('${i.src}')">
-        <img src="${i.src}">
-        <div class="furniture-name">${type.slice(0,1).toUpperCase() + type.slice(1)}</div>
-      </div>
-    `)
+    .map(i => {
+      // 🧠 IF rug → addRug
+      const action = type === "rugs"
+        ? `addRug('${i.src}')`
+        : `addFurniture('${i.src}')`;
+
+      return `
+        <div class="furniture-card" onclick="${action}">
+          <img src="${i.src}">
+          <div class="furniture-name">${type}</div>
+        </div>
+      `;
+    })
     .join("");
 }
 
@@ -891,23 +1253,31 @@ function openDecorCategory(type){
 
 
 
-function openFurnitureCategory(type){
- panelContent.innerHTML = furnitureLibrary[type]
-  .map(i => `
-    <div class="furniture-card" onclick="addFurniture('${i.src}')">
-      <img src="${i.src}">
-      <div class="furniture-name">${i.name}</div>
-    </div>
-  `).join("");
 
+
+function openFurnitureCategory(type){
+  panelState = "furniture-items";
+
+  panelTitle.innerText = type.toUpperCase();
+
+  panelContent.innerHTML = furnitureLibrary[type]
+    .map(i => `
+      <div class="furniture-card" onclick="addFurniture('${i.src}')">
+        <img src="${i.src}">
+        <div class="furniture-name">${i.name}</div>
+      </div>
+    `).join("");
 }
 
 
 
 
 
+
 function openDecorCategories(){
+openPanelGrid();
   panel.classList.add("active");
+
   panelState = "decor-categories";
   panelTitle.innerText = "Decor";
 
@@ -928,46 +1298,316 @@ function openDecorCategories(){
 
 
 function panelBack(){
-  if(panelState==="furniture-items"){
+
+  // 🔙 SUB-LEVEL → MAIN LEVEL
+  if(panelState === "furniture-items"){
     openFurnitureCategories();
     return;
   }
-  if(panelState === "decor-items"){
-panel.classList.remove("active");
-panelState = "root";
-  return;
-}
 
+  if(panelState === "decor-items"){
+    openDecorCategories();
+    return;
+  }
+
+  // ❌ MAIN LEVEL → CLOSE PANEL
   if(
-    panelState==="furniture-categories" ||
-    panelState==="templates" ||
-    panelState==="decor-categories" ||
-    panelState==="wall"
+    panelState === "furniture-categories" ||
+    panelState === "decor-categories" ||
+    panelState === "templates" ||
+    panelState === "wall"
   ){
     panel.classList.remove("active");
-    panelContent.innerHTML="";
-    panelTitle.innerText="";
-    panelState="root";
+    panelContent.innerHTML = "";
+    panelTitle.innerText = "";
+    panelState = "root";
+
+    closePanelGrid(); // ✅ THIS WAS MISSING
+    return;
   }
 }
 
+
 function saveDesign(btn){btn.classList.toggle("saved")}
-function undo(){}
 function resetCanvas(){
   canvas.innerHTML=`<div class="empty-state"><h3>Upload your room image</h3><p>Start designing with luxury precision</p><button onclick="uploadRoom()">Upload Image</button></div>`;
 }
 function shareDesign(){navigator.clipboard.writeText(location.href)}
-["dragstart","drag","dragend","dragover","drop"].forEach(evt=>{
-  document.addEventListener(evt, e => e.preventDefault());
-});
+//["dragstart","drag","dragend","dragover","drop"].forEach(evt=>{
+//  document.addEventListener(evt, e => e.preventDefault());
+//});
+
+
+
+const app = document.querySelector(".app");
+
+function openPanelGrid(){
+  app.style.gridTemplateColumns = "50px 260px 1fr";
+}
+
+function closePanelGrid(){
+  app.style.gridTemplateColumns = "50px 0px 1fr";
+}
+
+
+
+function showCanvasError(msg){
+  const el = document.getElementById("canvasError");
+  el.innerText = msg;
+  el.classList.add("show");
+
+  setTimeout(() => {
+    el.classList.remove("show");
+  }, 2200);
+}
+
+function hideEmptyState(){
+  const empty = canvas.querySelector(".empty-state");
+  if(empty) empty.remove();
+}
+
+function addRug(src){
+  if(!roomReady){
+    showCanvasError("Upload a room image first");
+    return;
+  }
+
+  const floor = document.getElementById("floor-layer");
+  const canvasRect = canvas.getBoundingClientRect();
+
+  const rug = document.createElement("img");
+  rug.src = src;
+  rug.className = "rug-item";
+
+  rug.style.width = "420px";
+  rug.style.left = (canvasRect.width / 2 - 210) + "px";
+  rug.style.top = (canvasRect.height * 0.68) + "px";
+  rug.style.transform = "perspective(800px) rotateX(65deg)";
+
+  let offsetX = 0;
+  let offsetY = 0;
+
+  rug.addEventListener("pointerdown", e => {
+    e.preventDefault();
+
+    document.querySelectorAll(".rug-item")
+      .forEach(r => r.classList.remove("selected"));
+
+    rug.classList.add("selected");
+
+    const rect = rug.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
+    rug.setPointerCapture(e.pointerId);
+  });
+
+  rug.addEventListener("pointermove", e => {
+    if(!rug.hasPointerCapture(e.pointerId)) return;
+
+    const canvasRect = canvas.getBoundingClientRect();
+    rug.style.left = (e.clientX - canvasRect.left - offsetX) + "px";
+    rug.style.top  = (e.clientY - canvasRect.top  - offsetY) + "px";
+  });
+
+  rug.addEventListener("pointerup", e => {
+    rug.releasePointerCapture(e.pointerId);
+  });
+
+  rug.addEventListener("wheel", e => {
+    e.preventDefault();
+    rug.style.width =
+      (rug.offsetWidth + (e.deltaY < 0 ? 20 : -20)) + "px";
+  });
+
+  floor.appendChild(rug);
+
+}
 
 
 
 
 
+function dragRug(e){
+  if(!activeRug) return;
+
+  const canvasRect = canvas.getBoundingClientRect();
+
+  activeRug.style.left =
+    (e.clientX - canvasRect.left - rugOffsetX) + "px";
+
+  activeRug.style.top =
+    (e.clientY - canvasRect.top - rugOffsetY) + "px";
+}
+
+function stopDragRug(){
+  document.removeEventListener("mousemove", dragRug);
+  document.removeEventListener("mouseup", stopDragRug);
+  activeRug = null;
+}
+
+async function goToPreview() {
+  if (!roomReady) {
+    showCanvasError("Upload a room image first");
+    return;
+  }
+
+  const canvasArea = document.getElementById("canvas");
+
+  const screenshot = await html2canvas(canvasArea, {
+    backgroundColor: null,
+    useCORS: true,
+    scale: 1.1
+  });
+
+  const afterImage = screenshot.toDataURL("image/png");
+
+  // ✅ STORE IMAGES SAFELY
+  sessionStorage.setItem("preview_before", beforeRoomImage);
+  sessionStorage.setItem("preview_after", afterImage);
+
+  // ✅ NORMAL NAVIGATION (NOT BLOCKED)
+  window.location.href = "preview.html";
+}
+
+
+document.getElementById("saveBtn")
+  .addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    saveDesignToDB();
+  });
+
+async function saveDesignToDB() {
+  if (!roomReady) {
+    showCanvasError("Upload a room image first");
+    return;
+  }
+
+  const title =
+    document.querySelector(".project-title-input").value || "Untitled Design";
+
+  const canvasArea = document.getElementById("canvas");
+
+  const screenshot = await html2canvas(canvasArea, {
+    backgroundColor: null,
+    scale: 1
+  });
+
+  const blob = await new Promise(resolve =>
+    screenshot.toBlob(resolve, "image/png")
+  );
+
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("image", blob, "design.png");
+
+  const res = await fetch("http://localhost:5000/api/designs/save", {
+    method: "POST",
+    body: formData
+  });
+
+if (res.ok) {
+  showCanvasError("✅ Design saved");
+}
+
+else {
+    const err = await res.text();
+    console.error(err);
+    alert("❌ Save failed");
+  }
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.style.opacity = "1";
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+  }, 2000);
+}
+
+
+
+function renderCanvas() {
+  canvas.innerHTML = "";
+
+  if (designState.roomImage) {
+    const room = document.createElement("img");
+    room.id = "room";
+    room.src = designState.roomImage;
+    canvas.appendChild(room);
+    roomReady = true;
+  }
+
+  const floor = document.createElement("div");
+  floor.id = "floor-layer";
+  canvas.appendChild(floor);
+
+  const furnitureLayer = document.createElement("div");
+  furnitureLayer.id = "furniture-layer";
+  canvas.appendChild(furnitureLayer);
+
+  // 🚫 DO NOT CALL addFurniture()
+  designState.furniture.forEach(item => {
+    createFurnitureFromState(item);
+  });
+
+  hideEmptyState();
+}
+
+
+
+function saveLocalDraft() {
+  localStorage.setItem(
+    "design_draft",
+    JSON.stringify(designState)
+  );
+}
+
+function undo() {
+  if (historyStack.length === 0) return;
+
+  const prev = historyStack.pop();
+  designState = JSON.parse(prev);
+
+  selectedWrapper = null;
+  selectedItem = null;
+
+  renderCanvas();
+}
+
+document.getElementById("undoBtn").addEventListener("click", undo);
+
+function deleteSelected() {
+  if (!selectedWrapper) {
+    showCanvasError("No item selected");
+    return;
+  }
+
+  saveHistory();
+
+  const src = selectedItem.src;
+
+  // remove from state
+  designState.furniture = designState.furniture.filter(
+    f => f.src !== src
+  );
+
+  // remove from DOM
+  selectedWrapper.remove();
+  selectedWrapper = null;
+  selectedItem = null;
+}
+
+document.getElementById("deleteBtn")
+  .addEventListener("click", deleteSelected);
 
 
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 </body>
 </html>
