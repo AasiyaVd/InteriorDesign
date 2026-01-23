@@ -44,3 +44,51 @@ model Design {
   userId    Int?     
   createdAt DateTime @default(now())
 }
+
+model UserNeeds {
+  id        Int      @id @default(autoincrement())
+
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+
+  city        String
+  budgetRange String
+  spaceType   String
+  timeline    String
+
+  createdAt DateTime @default(now())
+}
+
+
+model Designer {
+  id      Int          @id @default(autoincrement())
+  name    String
+  email   String
+  styles  String
+  city    String
+
+  leads   DesignLead[]
+}
+
+
+model DesignLead {
+  id             Int      @id @default(autoincrement())
+
+  userId         Int
+  designerId     Int
+
+  user           User     @relation(fields: [userId], references: [id])
+  designer       Designer @relation(fields: [designerId], references: [id])
+
+  city           String
+  budgetRange    String
+  spaceType      String
+  timeline       String
+
+  designImageUrl String
+  style          String?
+
+  status         String   @default("shared")
+  createdAt      DateTime @default(now())
+}
+

@@ -306,17 +306,7 @@ body{
 
 <body>
 
-<script src="auth.js"></script>
-<script>
-  // 🔒 This page is protected
-  protectPage();
 
-  // 🔁 In case user was redirected here after auth
-  saveRedirectIfNotAuth();
-
-  // 🔄 Navbar state (signup ↔ dashboard/logout)
-  document.addEventListener("DOMContentLoaded", setupNavbarAuth);
-</script>
 
 <nav class="navbar">
     <a href="home.html">
@@ -378,36 +368,36 @@ body{
     <div class="form-card">
       <div class="form-group">
         <label>Your City</label>
-        <input type="text" placeholder="Mumbai">
+        <input type="text" placeholder="Mumbai" id="cityInput">
       </div>
 
       <div class="form-group">
         <label>Budget Range</label>
-        <select>
-          <option>Under ₹5 Lakhs</option>
-          <option>₹5 – 10 Lakhs</option>
-          <option>₹10 – 20 Lakhs</option>
-          <option>Luxury / No Limit</option>
-        </select>
+        <select id="budgetInput">
+    <option value="under5">Under ₹5 Lakhs</option>
+    <option value="5to10">₹5 – 10 Lakhs</option>
+    <option value="10to20">₹10 – 20 Lakhs</option>
+    <option value="luxury">Luxury / No Limit</option>
+  </select>
       </div>
 
       <div class="form-group">
         <label>Space Type</label>
-        <select>
-          <option>1 BHK</option>
-          <option>2 BHK</option>
-          <option>Villa</option>
-          <option>Studio</option>
-        </select>
+        <select id="spaceInput">
+    <option value="1bhk">1 BHK</option>
+    <option value="2bhk">2 BHK</option>
+    <option value="villa">Villa</option>
+    <option value="studio">Studio</option>
+  </select>
       </div>
 
       <div class="form-group">
         <label>Timeline</label>
-        <select>
-          <option>Flexible</option>
-          <option>1–2 Months</option>
-          <option>3–6 Months</option>
-        </select>
+        <select id="timelineInput">
+    <option value="flexible">Flexible</option>
+    <option value="1-2">1–2 Months</option>
+    <option value="3-6">3–6 Months</option>
+  </select>
       </div>
 
       <button class="find-btn" onclick="showDesigners()">Find Designers</button>
@@ -464,10 +454,83 @@ body{
 
 <script>
 const params = new URLSearchParams(window.location.search);
+async function showDesigners() {
+  const city = document.getElementById("cityInput").value;
+  const budgetRange = document.getElementById("budgetInput").value;
+  const spaceType = document.getElementById("spaceInput").value;
+  const timeline = document.getElementById("timelineInput").value;
 
-function showDesigners(){
+  const token = localStorage.getItem("token"); // JWT from login
+
+  if (!token) {
+    alert("Please login first");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:5000/api/user-needs", {
+
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({
+        city,
+        budgetRange,
+        spaceType,
+        timeline
+      })
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to save user needs");
+    }
+
+    // AFTER saving → show designers
+    renderDesigners(budgetRange, spaceType, timeline);
+
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong");
+  }
+}
+
+function renderDesigners(budget, space, timeline) {
+  const grid = document.querySelector(".designer-grid");
+  grid.innerHTML = "";
+
+  let matched = designers.filter(d =>
+    d.budget === budget &&
+    d.spaces.includes(space) &&
+    (d.timeline === timeline || d.timeline === "flexible")
+  );
+
+  if (matched.length < 3) {
+    matched = designers.filter(d =>
+      d.budget === budget &&
+      d.spaces.includes(space)
+    );
+  }
+
+  matched.slice(0, 3).forEach(d => {
+    grid.innerHTML += `
+      <div class="designer-card">
+        <h4>${d.name}</h4>
+        <div class="tags">${d.style}</div>
+        <div class="cost">Estimated Cost: <strong>${d.cost}</strong></div>
+        <div class="meta">
+          Timeline: ${d.timeline}<br>
+          Experience: ${d.experience}
+        </div>
+        <button onclick="confirmShare()">Share My Design</button>
+        <a class="know-more" href="${d.link}" target="_blank">Know more →</a>
+      </div>
+    `;
+  });
+
   document.getElementById("results").style.display = "block";
-  document.getElementById("results").scrollIntoView({behavior:'smooth'});
+  document.getElementById("results").scrollIntoView({ behavior: "smooth" });
 }
 
 function confirmShare(){
@@ -496,6 +559,60 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<script>
+const designers = [
+  {
+    name: "Studio Noir",
+    style: "Luxury • Modern",
+    budget: "10to20",
+    spaces: ["villa", "2bhk"],
+    timeline: "3-6",
+    cost: "₹9–12 Lakhs",
+    experience: "8+ years",
+    link: "https://www.studionoir.com.au/"
+  },
+  {
+    name: "Bonito Designs",
+    style: "Minimal • Budget-friendly",
+    budget: "5to10",
+    spaces: ["1bhk", "2bhk", "studio"],
+    timeline: "1-2",
+    cost: "₹6–8 Lakhs",
+    experience: "6 years",
+    link: "https://bonito.in/"
+  },
+  {
+    name: "Studia 54",
+    style: "Premium • Contemporary",
+    budget: "luxury",
+    spaces: ["villa"],
+    timeline: "3-6",
+    cost: "₹11–15 Lakhs",
+    experience: "10 years",
+    link: "https://studia-54.com/"
+  },
+  {
+    name: "UrbanNest Studio",
+    style: "Modern • Compact",
+    budget: "under5",
+    spaces: ["studio", "1bhk"],
+    timeline: "1-2",
+    cost: "₹3–4.5 Lakhs",
+    experience: "4 years",
+    link: "#"
+  },
+  {
+    name: "CasaForma",
+    style: "Warm • Contemporary",
+    budget: "5to10",
+    spaces: ["2bhk"],
+    timeline: "flexible",
+    cost: "₹7–9 Lakhs",
+    experience: "7 years",
+    link: "#"
+  }
+];
+</script>
 
 </body>
 </html>

@@ -1,8 +1,0 @@
--- CreateTable
-CREATE TABLE "Design" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "title" TEXT NOT NULL,
-    "imagePath" TEXT NOT NULL,
-    "userId" INTEGER,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
