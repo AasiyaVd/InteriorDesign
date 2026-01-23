@@ -535,10 +535,6 @@ position:absolute;
 </head>
 
 <body>
-  <script src="auth.js"></script>
-<script>
-protectPage();
-</script>
 
 <div class="navbar">
 
@@ -581,13 +577,17 @@ protectPage();
   <i class="fa-solid fa-share-nodes"></i>
 </button>
 <i>
-<a href="dashboard.html" >
-        <svg class="user-icon" viewBox="0 0 24 24">
-          <circle cx="12" cy="8" r="4"></circle>
-          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-        </svg>
-      </a>
-      </i>
+  <svg
+    class="user-icon"
+    viewBox="0 0 24 24"
+    onclick="event.stopPropagation(); window.location.href='dashboard.html';"
+    style="cursor:pointer"
+  >
+    <circle cx="12" cy="8" r="4"></circle>
+    <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+  </svg>
+</i>
+
 </div>
 
 </div>
@@ -652,9 +652,9 @@ protectPage();
 </div>
 
 <div id="toast" style="
-  position:fixed;
-  bottom:30px;
-  right:30px;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
   background:#1a7f37;
   color:#fff;
   padding:14px 20px;
@@ -663,6 +663,7 @@ protectPage();
   opacity:0;
   transition:opacity .3s ease;
   z-index:99999;
+   pointer-events: none;
 ">
 </div>
 
@@ -1478,9 +1479,10 @@ async function goToPreview() {
 document.getElementById("saveBtn")
   .addEventListener("click", (e) => {
     e.preventDefault();
-    e.stopPropagation();
+    e.stopImmediatePropagation(); // 🔒 STRONGER
     saveDesignToDB();
   });
+
 
 async function saveDesignToDB() {
   if (!roomReady) {
@@ -1493,44 +1495,56 @@ async function saveDesignToDB() {
 
   const canvasArea = document.getElementById("canvas");
 
-  const screenshot = await html2canvas(canvasArea, {
-    backgroundColor: null,
-    scale: 1
-  });
+  try {
+    const screenshot = await html2canvas(canvasArea, {
+      backgroundColor: null,
+      scale: 1
+    });
 
-  const blob = await new Promise(resolve =>
-    screenshot.toBlob(resolve, "image/png")
-  );
+    const blob = await new Promise(resolve =>
+      screenshot.toBlob(resolve, "image/png")
+    );
 
-  const formData = new FormData();
-  formData.append("title", title);
-  formData.append("image", blob, "design.png");
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("image", blob, "design.png");
 
-  const res = await fetch("http://localhost:5000/api/designs/save", {
-    method: "POST",
-    body: formData
-  });
+    const res = await fetch("http://localhost:5000/api/designs/save", {
+      method: "POST",
+      body: formData
+    });
 
-if (res.ok) {
-  showCanvasError("✅ Design saved");
-}
+    if (!res.ok) {
+      const err = await res.text();
+      console.error(err);
+      showCanvasError("❌ Save failed");
+      return;
+    }
 
-else {
-    const err = await res.text();
+    // ✅ SUCCESS
+    showToast("✨ Design saved successfully");
+
+  } catch (err) {
     console.error(err);
-    alert("❌ Save failed");
+    showCanvasError("Server not reachable");
   }
 }
 
+
+
+
 function showToast(msg) {
   const toast = document.getElementById("toast");
+
   toast.innerText = msg;
   toast.style.opacity = "1";
+  toast.style.transform = "translateY(0)";
 
   setTimeout(() => {
     toast.style.opacity = "0";
-  }, 2000);
+  }, 2200);
 }
+
 
 
 
