@@ -15,6 +15,9 @@ app.use(express.json());
 // =====================
 app.use(express.static(path.join(__dirname, "../frontend")));
 
+// 🔥 SERVE UPLOADED IMAGES (VERY IMPORTANT)
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 // =====================
 // ROUTES
 // =====================
