@@ -582,7 +582,16 @@ body {
     </div>
 
     <div class="row">
-      <input type="tel" placeholder="Phone" id="phone" max="10">
+<input
+  type="tel"
+  id="phone"
+  placeholder="Phone"
+  maxlength="10"
+  inputmode="numeric"
+  pattern="[0-9]{10}"
+  oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+  required
+>
       <select required id="referral">
         <option value="">How did you hear about us?</option>
         <option>Google</option>
@@ -747,6 +756,11 @@ document.querySelector(".newsletter-form")
 document.getElementById("contactForm")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    if (!document.getElementById("privacy").checked) {
+  alert("Please accept the privacy policy to continue");
+  return;
+}
 
     const payload = {
       category: document.getElementById("category").value,

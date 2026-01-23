@@ -1,5 +1,5 @@
-import express from "express";
-import prisma from "../prismaClient.js";
+const express = require("express");
+const prisma = require("../prisma"); // use YOUR prisma.js
 
 const router = express.Router();
 
@@ -45,12 +45,14 @@ router.post("/", async (req, res) => {
       }
     });
 
-    res.status(201).json({ message: "Message sent successfully" });
+    return res.status(201).json({
+      message: "Message sent successfully"
+    });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error("CONTACT ERROR:", err);
+    return res.status(500).json({ message: "Server error" });
   }
 });
 
-export default router;
+module.exports = router;

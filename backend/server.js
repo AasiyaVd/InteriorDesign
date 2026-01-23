@@ -18,3 +18,6 @@ app.use("/api/user-needs", userNeedsRoutes);
 
 module.exports = app;
 
+const contactRoutes = require("./src/routes/contact.routes");
+
+app.use("/api/contact", contactRoutes);
