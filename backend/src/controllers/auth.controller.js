@@ -1,10 +1,9 @@
-const prisma = require("../prisma");
+const prisma = require("../prisma"); // make sure path is correct
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
   try {
-
     const { firstName, lastName, email, contact, password } = req.body;
 
     if (!firstName || !lastName || !email || !contact || !password) {
@@ -12,7 +11,7 @@ exports.register = async (req, res) => {
     }
 
     const existingUser = await prisma.user.findUnique({
-      where: { email },
+      where: { email }
     });
 
     if (existingUser) {
@@ -27,24 +26,24 @@ exports.register = async (req, res) => {
         lastName,
         email,
         contact,
-        password: hashedPassword,
-      },
+        password: hashedPassword
+      }
     });
 
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
-const token = jwt.sign(
-  { userId: user.id },
-  process.env.JWT_SECRET,
-  { expiresIn: "1d" }
-);
-
-res.status(201).json({
-  message: "User registered successfully",
-  token
-});
+    return res.status(201).json({
+      message: "User registered successfully",
+      token
+    });
 
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("REGISTER ERROR:", err);
+    return res.status(500).json({ message: "Registration failed" });
   }
 };
 
@@ -52,8 +51,12 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ message: "Missing credentials" });
+    }
+
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { email }
     });
 
     if (!user) {
@@ -72,10 +75,10 @@ exports.login = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.json({ token });
+    return res.json({ token });
 
   } catch (err) {
     console.error("LOGIN ERROR:", err);
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: "Login failed" });
   }
 };
