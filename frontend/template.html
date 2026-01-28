@@ -419,7 +419,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   <!-- RIGHT: ACTIONS -->
   <div class="nav-right">
-<button class="render-nav-btn" onclick="goToPreview()" type="button">Next</button>
+<button
+  class="render-nav-btn"
+  id="nextBtn"
+  type="button"
+>
+  Next
+</button>
 
 <button class="nav-icon danger" id="deleteBtn" title="Delete" type="button">
   <i class="fa-solid fa-trash"></i>
@@ -465,12 +471,16 @@ document.addEventListener("DOMContentLoaded", () => {
   <div class="canvas-area">
   <div class="canvas" id="canvas">
 
-  <div class="empty-state" >
-  <h2>Upload your room image</h2>
-  <p>Start designing with luxury precision</p>
-  <button onclick="uploadRoom()" >
-        Upload Image
-      </button>
+ <div class="empty-state">
+  <h2>Step 1: Upload Your Room</h2>
+  <p>
+    Upload a clear image of your room.<br>
+    This will be the base for your design.
+  </p>
+  <p style="font-size:13px;opacity:.7;margin-bottom:16px">
+    After uploading, click <b>Next</b> to start designing.
+  </p>
+  <button onclick="uploadRoom()">Upload Image</button>
 </div>
 <div class="canvas-error" id="canvasError">
   Please upload or select a room image first
@@ -502,11 +512,15 @@ const panelContent=document.getElementById("panelContent");
 
 function showCanvasError(msg) {
   const el = document.getElementById("canvasError");
-  if (!el) {
-    console.error("canvasError element not found");
-    return;
-  }
+  if (!el) return;
+
   el.innerText = msg;
+  el.classList.add("show");
+
+  clearTimeout(el._timeout);
+  el._timeout = setTimeout(() => {
+    el.classList.remove("show");
+  }, 2500);
 }
 
 function hideEmptyState(){
@@ -571,6 +585,13 @@ function uploadRoom() {
         alert("❌ This is not a room image.");
         return;
       }
+designState.roomImage = img.src;
+persistDesignState();
+renderCanvas();
+
+roomReady = true;
+updateNextButton();
+hideEmptyState();
 
       const canvas = document.getElementById("canvas");
       img.id = "room";
@@ -580,6 +601,8 @@ function uploadRoom() {
 
       roomReady = true;
       hideEmptyState();
+updateNextButton();
+
     };
   };
 
@@ -760,6 +783,34 @@ function panelBack() {
   closePanelGrid();
 }
 
+
+
+
+//next btn error logic
+const nextBtn = document.getElementById("nextBtn");
+
+nextBtn.addEventListener("click", () => {
+  if (!roomReady) {
+    showCanvasError("Please upload a room image to continue");
+    return;
+  }
+  goToPreview();
+});
+
+
+
+
+//next btn disable
+function updateNextButton() {
+  if (!roomReady) {
+    nextBtn.style.opacity = "0.4";
+    nextBtn.style.pointerEvents = "auto"; // allow click to show error
+    nextBtn.style.cursor = "not-allowed";
+  } else {
+    nextBtn.style.opacity = "1";
+    nextBtn.style.cursor = "pointer";
+  }
+}
 
 </script>
 
