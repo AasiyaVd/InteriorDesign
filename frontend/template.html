@@ -327,6 +327,12 @@ img {
   z-index:10;
 }
 
+#room{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;border-radius:20px
+}
+
+
 /* TOOL PANEL */
 .tool-panel{
   background:#f5f4f2;
@@ -475,6 +481,11 @@ img {
 </div>
 <script>
 
+let designState = {
+  roomImage: null,
+  title: "Untitled Design"
+};
+
 const canvas=document.getElementById("canvas");
 const panel=document.getElementById("toolPanel");
 const panelTitle=document.getElementById("panelTitle");
@@ -512,18 +523,6 @@ function renderCanvas() {
     canvas.appendChild(room);
     roomReady = true;
   }
-
-  const floor = document.createElement("div");
-  floor.id = "floor-layer";
-  canvas.appendChild(floor);
-
-  const furnitureLayer = document.createElement("div");
-  furnitureLayer.id = "furniture-layer";
-  canvas.appendChild(furnitureLayer);
-
-  designState.furniture.forEach(item => {
-    createFurnitureFromState(item);
-  });
 
   hideEmptyState();
 }
