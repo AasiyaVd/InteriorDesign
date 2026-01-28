@@ -706,6 +706,49 @@ async function goToPreview() {
 
 
 
+//dlt btn logic
+const deleteBtn = document.getElementById("deleteBtn");
+
+deleteBtn.addEventListener("click", () => {
+  resetCanvasToInitialState();
+});
+
+
+
+
+function resetCanvasToInitialState() {
+  // 1. Reset state
+  designState.roomImage = null;
+  designState.furniture = [];
+  roomReady = false;
+  beforeRoomImage = null;
+
+  // 2. Clear storage
+  sessionStorage.removeItem("design_draft");
+
+  // 3. Clear canvas completely
+  canvas.innerHTML = "";
+
+  // 4. Restore empty upload state
+  const emptyState = document.createElement("div");
+  emptyState.className = "empty-state";
+  emptyState.innerHTML = `
+    <h2>Upload your room image</h2>
+    <p>Start designing with luxury precision</p>
+    <button onclick="uploadRoom()">Upload Image</button>
+  `;
+
+  canvas.appendChild(emptyState);
+
+  // 5. Close side panel if open
+  panel.classList.remove("active");
+  panelContent.innerHTML = "";
+  panelTitle.innerText = "";
+  panelState = "root";
+  closePanelGrid();
+}
+
+
 </script>
 
 </body>
