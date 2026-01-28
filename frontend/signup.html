@@ -451,12 +451,41 @@ if (sessionStorage.getItem("token")) {
 
       <form id="signupForm">
         <div class="row">
-          <input type="text" id="firstName" placeholder="FIRST NAME" required>
-          <input type="text" id="lastName" placeholder="LAST NAME" required>
+<input
+  type="text"
+  id="firstName"
+  placeholder="FIRST NAME"
+  pattern="^[A-Za-z]{2,30}$"
+  title="Only letters allowed (2–30 characters)"
+  required
+>
+
+<input
+  type="text"
+  id="lastName"
+  placeholder="LAST NAME"
+  pattern="^[A-Za-z]{2,30}$"
+  title="Only letters allowed (2–30 characters)"
+  required
+>
         </div>
-        <input type="email" id="email" placeholder="EMAIL" required>
+<input
+  type="email"
+  id="email"
+  placeholder="EMAIL"
+  pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+  title="Enter a valid email address"
+  required
+>
         <input type="tel" id="phone" pattern="[0-9]{10}" maxlength="10" placeholder="CONTACT NUMBER" required>
-        <input type="password" id="password" pattern=".{8,}" placeholder="PASSWORD" required>
+<input
+  type="password"
+  id="password"
+  placeholder="PASSWORD"
+  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+  title="Min 8 chars, 1 uppercase, 1 lowercase, 1 number & 1 special character"
+  required
+>
 <button type="button" id="signupBtn" class="formbutton">CREATE</button>
         <br>
         <p class="login">
@@ -562,6 +591,40 @@ document.getElementById("signupBtn").addEventListener("click", async () => {
     alert("Please fill all fields");
     return;
   }
+
+  const nameRegex = /^[A-Za-z]{2,30}$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const contactRegex = /^[0-9]{10}$/;
+
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+if (!nameRegex.test(firstName)) {
+  alert("First name must contain only letters (2–30 chars)");
+  return;
+}
+
+if (!nameRegex.test(lastName)) {
+  alert("Last name must contain only letters (2–30 chars)");
+  return;
+}
+
+if (!emailRegex.test(email)) {
+  alert("Enter a valid email address");
+  return;
+}
+
+if (!contactRegex.test(contact)) {
+  alert("Contact must be a 10-digit number");
+  return;
+}
+
+if (!passwordRegex.test(password)) {
+  alert(
+    "Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character"
+  );
+  return;
+}
 
   try {
     const res = await fetch("http://localhost:5000/api/auth/register", {

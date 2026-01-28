@@ -15,6 +15,9 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+
+  needs UserNeeds?
+  leads DesignLead[] // 👈 THIS LINE FIXES THE ERROR
 }
 
 model NewsletterSubscriber {
@@ -22,34 +25,34 @@ model NewsletterSubscriber {
   email     String   @unique
   createdAt DateTime @default(now())
 }
+
 model ContactMessage {
-  id            Int      @id @default(autoincrement())
-  category      String
-  occupation    String
-  firstName     String
-  lastName      String
-  email         String
-  company       String?
-  phone         String?
-  referral      String
-  country       String
-  message       String?
-  createdAt     DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  category   String
+  occupation String
+  firstName  String
+  lastName   String
+  email      String
+  company    String?
+  phone      String?
+  referral   String
+  country    String
+  message    String?
+  createdAt  DateTime @default(now())
 }
 
 model Design {
   id        Int      @id @default(autoincrement())
   title     String
   imagePath String
-  userId    Int?     
   createdAt DateTime @default(now())
 }
 
 model UserNeeds {
-  id        Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  userId    Int      @unique
-  user      User     @relation(fields: [userId], references: [id])
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
 
   city        String
   budgetRange String
@@ -59,36 +62,33 @@ model UserNeeds {
   createdAt DateTime @default(now())
 }
 
-
 model Designer {
-  id      Int          @id @default(autoincrement())
-  name    String
-  email   String
-  styles  String
-  city    String
+  id     Int    @id @default(autoincrement())
+  name   String
+  email  String
+  styles String
+  city   String
 
-  leads   DesignLead[]
+  leads DesignLead[]
 }
 
-
 model DesignLead {
-  id             Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  userId         Int
-  designerId     Int
+  userId     Int
+  designerId Int
 
-  user           User     @relation(fields: [userId], references: [id])
-  designer       Designer @relation(fields: [designerId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+  designer Designer @relation(fields: [designerId], references: [id])
 
-  city           String
-  budgetRange    String
-  spaceType      String
-  timeline       String
+  city        String
+  budgetRange String
+  spaceType   String
+  timeline    String
 
   designImageUrl String
   style          String?
 
-  status         String   @default("shared")
-  createdAt      DateTime @default(now())
+  status    String   @default("shared")
+  createdAt DateTime @default(now())
 }
-

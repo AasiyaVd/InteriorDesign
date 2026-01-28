@@ -25,7 +25,7 @@ app.use("/api/auth", require("./src/routes/auth.routes"));
 app.use("/api/designs", require("./src/routes/design"));
 app.use("/api/user-needs", require("./src/routes/userNeeds"));
 app.use("/api/contact", require("./src/routes/contact.routes"));
-
+app.use("/api/newsletter", require("./src/routes/newsletter.routes"));
 // =====================
 // HEALTH CHECK
 // =====================
