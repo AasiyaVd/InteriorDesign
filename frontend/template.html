@@ -748,6 +748,18 @@ function resetCanvasToInitialState() {
 }
 
 
+
+
+//back btn on tool panel
+function panelBack() {
+  panel.classList.remove("active");
+  panelContent.innerHTML = "";
+  panelTitle.innerText = "";
+  panelState = "root";
+  closePanelGrid();
+}
+
+
 </script>
 
 </body>
