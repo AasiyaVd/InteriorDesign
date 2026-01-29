@@ -305,7 +305,14 @@ body{
 </head>
 
 <body>
+<script src="auth.js"></script>
+<script src="designers.data.js"></script> <!-- 👈 MUST be before logic -->
+<script src="make-it-real.js"></script> 
+<script>
 
+  // 🔄 Navbar auth state
+  document.addEventListener("DOMContentLoaded", setupNavbarAuth);
+</script>
 
 
 <nav class="navbar">
@@ -360,7 +367,6 @@ body{
 <img id="finalDesign" alt="Final Design Preview">
       <div class="design-meta">
         <h4>Your Approved Design</h4>
-        <p>Style: Modern • Estimated Budget: ₹8–12L</p>
       </div>
     </div>
 
@@ -459,8 +465,27 @@ async function showDesigners() {
   const budgetRange = document.getElementById("budgetInput").value;
   const spaceType = document.getElementById("spaceInput").value;
   const timeline = document.getElementById("timelineInput").value;
+const budgetMap = {
+  under5: "UNDER_5",
+  "5to10": "FIVE_TO_TEN",
+  "10to20": "TEN_TO_TWENTY",
+  luxury: "LUXURY"
+};
 
-  const token = localStorage.getItem("token"); // JWT from login
+const spaceMap = {
+  "1bhk": "ONE_BHK",
+  "2bhk": "TWO_BHK",
+  studio: "STUDIO",
+  villa: "VILLA"
+};
+
+const timelineMap = {
+  flexible: "FLEXIBLE",
+  "1-2": "ONE_TO_TWO",
+  "3-6": "THREE_TO_SIX"
+};
+
+const token = sessionStorage.getItem("token");
 
   if (!token) {
     alert("Please login first");
@@ -475,12 +500,13 @@ async function showDesigners() {
         "Content-Type": "application/json",
         "Authorization": "Bearer " + token
       },
-      body: JSON.stringify({
-        city,
-        budgetRange,
-        spaceType,
-        timeline
-      })
+body: JSON.stringify({
+  city,
+  budgetRange: budgetMap[budgetRange],
+  spaceType: spaceMap[spaceType],
+  timeline: timelineMap[timeline]
+})
+
     });
 
     if (!res.ok) {
@@ -500,20 +526,32 @@ function renderDesigners(budget, space, timeline) {
   const grid = document.querySelector(".designer-grid");
   grid.innerHTML = "";
 
-  let matched = designers.filter(d =>
-    d.budget === budget &&
-    d.spaces.includes(space) &&
-    (d.timeline === timeline || d.timeline === "flexible")
+  // STRICT: budget must match
+ let strictMatches = designers.filter(d =>
+  d.budget === budget &&
+  (timeline === "flexible" || d.timeline === timeline)
+);
+
+  // Prefer space match
+  let preferred = strictMatches.filter(d =>
+    d.spaces.includes(space)
   );
 
-  if (matched.length < 3) {
-    matched = designers.filter(d =>
-      d.budget === budget &&
-      d.spaces.includes(space)
+  let finalResults = [...preferred];
+
+  // Fill remaining from same budget + timeline
+  if (finalResults.length < 3) {
+    const fillers = strictMatches.filter(d =>
+      !finalResults.includes(d)
     );
+    finalResults.push(...fillers);
   }
 
-  matched.slice(0, 3).forEach(d => {
+  // GUARANTEE 3
+  finalResults = finalResults.slice(0, 3);
+
+  // Render
+  finalResults.forEach(d => {
     grid.innerHTML += `
       <div class="designer-card">
         <h4>${d.name}</h4>
@@ -532,6 +570,10 @@ function renderDesigners(budget, space, timeline) {
   document.getElementById("results").style.display = "block";
   document.getElementById("results").scrollIntoView({ behavior: "smooth" });
 }
+
+
+
+
 
 function confirmShare(){
   document.getElementById("confirmMsg").style.display = "block";
@@ -559,60 +601,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-<script>
-const designers = [
-  {
-    name: "Studio Noir",
-    style: "Luxury • Modern",
-    budget: "10to20",
-    spaces: ["villa", "2bhk"],
-    timeline: "3-6",
-    cost: "₹9–12 Lakhs",
-    experience: "8+ years",
-    link: "https://www.studionoir.com.au/"
-  },
-  {
-    name: "Bonito Designs",
-    style: "Minimal • Budget-friendly",
-    budget: "5to10",
-    spaces: ["1bhk", "2bhk", "studio"],
-    timeline: "1-2",
-    cost: "₹6–8 Lakhs",
-    experience: "6 years",
-    link: "https://bonito.in/"
-  },
-  {
-    name: "Studia 54",
-    style: "Premium • Contemporary",
-    budget: "luxury",
-    spaces: ["villa"],
-    timeline: "3-6",
-    cost: "₹11–15 Lakhs",
-    experience: "10 years",
-    link: "https://studia-54.com/"
-  },
-  {
-    name: "UrbanNest Studio",
-    style: "Modern • Compact",
-    budget: "under5",
-    spaces: ["studio", "1bhk"],
-    timeline: "1-2",
-    cost: "₹3–4.5 Lakhs",
-    experience: "4 years",
-    link: "#"
-  },
-  {
-    name: "CasaForma",
-    style: "Warm • Contemporary",
-    budget: "5to10",
-    spaces: ["2bhk"],
-    timeline: "flexible",
-    cost: "₹7–9 Lakhs",
-    experience: "7 years",
-    link: "#"
-  }
-];
-</script>
+
 
 </body>
 </html>

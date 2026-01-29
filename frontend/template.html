@@ -386,16 +386,23 @@ img {
 </head>
 
 <body>
+<script src="auth.js"></script>
+
 <script>
-  // Save where user came from (AI page)
+document.addEventListener("DOMContentLoaded", () => {
+  if (typeof saveRedirectIfNotAuth !== "function") {
+    console.error("Auth not ready");
+    return;
+  }
+
   saveRedirectIfNotAuth();
-
-  // Protect this page
   protectPage();
-
-  // Setup navbar (signup vs dashboard/logout)
-  document.addEventListener("DOMContentLoaded", setupNavbarAuth);
+  setupNavbarAuth();
+});
 </script>
+
+
+
 <div class="navbar">
 
   <!-- LEFT: LOGO -->
@@ -418,7 +425,13 @@ img {
 
   <!-- RIGHT: ACTIONS -->
   <div class="nav-right">
-<button class="render-nav-btn" onclick="goToPreview()" type="button">Next</button>
+<button
+  class="render-nav-btn"
+  id="nextBtn"
+  type="button"
+>
+  Next
+</button>
 
 <button class="nav-icon danger" id="deleteBtn" title="Delete" type="button">
   <i class="fa-solid fa-trash"></i>
@@ -464,12 +477,16 @@ img {
   <div class="canvas-area">
   <div class="canvas" id="canvas">
 
-  <div class="empty-state" >
-  <h2>Upload your room image</h2>
-  <p>Start designing with luxury precision</p>
-  <button onclick="uploadRoom()" >
-        Upload Image
-      </button>
+ <div class="empty-state">
+  <h2>Step 1: Upload Your Room</h2>
+  <p>
+    Upload a clear image of your room.<br>
+    This will be the base for your design.
+  </p>
+  <p style="font-size:13px;opacity:.7;margin-bottom:16px">
+    After uploading, click <b>Next</b> to start designing.
+  </p>
+  <button onclick="uploadRoom()">Upload Image</button>
 </div>
 <div class="canvas-error" id="canvasError">
   Please upload or select a room image first
@@ -479,6 +496,18 @@ img {
 </div>
 
 </div>
+
+
+
+<script>
+/* SAFE DEFAULTS */
+window.designState = { roomImage: null, furniture: [] };
+window.roomReady = false;
+window.beforeRoomImage = null;
+window.historyStack = [];
+window.MAX_HISTORY = 50;
+</script>
+
 <script>
 
 let designState = {
@@ -494,11 +523,15 @@ const panelContent=document.getElementById("panelContent");
 
 function showCanvasError(msg) {
   const el = document.getElementById("canvasError");
-  if (!el) {
-    console.error("canvasError element not found");
-    return;
-  }
+  if (!el) return;
+
   el.innerText = msg;
+  el.classList.add("show");
+
+  clearTimeout(el._timeout);
+  el._timeout = setTimeout(() => {
+    el.classList.remove("show");
+  }, 2500);
 }
 
 function hideEmptyState(){
@@ -551,6 +584,13 @@ function uploadRoom() {
         alert("❌ This is not a room image.");
         return;
       }
+designState.roomImage = img.src;
+persistDesignState();
+renderCanvas();
+
+roomReady = true;
+updateNextButton();
+hideEmptyState();
 
       const canvas = document.getElementById("canvas");
       img.id = "room";
@@ -560,6 +600,8 @@ function uploadRoom() {
 
       roomReady = true;
       hideEmptyState();
+updateNextButton();
+
     };
   };
 
@@ -683,33 +725,89 @@ async function goToPreview() {
   window.location.href = "preview.html";
 }
 
-function panelBack(){
 
-  // 🔙 SUB-LEVEL → MAIN LEVEL
-  if(panelState === "furniture-items"){
-    openFurnitureCategories();
+
+
+//dlt btn logic
+const deleteBtn = document.getElementById("deleteBtn");
+
+deleteBtn.addEventListener("click", () => {
+  resetCanvasToInitialState();
+});
+
+
+
+
+function resetCanvasToInitialState() {
+  // 1. Reset state
+  designState.roomImage = null;
+  designState.furniture = [];
+  roomReady = false;
+  beforeRoomImage = null;
+
+  // 2. Clear storage
+  sessionStorage.removeItem("design_draft");
+
+  // 3. Clear canvas completely
+  canvas.innerHTML = "";
+
+  // 4. Restore empty upload state
+  const emptyState = document.createElement("div");
+  emptyState.className = "empty-state";
+  emptyState.innerHTML = `
+    <h2>Upload your room image</h2>
+    <p>Start designing with luxury precision</p>
+    <button onclick="uploadRoom()">Upload Image</button>
+  `;
+
+  canvas.appendChild(emptyState);
+
+  // 5. Close side panel if open
+  panel.classList.remove("active");
+  panelContent.innerHTML = "";
+  panelTitle.innerText = "";
+  panelState = "root";
+  closePanelGrid();
+}
+
+
+
+
+//back btn on tool panel
+function panelBack() {
+  panel.classList.remove("active");
+  panelContent.innerHTML = "";
+  panelTitle.innerText = "";
+  panelState = "root";
+  closePanelGrid();
+}
+
+
+
+
+//next btn error logic
+const nextBtn = document.getElementById("nextBtn");
+
+nextBtn.addEventListener("click", () => {
+  if (!roomReady) {
+    showCanvasError("Please upload a room image to continue");
     return;
   }
+  goToPreview();
+});
 
-  if(panelState === "decor-items"){
-    openDecorCategories();
-    return;
-  }
 
-  // ❌ MAIN LEVEL → CLOSE PANEL
-  if(
-    panelState === "furniture-categories" ||
-    panelState === "decor-categories" ||
-    panelState === "templates" ||
-    panelState === "wall"
-  ){
-    panel.classList.remove("active");
-    panelContent.innerHTML = "";
-    panelTitle.innerText = "";
-    panelState = "root";
 
-    closePanelGrid(); // ✅ THIS WAS MISSING
-    return;
+
+//next btn disable
+function updateNextButton() {
+  if (!roomReady) {
+    nextBtn.style.opacity = "0.4";
+    nextBtn.style.pointerEvents = "auto"; // allow click to show error
+    nextBtn.style.cursor = "not-allowed";
+  } else {
+    nextBtn.style.opacity = "1";
+    nextBtn.style.cursor = "pointer";
   }
 }
 
