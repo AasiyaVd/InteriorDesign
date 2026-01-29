@@ -429,9 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
   class="render-nav-btn"
   id="nextBtn"
   type="button"
->
-  Next
-</button>
+> Next</button>
 
 <button class="nav-icon danger" id="deleteBtn" title="Delete" type="button">
   <i class="fa-solid fa-trash"></i>
@@ -501,20 +499,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
 /* SAFE DEFAULTS */
-window.designState = { roomImage: null, furniture: [] };
 window.roomReady = false;
 window.beforeRoomImage = null;
 window.historyStack = [];
 window.MAX_HISTORY = 50;
+
+let designState = JSON.parse(sessionStorage.getItem("design_draft")) || {
+  roomImage: null,
+  title: "Untitled Design",
+  furniture: []
+};
 </script>
 
 <script>
-
-let designState = {
-  roomImage: null,
-  title: "Untitled Design"
-};
-
 const canvas=document.getElementById("canvas");
 const panel=document.getElementById("toolPanel");
 const panelTitle=document.getElementById("panelTitle");
@@ -560,11 +557,7 @@ function renderCanvas() {
   hideEmptyState();
 }
  
-let panelState="root";
-
 function uploadRoom() {
-  alert("AI uploadRoom is running");
-
   const input = document.createElement("input");
   input.type = "file";
   input.accept = "image/*";
@@ -584,24 +577,18 @@ function uploadRoom() {
         alert("❌ This is not a room image.");
         return;
       }
-designState.roomImage = img.src;
-persistDesignState();
-renderCanvas();
 
-roomReady = true;
-updateNextButton();
-hideEmptyState();
-
-      const canvas = document.getElementById("canvas");
-      img.id = "room";
+      // ✅ ONLY THIS (IMPORTANT)
       designState.roomImage = img.src;
+
       persistDesignState();
       renderCanvas();
 
       roomReady = true;
       hideEmptyState();
-updateNextButton();
+      updateNextButton();
 
+      console.log("ROOM IMAGE SAVED ✅", designState.roomImage);
     };
   };
 
@@ -618,6 +605,9 @@ function loadSample(src){
 
   canvas.appendChild(img);
 
+  designState.roomImage = src;   // ✅ ADD THIS
+  persistDesignState();          // ✅ ADD THIS
+  
   roomReady = true;
   hideEmptyState();
 }
@@ -725,18 +715,12 @@ async function goToPreview() {
   window.location.href = "preview.html";
 }
 
-
-
-
 //dlt btn logic
 const deleteBtn = document.getElementById("deleteBtn");
 
 deleteBtn.addEventListener("click", () => {
   resetCanvasToInitialState();
 });
-
-
-
 
 function resetCanvasToInitialState() {
   // 1. Reset state
@@ -770,9 +754,6 @@ function resetCanvasToInitialState() {
   closePanelGrid();
 }
 
-
-
-
 //back btn on tool panel
 function panelBack() {
   panel.classList.remove("active");
@@ -781,23 +762,6 @@ function panelBack() {
   panelState = "root";
   closePanelGrid();
 }
-
-
-
-
-//next btn error logic
-const nextBtn = document.getElementById("nextBtn");
-
-nextBtn.addEventListener("click", () => {
-  if (!roomReady) {
-    showCanvasError("Please upload a room image to continue");
-    return;
-  }
-  goToPreview();
-});
-
-
-
 
 //next btn disable
 function updateNextButton() {
@@ -810,6 +774,22 @@ function updateNextButton() {
     nextBtn.style.cursor = "pointer";
   }
 }
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  console.log("✅ NEXT BUTTON CLICKED");
+  console.log("designState =", designState);
+  console.log("roomImage =", designState?.roomImage);
+
+  if (!designState || !designState.roomImage) {
+    alert("❌ Upload a room template first!");
+    return;
+  }
+
+  sessionStorage.setItem("design_draft", JSON.stringify(designState));
+  alert("✅ Template saved! Redirecting...");
+  window.location.href = "furniture.html";
+});
+
 
 </script>
 
