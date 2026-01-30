@@ -484,7 +484,8 @@ position:absolute;
   <i class="fa-solid fa-rotate-left"></i>
 </button>
 
-<button class="nav-icon danger" id="deleteBtn" title="Delete" type="button" onclick="deleteAllItems">
+<button class="nav-icon danger" id="deleteBtn" title="Delete" type="button" onclick="deleteAllItems()"
+>
   <i class="fa-solid fa-trash"></i>
 </button>
 
@@ -1310,14 +1311,23 @@ function saveHistory() {
 }
 
 function deleteAllItems() {
-  console.log("🔥 DELETE BUTTON CLICKED");
+  console.log("🔥 DELETE ALL FURNITURE");
 
+  // 1️⃣ Clear state
   designState.furniture = [];
 
-  document.querySelectorAll(".canvas-wrapper, .rug-item").forEach(el => el.remove());
+  // 2️⃣ Remove ONLY furniture & rugs
+  document.querySelectorAll(".canvas-wrapper").forEach(el => el.remove());
+  document.querySelectorAll(".rug-item").forEach(el => el.remove());
 
+  // 3️⃣ Keep room image untouched
+  selectedWrapper = null;
+  selectedItem = null;
+
+  // 4️⃣ Persist
   persistDesignState();
 }
+
 
 </script>
 
