@@ -384,6 +384,7 @@ html, body {
 </head>
 
 <body>
+<script src="auth.js"></script>
 
 <script>
 
@@ -449,27 +450,33 @@ html, body {
 
   
     <!-- ACTION DOCK -->
-    <div class="action-dock">
+   <div class="action-dock">
 
-      <div class="dock-btn" onclick="goBack()" title="Go Back">
-        <svg viewBox="0 0 24 24">
-          <path d="M15 18l-6-6 6-6"/>
-        </svg>
-      </div>
+  <!-- DOWNLOAD (LEFT) -->
+  <div class="dock-btn" onclick="downloadDesign()" title="Download">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 3v12"/>
+      <path d="M7 10l5 5 5-5"/>
+      <path d="M5 21h14"/>
+    </svg>
+  </div>
 
-      <div class="dock-main" onclick="goMakeItReal()">
-        Make It Real
-      </div>
+  <!-- MAIN CTA -->
+  <div class="dock-main" onclick="goMakeItReal()">
+    Make It Real
+  </div>
 
-      <div class="dock-btn" onclick="downloadDesign()" title="Download">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 3v12"/>
-          <path d="M7 10l5 5 5-5"/>
-          <path d="M5 21h14"/>
-        </svg>
-      </div>
+  <!-- SAVE (RIGHT) -->
+  <div class="dock-btn" onclick="saveDesign()" title="Save">
+    <svg viewBox="0 0 24 24">
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+      <path d="M17 21v-8H7v8"/>
+      <path d="M7 3v5h8"/>
+    </svg>
+  </div>
 
-    </div>
+</div>
+
 
 
 
@@ -551,6 +558,47 @@ function downloadDesign(){
 }
 </script>
 
+<script>
+async function saveDesign() {
+  if (!afterSrc) {
+    alert("No design to save.");
+    return;
+  }
+
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    alert("Please login to save your design.");
+    location.href = "login.html";
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/designs/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        title: "My Interior Design",
+        image: afterSrc   // 👈 base64 image
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Save failed");
+    }
+
+    alert("Design saved successfully 💾");
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to save design");
+  }
+}
+</script>
 
 </body>
 </html>
