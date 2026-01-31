@@ -484,7 +484,8 @@ position:absolute;
   <i class="fa-solid fa-rotate-left"></i>
 </button>
 
-<button class="nav-icon danger" id="deleteBtn" title="Delete" type="button" onclick="deleteAllItems">
+<button class="nav-icon danger" id="deleteBtn" title="Delete" type="button" onclick="deleteAllItems()"
+>
   <i class="fa-solid fa-trash"></i>
 </button>
 
@@ -720,7 +721,7 @@ if(!roomReady){
 
   // WRAPPER
   const wrapper = document.createElement("div");
-  wrapper.className = "canvas-wrapper";
+wrapper.className = "canvas-wrapper design-item";
   wrapper.style.left = "440px";
   wrapper.style.top = "220px";
 
@@ -794,7 +795,7 @@ persistDesignState();
 //CREATE FURNITURE
 function createFurnitureFromState(item) {
   const wrapper = document.createElement("div");
-  wrapper.className = "canvas-wrapper";
+wrapper.className = "canvas-wrapper design-item";
   wrapper.style.left = item.left;
   wrapper.style.top = item.top;
 
@@ -1207,33 +1208,53 @@ function stopDragRug(){
   activeRug = null;
 }
 
+
+
+
+
 async function goToPreview() {
   if (!roomReady) {
-    showCanvasError("Upload a room image first");
+    showCanvasError("Please select a room template first");
     return;
   }
 
-// 🔥 SAVE FULL DESIGN STATE
-  sessionStorage.setItem(
-    "design_draft",
-    JSON.stringify(designState)
-  );
+  const canvasEl = document.getElementById("canvas");
+  const designItems = document.querySelectorAll(".design-item");
 
-  const canvasArea = document.getElementById("canvas");
+  const ratio = window.devicePixelRatio || 1;
 
-  const screenshot = await html2canvas(canvasArea, {
+  /* ================= BEFORE ================= */
+  designItems.forEach(el => el.style.visibility = "hidden");
+
+  const beforeCanvas = await html2canvas(canvasEl, {
     backgroundColor: null,
     useCORS: true,
-    scale: 1.1
+    scale: ratio
   });
 
-  const afterImage = screenshot.toDataURL("image/png");
+  const beforeImage = beforeCanvas.toDataURL("image/png", 1.0);
 
-  sessionStorage.setItem("preview_before", beforeRoomImage);
+  /* ================= AFTER ================= */
+  designItems.forEach(el => el.style.visibility = "visible");
+
+  const afterCanvas = await html2canvas(canvasEl, {
+    backgroundColor: null,
+    useCORS: true,
+    scale: ratio
+  });
+
+  const afterImage = afterCanvas.toDataURL("image/png");
+
+  /* ================= SAVE ================= */
+  sessionStorage.setItem("preview_before", beforeImage);
   sessionStorage.setItem("preview_after", afterImage);
 
   window.location.href = "preview.html";
 }
+
+
+
+
 
   //TOAST MESSAGE
   function showToast(msg) {
@@ -1257,7 +1278,11 @@ function renderCanvas() {
     room.id = "room";
     room.src = designState.roomImage;
     canvas.appendChild(room);
+
     roomReady = true;
+
+    // ✅ THIS IS CRITICAL
+    beforeRoomImage = designState.roomImage;
   }
 
   const floor = document.createElement("div");
@@ -1268,13 +1293,11 @@ function renderCanvas() {
   furnitureLayer.id = "furniture-layer";
   canvas.appendChild(furnitureLayer);
 
-  // 🚫 DO NOT CALL addFurniture()
   designState.furniture.forEach(item => {
     createFurnitureFromState(item);
   });
-
-  hideEmptyState();
 }
+
 
 //SAVE LOCAL DRAFT
 function saveLocalDraft() {
@@ -1310,14 +1333,23 @@ function saveHistory() {
 }
 
 function deleteAllItems() {
-  console.log("🔥 DELETE BUTTON CLICKED");
+  console.log("🔥 DELETE ALL FURNITURE");
 
+  // 1️⃣ Clear state
   designState.furniture = [];
 
-  document.querySelectorAll(".canvas-wrapper, .rug-item").forEach(el => el.remove());
+  // 2️⃣ Remove ONLY furniture & rugs
+  document.querySelectorAll(".canvas-wrapper").forEach(el => el.remove());
+  document.querySelectorAll(".rug-item").forEach(el => el.remove());
 
+  // 3️⃣ Keep room image untouched
+  selectedWrapper = null;
+  selectedItem = null;
+
+  // 4️⃣ Persist
   persistDesignState();
 }
+
 
 </script>
 

@@ -217,7 +217,7 @@ form input:focus { outline: none; }
   gap: 20px;
 }
 
-.row input { width: 50%; }
+.row input { width: 70%; }
 
 .formbutton {
   background: #000;
@@ -397,6 +397,41 @@ form input:focus { outline: none; }
       }
 
 
+
+
+/* PASSWORD EYE TOGGLE */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.password-wrapper input {
+  width: 70%;
+  border: none;
+  border-bottom: 1px solid #000;
+  padding: 10px 32px 10px 0;
+  font-size: 12px;
+  letter-spacing: 1px;
+  background: transparent;
+}
+
+.password-wrapper i {
+  position: absolute;
+  right: 30%;
+  top: 35%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 14px;
+  color: #000;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.password-wrapper i:hover {
+  opacity: 1;
+}
+
 </style>
 </head>
 <body>
@@ -407,6 +442,25 @@ if (isLoggedIn()) {
   location.replace("home.html");
 }
 </script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const togglePassword = document.getElementById("togglePassword");
+  const passwordField = document.getElementById("password");
+
+  if (!togglePassword || !passwordField) return;
+
+  togglePassword.addEventListener("click", () => {
+    const isPassword = passwordField.type === "password";
+    passwordField.type = isPassword ? "text" : "password";
+
+    togglePassword.classList.toggle("fa-eye");
+    togglePassword.classList.toggle("fa-eye-slash");
+  });
+});
+</script>
+
 
 
 <!-- NAVIGATION BAR -->
@@ -452,7 +506,10 @@ if (isLoggedIn()) {
         <div class="row">
           <input type="email" id="email" placeholder="EMAIL" required>
         </div>
-        <input type="password" id="password" placeholder="PASSWORD" required>
+<div class="password-wrapper">
+  <input type="password" id="password" placeholder="PASSWORD" required>
+  <i class="fa-regular fa-eye" id="togglePassword"></i>
+</div>
         <button type="submit" class="formbutton">LOGIN</button>
         <br>
         <p class="login">
