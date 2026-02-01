@@ -1,66 +1,90 @@
-const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
+const fs = require("fs");
+const sqlite3 = require("sqlite3").verbose();
 
-// SQLite DB connection
-const db = new sqlite3.Database(path.join(__dirname, "../designs_ai.db"));
+// === Database setup ===
+const db = new sqlite3.Database("./designs.db", (err) => {
+  if (err) console.error("DB connection error:", err);
+  else console.log("Connected to SQLite DB");
+});
 
-// Create table if not exists
-db.run(`
-  CREATE TABLE IF NOT EXISTS designs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    style TEXT,
-    room_type TEXT,
-    colors TEXT,
-    lighting TEXT,
-    before_image TEXT,
-    after_image TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )
-`);
-
+// 1️⃣ Upload room image & save selections
 exports.uploadRoomImage = (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No image uploaded" });
-    }
+    if (!req.file) return res.status(400).json({ message: "No image uploaded" });
 
     const { style, room_type, colors, lighting } = req.body;
+    const beforeImagePath = req.file.path;
 
-    const imagePath = req.file.filename; // better than full path
+    db.run(
+      `INSERT INTO designs (style, room_type, colors, before_image) VALUES (?, ?, ?, ?)`,
+      [style, room_type, colors, beforeImagePath],
+      function (err) {
+        if (err) return res.status(500).json({ message: "DB error" });
 
-    const query = `
-      INSERT INTO designs(style, room_type, colors, lighting, before_image)
-      VALUES (?, ?, ?, ?, ?)
-    `;
-
-    db.run(query, [style, room_type, colors, lighting, imagePath], function (err) {
-      if (err) {
-        return res.status(500).json({
-          message: "DB Insert Failed",
-          error: err.message
+        res.status(200).json({
+          message: "Room image uploaded successfully",
+          designId: this.lastID,
+          beforeImage: beforeImagePath
         });
       }
-
-      res.status(200).json({
-        message: "Room image uploaded successfully",
-        designId: this.lastID,
-        beforeImage: imagePath
-      });
-    });
-
+    );
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Server error", error });
   }
 };
 
-exports.updateAfterImage = (designId, afterImagePath) => {
-  const query = `UPDATE designs SET after_image = ? WHERE id = ?`;
+// 2️⃣ Generate AI image
+exports.generateAIImage = async (req, res) => {
+  try {
+    const { designId } = req.body;
+    if (!designId) return res.status(400).json({ message: "Missing designId" });
 
-  db.run(query, [afterImagePath, designId], function (err) {
-    if (err) {
-      console.error("Error updating after image:", err);
-    } else {
-      console.log("After image updated successfully for ID:", designId);
-    }
+    db.get(`SELECT * FROM designs WHERE id = ?`, [designId], async (err, row) => {
+      if (err || !row) return res.status(404).json({ message: "Design not found" });
+
+      const beforeImagePath = row.before_image;
+
+      // Simulate AI generation (replace with real AI API)
+      const afterImageName = "after_" + path.basename(beforeImagePath);
+      const afterImagePath = path.join("generated_ai", afterImageName);
+
+      fs.copyFile(beforeImagePath, afterImagePath, (copyErr) => {
+        if (copyErr) return res.status(500).json({ message: "Failed to generate AI image" });
+
+        db.run(
+          `UPDATE designs SET after_image = ? WHERE id = ?`,
+          [afterImagePath, designId],
+          (updateErr) => {
+            if (updateErr) return res.status(500).json({ message: "Failed to update design" });
+
+            res.status(200).json({
+              designId,
+              before: beforeImagePath,
+              after: afterImagePath
+            });
+          }
+        );
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+// 3️⃣ Get design by ID (optional)
+exports.getDesignById = (req, res) => {
+  const { designId } = req.params;
+  db.get(`SELECT * FROM designs WHERE id = ?`, [designId], (err, row) => {
+    if (err || !row) return res.status(404).json({ message: "Design not found" });
+
+    res.status(200).json({
+      designId: row.id,
+      style: row.style,
+      room_type: row.room_type,
+      colors: row.colors,
+      before: row.before_image,
+      after: row.after_image
+    });
   });
 };
