@@ -545,9 +545,19 @@ document.addEventListener("DOMContentLoaded", setupNavbarAuth);
 <script>
 async function loadMyDesigns() {
   try {
-    const res = await fetch("http://localhost:5000/api/designs");
-    const designs = await res.json();
+    const token = sessionStorage.getItem("token");
 
+    const res = await fetch("http://localhost:5000/api/designs", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error("Unauthorized or failed request");
+    }
+
+    const designs = await res.json();
     const grid = document.getElementById("designsGrid");
     grid.innerHTML = "";
 
@@ -557,18 +567,19 @@ async function loadMyDesigns() {
     }
 
     designs.forEach(design => {
+      if (!design.imagePath) return;
+
       const card = document.createElement("div");
       card.className = "design-card";
 
       card.innerHTML = `
-        <img src="http://localhost:5000/${design.imagePath}" />
+<img src="${design.imagePath}" alt="Design"/>
         <div class="design-info">
           <h5>${design.title}</h5>
           <span>${new Date(design.createdAt).toDateString()}</span>
         </div>
       `;
 
-      // Lightbox support
       card.querySelector("img").onclick = () => {
         lightboxImg.src = card.querySelector("img").src;
         lightbox.classList.add("active");
@@ -582,9 +593,9 @@ async function loadMyDesigns() {
   }
 }
 
-// Load on page open
 document.addEventListener("DOMContentLoaded", loadMyDesigns);
 </script>
+
 
 
     <!-- NAVIGATION BAR -->
@@ -677,7 +688,7 @@ document.addEventListener("DOMContentLoaded", loadMyDesigns);
         <!-- DESIGNS -->
         <h2 class="section-title">My Designs</h2>
 <div class="designs-grid" id="designsGrid">
-          
+
         </div>
 
         <!-- ACTIONS -->
@@ -779,12 +790,7 @@ const lightbox=document.getElementById('lightbox');
 const lightboxImg=document.getElementById('lightbox-img');
 const closeBtn=document.querySelector('.close-btn');
 
-document.querySelectorAll('.design-card img').forEach(img=>{
-  img.onclick=()=>{
-    lightboxImg.src=img.src;
-    lightbox.classList.add('active');
-  }
-});
+
 closeBtn.onclick=e=>{
   e.stopPropagation();
   lightbox.classList.remove('active');

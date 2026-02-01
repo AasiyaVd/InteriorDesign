@@ -66,7 +66,7 @@ body{
   width:100%;
   max-width:1100px;
   margin:0 auto;
-  height:580px;
+  height:520px;
   border-radius:24px;
   overflow:hidden;
 
@@ -140,7 +140,7 @@ body{
   padding:10px 22px;
   font-size:13px;
   font-weight:600;
-  background: rgba(75, 0, 7); 
+  background: #000; 
   color:#fff;
   border-radius:40px;
   white-space:nowrap;   /* 🔥 prevents BAforee issue */
@@ -315,11 +315,76 @@ background:linear-gradient(135deg,#000,#333);
   opacity: 0.6;
   transform: translateX(2px);
 }
+
+
+
+
+
+
+
+/* ================= ACTION DOCK ================= */
+.action-dock{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  align-items:center;
+  gap:22px;
+  padding:18px 28px;
+}
+
+/* side buttons */
+.dock-btn{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:transform .3s, background .3s;
+}
+.dock-btn:hover{
+  transform:translateY(-3px);
+  background:rgba(255,255,255,0.18);
+}
+.dock-btn svg{
+  width:18px;
+  height:18px;
+  stroke:#000;
+  fill:none;
+  stroke-width:1.6;
+}
+
+/* main CTA */
+.dock-main{
+  padding:14px 46px;
+  border-radius:40px;
+  background:#000;
+  color:#fff;
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:0.5px;
+  cursor:pointer;
+  transition:transform .3s, box-shadow .3s;
+  box-shadow:0 15px 40px rgba(255,255,255,0.3);
+}
+.dock-main:hover{
+  transform:translateY(-3px);
+  box-shadow:0 25px 60px rgba(255,255,255,0.45);
+}
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 </style>
 
 </head>
 
 <body>
+<script src="auth.js"></script>
 
 <script>
 
@@ -383,30 +448,35 @@ background:linear-gradient(135deg,#000,#333);
 
   
 
-  <div class="preview-actions premium-actions">
+  
+    <!-- ACTION DOCK -->
+   <div class="action-dock">
 
-  <!-- GO BACK -->
-  <div class="action-side" onclick="goBack()" title="Go Back">
-    <svg viewBox="0 0 24 24" class="icon">
-      <path d="M15 18l-6-6 6-6" />
+  <!-- DOWNLOAD (LEFT) -->
+  <div class="dock-btn" onclick="downloadDesign()" title="Download">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 3v12"/>
+      <path d="M7 10l5 5 5-5"/>
+      <path d="M5 21h14"/>
     </svg>
   </div>
 
   <!-- MAIN CTA -->
-  <div class="action-main" onclick="goMakeItReal()">
+  <div class="dock-main" onclick="goMakeItReal()">
     Make It Real
   </div>
 
-  <!-- DOWNLOAD -->
-  <div class="action-side" title="Download Design" onclick="downloadDesign()">
-    <svg viewBox="0 0 24 24" class="icon">
-      <path d="M12 3v12" />
-      <path d="M7 10l5 5 5-5" />
-      <path d="M5 21h14" />
+  <!-- SAVE (RIGHT) -->
+  <div class="dock-btn" onclick="saveDesign()" title="Save">
+    <svg viewBox="0 0 24 24">
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+      <path d="M17 21v-8H7v8"/>
+      <path d="M7 3v5h8"/>
     </svg>
   </div>
 
 </div>
+
 
 
 
@@ -431,8 +501,9 @@ if (!beforeSrc || !afterSrc) {
   window.location.href = "template.html";
 }
  else {
-  beforeImg.src = decodeURIComponent(beforeSrc);
-  afterImg.src  = decodeURIComponent(afterSrc);
+beforeImg.src = afterSrc;
+afterImg.src  = beforeSrc;
+
 }
 
 /* ================= IMAGE LOAD ================= */
@@ -487,6 +558,47 @@ function downloadDesign(){
 }
 </script>
 
+<script>
+async function saveDesign() {
+  if (!afterSrc) {
+    alert("No design to save.");
+    return;
+  }
+
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    alert("Please login to save your design.");
+    location.href = "login.html";
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/api/designs/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        title: "My Interior Design",
+        image: afterSrc   // 👈 base64 image
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Save failed");
+    }
+
+    alert("Design saved successfully 💾");
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to save design");
+  }
+}
+</script>
 
 </body>
 </html>
