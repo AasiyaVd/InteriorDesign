@@ -189,12 +189,12 @@ body {
 .upload-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin-bottom: 40px;
 }
 
 .upload-box {
   width: 100%;
-  max-width: 600px;
+  max-width: 200px;
   height: 280px;
   border: 2px dashed #ccc;
   border-radius: 16px;
@@ -346,6 +346,72 @@ body {
   transform: translateX(2px);
 }
 
+
+.upload-step-box {
+  width: 100%;
+  max-width: 650px;
+  height: 200px;
+  border: 2px dashed #cfcfcf;
+  border-radius: 22px;
+  background: #faf9f7;
+  position: relative;
+  overflow: hidden;
+}
+.upload-step-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 30px;
+  z-index: 2;
+}
+upload-step-content h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #000;
+}
+.upload-step-content .main-text {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.upload-step-content .sub-text {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 18px;
+}
+
+.upload-btn {
+  background: rgba(75,0,7);
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+/* Preview image */
+#previewImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+  z-index: 1;
+}
   </style>
 </head>
 
@@ -479,15 +545,27 @@ body {
 </div>
 
     <div class="upload-container">
-  <div class="upload-box">
-    <img id="previewImage">
+  <div class="upload-step-box">
 
-    <div class="upload-content" id="uploadText">
-      <p>Select a preset or upload your own image</p>
-      <input type="file" id="fileInput" accept="image/*">
+    <img id="previewImage" />
+
+    <div class="upload-step-content" id="uploadText">
+      <h3>Step 1: Upload Your Room</h3>
+      <p class="main-text">
+        Upload a clear image of your room.<br>
+        This will be the base for your design.
+      </p>
+
+      <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+        Upload Image
+      </button>
+
+      <input type="file" id="fileInput" accept="image/*" hidden>
     </div>
+
   </div>
 </div>
+
 
     <!-- BUTTON -->
     <button class="generate-btn" onclick="generateDesign()">
@@ -502,54 +580,40 @@ let designState = JSON.parse(sessionStorage.getItem("design_draft")) || {
   roomImage: null,
 };
 
-function uploadRoom() {
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "image/*";
+const fileInput = document.getElementById("fileInput");
+const previewImage = document.getElementById("previewImage");
+const uploadText = document.getElementById("uploadText");
 
-  input.onchange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+fileInput.addEventListener("change", async function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
+  const img = new Image();
+  img.src = URL.createObjectURL(file);
 
-    img.onload = async () => {
-      const allowed = await checkIfRoom(img);
+  img.onload = async () => {
+    const allowed = await checkIfRoom(img);
 
-      if (!allowed) {
-        alert("❌ Please upload a ROOM image only.");
-        return;
-      }
+    if (!allowed) {
+      alert("❌ Please upload a ROOM image only.");
+      fileInput.value = "";
+      return;
+    }
 
-      // ✅ Save image
-      designState.roomImage = img.src;
-      sessionStorage.setItem("design_draft", JSON.stringify(designState));
-      localStorage.setItem("imageSource", "upload");
+    // ✅ Save state
+    previewImage.src = img.src;
+    previewImage.style.display = "block";
+    uploadText.style.display = "none";
 
-      // ✅ ALWAYS get elements fresh (no null issue)
-      const previewImage = document.querySelector("#previewImage");
-      const uploadText = document.querySelector("#uploadText");
+    localStorage.setItem("imageSource", "upload");
+    sessionStorage.setItem(
+      "design_draft",
+      JSON.stringify({ roomImage: img.src })
+    );
 
-      if (!previewImage) {
-        console.error("❌ previewImage not found. Check your HTML id!");
-        return;
-      }
-
-      previewImage.src = img.src;
-previewImage.style.display = "block";
-document.querySelector(".preview-wrapper").style.display = "block";
-uploadText.style.display = "none";
-
-
-      if (uploadText) uploadText.style.display = "none";
-
-      console.log("✅ ROOM IMAGE SAVED", designState.roomImage);
-    };
+    console.log("✅ Room image loaded & previewed");
   };
-
-  input.click();
-}
+});
 
 /* ================= GENERATE BUTTON (TEMP OUTPUT FLOW) ================= */
 function generateDesign() {
