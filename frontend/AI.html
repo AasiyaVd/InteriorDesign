@@ -471,43 +471,46 @@ body {
 </div>
 
 <script>
-/* ================= BUTTON LOGIC ================= */
-async function generateDesign() {
+/* ================= GENERATE BUTTON (TEMP OUTPUT FLOW) ================= */
+function generateDesign() {
 
+  // Get dropdown values
   const style = document.getElementById("style").value;
   const room = document.getElementById("room").value;
   const color = document.getElementById("color").value;
   const lighting = document.getElementById("lighting").value;
 
+  // Get image source
   const imageSource = localStorage.getItem("imageSource");
 
-  const formData = new FormData();
-  formData.append("style", style);
-  formData.append("room", room);
-  formData.append("color", color);
-  formData.append("lighting", lighting);
+  let finalImage = "";
 
   if (imageSource === "upload") {
-    const file = document.getElementById("fileInput").files[0];
-    formData.append("image", file);
-  } 
-  else {
-    const presetImage = localStorage.getItem("presetImage");
-    formData.append("presetImage", presetImage);
+    // Uploaded image preview
+    finalImage = document.getElementById("previewImage").src;
+  } else {
+    // Preset image
+    finalImage = localStorage.getItem("presetImage");
   }
 
-  const res = await fetch("http://localhost:5000/api/generate-design", {
-    method: "POST",
-    body: formData
-  });
+  // Safety check
+  if (!finalImage) {
+    alert("Please select or upload an image before generating.");
+    return;
+  }
 
-  const data = await res.json();
+  // Store everything for preview page
+  localStorage.setItem("output_style", style);
+  localStorage.setItem("output_room", room);
+  localStorage.setItem("output_color", color);
+  localStorage.setItem("output_lighting", lighting);
+  localStorage.setItem("output_image", finalImage);
 
-  localStorage.setItem("generatedImage", data.generatedImage);
-
-  window.location.href = "preview.html";
+  // Redirect to output page
+  window.location.href = "preview1.html";
 }
 </script>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
