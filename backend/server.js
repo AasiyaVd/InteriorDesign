@@ -16,7 +16,7 @@ app.use(express.urlencoded({ limit: "20mb", extended: true }));
 // =====================
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// 🔥 SERVE UPLOADED IMAGES (VERY IMPORTANT)
+// 🔥 SERVE UPLOADED IMAGES DRAG-DROP (VERY IMPORTANT)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // =====================
@@ -26,7 +26,10 @@ app.use("/api/auth", require("./src/routes/auth.routes"));
 app.use("/api/user-needs", require("./src/routes/userNeeds"));
 app.use("/api/contact", require("./src/routes/contact.routes"));
 app.use("/api/newsletter", require("./src/routes/newsletter.routes"));
+<<<<<<< HEAD
+=======
 app.use("/api/designs", require("./src/routes/design.routes"));
+>>>>>>> 8969c50a2d3fc95ee4fcafe1ccef980f441612a5
 
 // =====================
 // HEALTH CHECK

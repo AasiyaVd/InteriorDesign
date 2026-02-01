@@ -349,7 +349,7 @@ body {
 
   <ul class="menu">
     <li><a href="AI.html">AI INSIGHTS</a></li>
-    <li><a href="design1.html">DESIGN</a></li>
+    <li><a href="template.html">DESIGN</a></li>
     <li><a href="about.html">ABOUT</a></li>
     <li><a href="contact.html">CONTACT</a></li>
  <li id="signupNav"><a href="signup.html">SIGN UP</a></li>
@@ -472,18 +472,40 @@ body {
 
 <script>
 /* ================= BUTTON LOGIC ================= */
-function generateDesign() {
+async function generateDesign() {
 
   const style = document.getElementById("style").value;
   const room = document.getElementById("room").value;
+  const color = document.getElementById("color").value;
+  const lighting = document.getElementById("lighting").value;
 
-  // Save selections (for backend / preview later)
-  localStorage.setItem("style", style);
-  localStorage.setItem("room", room);
+  const imageSource = localStorage.getItem("imageSource");
 
-  // Redirect to preview page
+  const formData = new FormData();
+  formData.append("style", style);
+  formData.append("room", room);
+  formData.append("color", color);
+  formData.append("lighting", lighting);
+
+  if (imageSource === "upload") {
+    const file = document.getElementById("fileInput").files[0];
+    formData.append("image", file);
+  } 
+  else {
+    const presetImage = localStorage.getItem("presetImage");
+    formData.append("presetImage", presetImage);
+  }
+
+  const res = await fetch("http://localhost:5000/api/generate-design", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+
+  localStorage.setItem("generatedImage", data.generatedImage);
+
   window.location.href = "preview.html";
-
 }
 </script>
 
