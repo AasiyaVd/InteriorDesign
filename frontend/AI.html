@@ -29,6 +29,9 @@
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 />
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+<script src="ai-room-check.js"></script>
   <style>
      *,
 *::before,
@@ -183,34 +186,59 @@ body {
 }
 
 /* ================= UPLOAD ================= */
-.upload-box {
-  border: 2px dashed #bbb;
-  border-radius: 14px;
-  padding: 35px;
-  text-align: center;
-  background: rgba(255,255,255,0.6);
-  margin-bottom: 35px;
+.upload-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.upload-box {
+  width: 100%;
+  max-width: 600px;
+  height: 280px;
+  border: 2px dashed #ccc;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Center text & button */
+.upload-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+}
+
+/* Text */
 .upload-box p {
   font-size: 15px;
   color: #555;
   margin-bottom: 10px;
 }
 
+/* Input */
 .upload-box input {
   font-size: 14px;
-  margin-top: 15px;
-  
+  margin-top: 10px;
 }
 
-.upload-box img {
+/* Preview image */
+#previewImage {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-height: 240px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 12px;
+  height: 100%;
+  object-fit: cover;   /* 🔥 fits image perfectly */
+  border-radius: 16px;
+  display: none;
+  z-index: 1;
 }
+
 
 /* ================= BUTTON ================= */
 .generate-btn {
@@ -449,17 +477,16 @@ body {
   </div>
 
 </div>
-    <!-- IMAGE UPLOAD -->
-    <div class="upload-box">
 
-  <p id="uploadText">Select a preset or upload your own image</p>
+    <div class="upload-container">
+  <div class="upload-box">
+    <img id="previewImage">
 
-  <!-- Preview image -->
-  <img id="previewImage" style="display:none;">
-
-  <!-- File upload -->
-  <input type="file" id="fileInput" accept="image/*">
-
+    <div class="upload-content" id="uploadText">
+      <p>Select a preset or upload your own image</p>
+      <input type="file" id="fileInput" accept="image/*">
+    </div>
+  </div>
 </div>
 
     <!-- BUTTON -->
@@ -471,6 +498,59 @@ body {
 </div>
 
 <script>
+let designState = JSON.parse(sessionStorage.getItem("design_draft")) || {
+  roomImage: null,
+};
+
+function uploadRoom() {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+
+    img.onload = async () => {
+      const allowed = await checkIfRoom(img);
+
+      if (!allowed) {
+        alert("❌ Please upload a ROOM image only.");
+        return;
+      }
+
+      // ✅ Save image
+      designState.roomImage = img.src;
+      sessionStorage.setItem("design_draft", JSON.stringify(designState));
+      localStorage.setItem("imageSource", "upload");
+
+      // ✅ ALWAYS get elements fresh (no null issue)
+      const previewImage = document.querySelector("#previewImage");
+      const uploadText = document.querySelector("#uploadText");
+
+      if (!previewImage) {
+        console.error("❌ previewImage not found. Check your HTML id!");
+        return;
+      }
+
+      previewImage.src = img.src;
+previewImage.style.display = "block";
+document.querySelector(".preview-wrapper").style.display = "block";
+uploadText.style.display = "none";
+
+
+      if (uploadText) uploadText.style.display = "none";
+
+      console.log("✅ ROOM IMAGE SAVED", designState.roomImage);
+    };
+  };
+
+  input.click();
+}
+
 /* ================= GENERATE BUTTON (TEMP OUTPUT FLOW) ================= */
 function generateDesign() {
 
@@ -518,7 +598,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const styleCards = document.querySelectorAll(".style-card");
   const previewImage = document.getElementById("previewImage");
   const uploadText = document.getElementById("uploadText");
-  const fileInput = document.getElementById("fileInput");
 
   /* ========= PRESET IMAGE SELECTION ========= */
   styleCards.forEach(card => {
@@ -543,33 +622,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
   });
-
-  /* ========= FILE UPLOAD SELECTION ========= */
-  fileInput.addEventListener("change", function () {
-
-    const file = this.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      previewImage.src = e.target.result;
-      previewImage.style.display = "block";
-      uploadText.style.display = "none";
-    };
-
-    reader.readAsDataURL(file);
-
-    // Remove preset highlight (file takes priority)
-    styleCards.forEach(c => c.classList.remove("active"));
-
-    // Store upload info
-    localStorage.setItem("imageSource", "upload");
-
-  });
-
 });
-
 
     /* NAVBAR SCROLL — UNCHANGED */
     const navbar = document.getElementById('navbar');
