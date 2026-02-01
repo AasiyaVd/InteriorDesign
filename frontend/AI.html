@@ -648,7 +648,12 @@ function generateDesign() {
   localStorage.setItem("output_room", room);
   localStorage.setItem("output_color", color);
   localStorage.setItem("output_lighting", lighting);
-  localStorage.setItem("output_image", finalImage);
+// BEFORE image = original uploaded / selected image
+sessionStorage.setItem("preview_before", finalImage);
+
+// TEMP: until AI generates new image,
+// AFTER image = same image (placeholder)
+sessionStorage.setItem("preview_after", finalImage);
 
   // Redirect to output page
   window.location.href = "preview1.html";
