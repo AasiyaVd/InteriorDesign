@@ -87,10 +87,12 @@ body{
   height:100%;
   object-fit:cover;
   display:none;
+  z-index: 1;
 }
 
 .after-img{
-  clip-path:inset(0 50% 0 0);
+  clip-path:inset(0 0 0 50%);
+  z-index: 2;
 }
 
 /* slider */
@@ -501,8 +503,8 @@ if (!beforeSrc || !afterSrc) {
   window.location.href = "template.html";
 }
  else {
-beforeImg.src = afterSrc;
-afterImg.src  = beforeSrc;
+beforeImg.src = beforeSrc;
+afterImg.src  = afterSrc;
 
 }
 
@@ -513,7 +515,7 @@ beforeImg.onload = () => {
 afterImg.onload = () => {
   afterImg.style.display = "block";
   slider.style.left = "50%";
-  afterImg.style.clipPath = "inset(0 50% 0 0)";
+  afterImg.style.clipPath = "inset(0 0 0 50%)";
 };
 
 /* ================= SLIDER ================= */
@@ -531,7 +533,7 @@ window.addEventListener("mousemove", (e) => {
 
   const percent = (x / rect.width) * 100;
   slider.style.left = percent + "%";
-  afterImg.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+  afterImg.style.clipPath = `inset(0 0 0 ${percent}%)`;
 });
 
 /* ================= ACTIONS ================= */
@@ -550,7 +552,7 @@ function downloadDesign(){
   }
 
   const link = document.createElement("a");
-  link.href = decodeURIComponent(afterSrc);
+  link.href = afterSrc;
   link.download = "la-obsidiane-design.png";
   document.body.appendChild(link);
   link.click();
