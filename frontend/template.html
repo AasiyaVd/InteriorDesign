@@ -791,7 +791,8 @@ document.getElementById("nextBtn").addEventListener("click", () => {
     alert("❌ Upload a room template first!");
     return;
   }
-
+// 🔥 CLEAR OLD FURNITURE BEFORE SAVING TEMPLATE
+designState.furniture = [];
   sessionStorage.setItem("design_draft", JSON.stringify(designState));
   alert("✅ Template saved! Redirecting...");
   window.location.href = "furniture.html";
