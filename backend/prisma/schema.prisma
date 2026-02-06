@@ -67,7 +67,7 @@ model DesignRequest {
 }
 
 // =========================
-// AI GENERATED DESIGNS
+// Ai GENERATED DESIGNS
 // =========================
 model AIDesign {
   id          Int      @id @default(autoincrement())
