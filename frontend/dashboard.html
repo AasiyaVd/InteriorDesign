@@ -193,36 +193,7 @@ body{
   border-radius:20px;
 }
 
-/* LIGHTBOX */
-.lightbox{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.92);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:.3s;
-  z-index:9999;
-}
-.lightbox.active{
-  opacity:1;
-  pointer-events:auto;
-}
-.lightbox img{
-  max-width:90%;
-  max-height:90%;
-  border-radius:8px;
-}
-.close-btn{
-  position:absolute;
-  top:24px;
-  right:32px;
-  font-size:36px;
-  color:#fff;
-  cursor:pointer;
-}
+
 
 /* RESPONSIVE */
 @media(max-width:900px){
@@ -485,6 +456,81 @@ body{
   border-radius: 8px;
 }
 
+/* CENTERED CONTENT */
+.lightbox-content{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:22px;
+  max-width:90vw;
+  max-height:90vh;
+}
+
+/* IMAGE */
+.lightbox-content img{
+  max-width:100%;
+  max-height:70vh;
+  object-fit:contain;
+  border-radius:12px;
+}
+
+/* IMAGE WRAPPER */
+.image-wrapper{
+  position:relative;
+  max-width:90vw;
+  max-height:80vh;
+}
+
+/* IMAGE */
+.image-wrapper img{
+  max-width:100%;
+  max-height:80vh;
+  object-fit:contain;
+  border-radius:14px;
+}
+
+/* BUTTON OVERLAY */
+.lightbox-actions{
+  position:absolute;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:16px;
+  padding:10px 14px;
+  border-radius:40px;
+}
+
+/* BUTTONS */
+.lb-btn{
+  padding:10px 24px;
+  border-radius:24px;
+  border:1px solid rgba(75,0,7,0.8);
+  background:transparent;
+  color:#fff;
+  font-size:12px;
+  cursor:pointer;
+  transition:all .3s ease;
+  width: 150px;
+}
+
+.lb-btn:hover{
+  background:rgba(75,0,7,0.8);
+  color:#fff;
+}
+
+.lb-btn.primary{
+  background:rgba(75,0,7,0.8);
+  color:#fff;
+  font-weight:500;
+
+}
+
+.lb-btn.primary:hover{
+opacity: 0.8;
+  background:rgba(94, 4, 13, 0.8);
+
+}
 /* CLOSE BUTTON */
 .close-btn {
   position: absolute;
@@ -529,6 +575,9 @@ body{
 .navbar.scrolled .logout-icon{
   stroke: #d0b75b;/* GOLD tone from navbar */
 }
+
+
+
 
   </style>
 </head>
@@ -581,9 +630,12 @@ async function loadMyDesigns() {
       `;
 
       card.querySelector("img").onclick = () => {
-        lightboxImg.src = card.querySelector("img").src;
-        lightbox.classList.add("active");
-      };
+  lightboxImg.src = design.imagePath;
+  lightbox.classList.add("active");
+
+  // store selected design
+  lightbox.dataset.designId = design.id;
+};
 
       grid.appendChild(card);
     });
@@ -639,10 +691,27 @@ document.addEventListener("DOMContentLoaded", loadMyDesigns);
 
     </ul>
   </nav>
+
+
 <div class="lightbox" id="lightbox">
   <span class="close-btn">&times;</span>
-  <img id="lightbox-img">
+
+  <div class="lightbox-content">
+    <div class="image-wrapper">
+      <img id="lightbox-img">
+
+      <div class="lightbox-actions">
+        <button id="previewBtn" class="lb-btn">Preview</button>
+        <button id="editBtn" class="lb-btn primary">Edit Design</button>
+      </div>
+    </div>
+  </div>
 </div>
+
+
+
+
+
 
 <div class="frame-wrapper">
   <div class="dashboard-frame">
@@ -798,8 +867,24 @@ closeBtn.onclick=e=>{
 lightbox.onclick=()=>lightbox.classList.remove('active');
 lightboxImg.onclick=e=>e.stopPropagation();
 
+const previewBtn = document.getElementById("previewBtn");
+const editBtn = document.getElementById("editBtn");
 
+previewBtn.onclick = () => {
+  const designId = lightbox.dataset.designId;
+  if (!designId) return;
+
+  window.location.href = `preview.html?designId=${designId}`;
+};
+
+editBtn.onclick = () => {
+  const designId = lightbox.dataset.designId;
+  if (!designId) return;
+
+  window.location.href = `furniture.html?designId=${designId}`;
+};
 </script>
+
 
 
 <script>
