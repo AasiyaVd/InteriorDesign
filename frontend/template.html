@@ -500,7 +500,6 @@ document.addEventListener("DOMContentLoaded", () => {
 <script>
 /* SAFE DEFAULTS */
 window.roomReady = false;
-window.beforeRoomImage = null;
 window.historyStack = [];
 window.MAX_HISTORY = 50;
 
@@ -546,16 +545,16 @@ function persistDesignState() {
 function renderCanvas() {
   canvas.innerHTML = "";
 
-  if (designState.roomImage) {
-    const room = document.createElement("img");
-    room.id = "room";
-    room.src = designState.roomImage;
-    canvas.appendChild(room);
-    roomReady = true;
-  }
+  if (!designState.roomImage) return;
 
-  hideEmptyState();
+  const room = document.createElement("img");
+  room.id = "room";
+  room.src = designState.roomImage;
+  canvas.appendChild(room);
+
+  roomReady = true;
 }
+
  
 function uploadRoom() {
   const input = document.createElement("input");
@@ -566,34 +565,38 @@ function uploadRoom() {
     const file = e.target.files[0];
     if (!file) return;
 
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
+    const reader = new FileReader();
 
-    img.onload = async () => {
-      const allowed = await checkIfRoom(img);
-      beforeRoomImage = img.src;
+    reader.onload = async () => {
+      const base64 = reader.result;
 
-      if (!allowed) {
-        alert("❌ This is not a room image.");
-        return;
-      }
+      const testImg = new Image();
+      testImg.src = base64;
 
-      // ✅ ONLY THIS (IMPORTANT)
-      designState.roomImage = img.src;
+      testImg.onload = async () => {
+        const allowed = await checkIfRoom(testImg);
+        if (!allowed) {
+          alert("❌ This is not a room image.");
+          return;
+        }
 
-      persistDesignState();
-      renderCanvas();
+        // 🔒 SINGLE SOURCE OF TRUTH
+        designState.roomImage = base64;
+        persistDesignState();
+        renderCanvas();
 
-      roomReady = true;
-      hideEmptyState();
-      updateNextButton();
-
-      console.log("ROOM IMAGE SAVED ✅", designState.roomImage);
+        roomReady = true;
+        hideEmptyState();
+        updateNextButton();
+      };
     };
+
+    reader.readAsDataURL(file);
   };
 
   input.click();
 }
+
 
 function loadSample(src){
   canvas.innerHTML = "";
@@ -601,7 +604,6 @@ function loadSample(src){
   const img = document.createElement("img");
   img.id = "room";
   img.src = src;
-  beforeRoomImage = src;
 
   canvas.appendChild(img);
 
@@ -689,31 +691,36 @@ function saveLocalDraft() {
 }
 
 async function goToPreview() {
-  if (!roomReady) {
+  if (!designState.roomImage) {
     showCanvasError("Upload a room image first");
     return;
   }
 
+  const canvasEl = document.getElementById("canvas");
+
+  // 🔒 BEFORE = original room image
   sessionStorage.setItem(
-    "design_draft",
-    JSON.stringify(designState)
+    "preview_before",
+    designState.roomImage
   );
 
-  const canvasArea = document.getElementById("canvas");
-
-  const screenshot = await html2canvas(canvasArea, {
+  // 🎨 AFTER = rendered canvas
+  const afterCanvas = await html2canvas(canvasEl, {
     backgroundColor: null,
     useCORS: true,
-    scale: 1.1
+    scale: 1
   });
 
-  const afterImage = screenshot.toDataURL("image/png");
-
-  sessionStorage.setItem("preview_before", beforeRoomImage);
-  sessionStorage.setItem("preview_after", afterImage);
+  sessionStorage.setItem(
+    "preview_after",
+    afterCanvas.toDataURL("image/png")
+  );
 
   window.location.href = "preview.html";
 }
+
+
+
 
 //dlt btn logic
 const deleteBtn = document.getElementById("deleteBtn");
