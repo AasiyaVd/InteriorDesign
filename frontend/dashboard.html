@@ -577,6 +577,11 @@ opacity: 0.8;
 }
 
 
+/* LOCK SCROLL WHEN LIGHTBOX OPEN */
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
 
 
   </style>
@@ -629,13 +634,15 @@ async function loadMyDesigns() {
         </div>
       `;
 
-      card.querySelector("img").onclick = () => {
+card.querySelector("img").onclick = () => {
   lightboxImg.src = design.imagePath;
   lightbox.classList.add("active");
+  document.body.classList.add("no-scroll"); // 🔒 lock scroll
 
-  // store selected design
   lightbox.dataset.designId = design.id;
 };
+
+
 
       grid.appendChild(card);
     });
@@ -860,11 +867,14 @@ const lightboxImg=document.getElementById('lightbox-img');
 const closeBtn=document.querySelector('.close-btn');
 
 
-closeBtn.onclick=e=>{
+closeBtn.onclick = e => {
   e.stopPropagation();
-  lightbox.classList.remove('active');
+  lightbox.classList.remove("active");
+  document.body.classList.remove("no-scroll"); // 🔓 unlock
 };
+
 lightbox.onclick=()=>lightbox.classList.remove('active');
+document.body.classList.remove("no-scroll"); 
 lightboxImg.onclick=e=>e.stopPropagation();
 
 const previewBtn = document.getElementById("previewBtn");

@@ -610,6 +610,10 @@ async function saveDesign() {
   }
 }
 </script>
+<script>
+  // Save the current preview URL so dashboard can reopen it
+  sessionStorage.setItem("lastPreviewUrl", window.location.href);
+</script>
 
 </body>
 </html>
