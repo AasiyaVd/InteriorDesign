@@ -560,6 +560,8 @@ let designState = JSON.parse(sessionStorage.getItem("design_draft")) || {
   title: "Untitled Design",
   furniture: []
 };
+// 🔥 STOP REPEATING FURNITURE
+designState.furniture = [];
 
 console.log("LOADED DESIGN STATE =", designState);
 
@@ -836,6 +838,10 @@ selectedWrapper.style.top  = `${e.clientY - rect.top - offsetY}px`;
 function stopDrag(){
   document.removeEventListener("mousemove", dragItem);
   document.removeEventListener("mouseup", stopDrag);
+
+  if (selectedWrapper) {
+    updateItemState(selectedWrapper);
+  }
 }
 
 //SELECT ITEM(WRAPPER)
@@ -905,7 +911,10 @@ function resizeItem(e){
 function stopResize(){
   document.removeEventListener("mousemove", resizeItem);
   document.removeEventListener("mouseup", stopResize);
-  
+
+  if (selectedWrapper) {
+    updateItemState(selectedWrapper);
+  }
 }
 
 //START & STOP ROTATE
@@ -972,6 +981,10 @@ function stopRotate(){
   // 🔒 Snap back to valid angle
   selectedItem.style.transform = `rotate(${nearestAngle}deg)`;
   selectedItem.dataset.rotate = nearestAngle;
+
+  if (selectedWrapper) {
+    updateItemState(selectedWrapper);
+  }
 }
 
 canvas.addEventListener("mousedown", e => {
@@ -1120,6 +1133,20 @@ function persistDesignState() {
   );
 }
 
+function updateFurnitureInState(el) {
+  const id = el.dataset.id;
+
+  const item = designState.furniture.find(f => f.id === id);
+  if (!item) return;
+
+  item.left = el.style.left;
+  item.top = el.style.top;
+  item.transform = el.style.transform;
+  item.zIndex = el.style.zIndex;
+
+  persistDesignState();
+}
+
 const app = document.querySelector(".app");
 
 //OPEN & CLOSE PANEL GRID
@@ -1208,10 +1235,6 @@ function stopDragRug(){
   activeRug = null;
 }
 
-
-
-
-
 async function goToPreview() {
   if (!roomReady) {
     showCanvasError("Please select a room template first");
@@ -1227,7 +1250,7 @@ async function goToPreview() {
   designItems.forEach(el => el.style.visibility = "hidden");
 
   const beforeCanvas = await html2canvas(canvasEl, {
-    backgroundColor: null,
+    backgroundColor: null, 
     useCORS: true,
     scale: ratio
   });
@@ -1251,10 +1274,6 @@ async function goToPreview() {
 
   window.location.href = "preview.html";
 }
-
-
-
-
 
   //TOAST MESSAGE
   function showToast(msg) {
