@@ -4,7 +4,7 @@ const path = require("path");
 const prisma = require("../prisma");
 const authenticate = require("../middleware/auth.middleware");
 
-const router = express.Router();
+const router = express.Router(); // ✅ REQUIRED
 
 /**
  * POST /api/designs/save
@@ -22,7 +22,7 @@ router.post("/save", authenticate, async (req, res) => {
     const buffer = Buffer.from(base64Data, "base64");
 
     // 🔹 Ensure folder exists
-const uploadDir = path.join(process.cwd(), "uploads", "designs");
+    const uploadDir = path.join(process.cwd(), "uploads", "designs");
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -33,18 +33,19 @@ const uploadDir = path.join(process.cwd(), "uploads", "designs");
 
     fs.writeFileSync(filePath, buffer);
 
-    // 🔹 Save DB record
-  const design = await prisma.design.create({
-  data: {
-    title: title || "My Interior Design",
-    imagePath: `/uploads/designs/${fileName}`, // ✅ leading slash
-  },
-});
-
+    // 🔹 Save to DB
+    const design = await prisma.design.create({
+      data: {
+        title: title || "My Interior Design",
+        imagePath: `/uploads/designs/${fileName}`,
+        designState: {},          // required by schema
+        userId: req.user.id       // from auth middleware
+      }
+    });
 
     res.status(201).json({
       message: "Design saved successfully",
-      design,
+      design
     });
 
   } catch (err) {
@@ -57,11 +58,17 @@ const uploadDir = path.join(process.cwd(), "uploads", "designs");
  * GET /api/designs
  */
 router.get("/", authenticate, async (req, res) => {
-  const designs = await prisma.design.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  try {
+    const designs = await prisma.design.findMany({
+      where: { userId: req.user.id },
+      orderBy: { createdAt: "desc" }
+    });
 
-  res.json(designs);
+    res.json(designs);
+  } catch (err) {
+    console.error("Fetch designs error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
-module.exports = router;
+module.exports = router; // ✅ REQUIRED

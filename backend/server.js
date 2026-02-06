@@ -10,7 +10,8 @@ const app = express();
 // =====================
 app.use(cors());
 app.use(express.json({ limit: "20mb" }));
-app.use(express.urlencoded({ limit: "20mb", extended: true }));
+app.use(express.urlencoded({ extended: true, limit: "20mb" }));
+
 
 // =====================
 // SERVE FRONTEND
