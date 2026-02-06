@@ -16,8 +16,9 @@ model User {
   password  String
   createdAt DateTime @default(now())
 
-  needs UserNeeds?
-  leads DesignLead[] // 👈 THIS LINE FIXES THE ERROR
+  needs     UserNeeds?
+  leads     DesignLead[]
+  aiDesigns AIDesign[] // ✅ FIXED LINE
 }
 
 model NewsletterSubscriber {
@@ -91,4 +92,18 @@ model DesignLead {
 
   status    String   @default("shared")
   createdAt DateTime @default(now())
+}
+
+model AIDesign {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  style       String
+  roomType    String
+  colorMood   String?
+  lighting    String?
+  beforeImage String
+  afterImage  String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
 }
