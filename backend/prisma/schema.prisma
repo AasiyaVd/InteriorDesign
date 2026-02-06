@@ -66,9 +66,9 @@ model DesignRequest {
   design Design @relation(fields: [designId], references: [id])
 }
 
-// ==========================
+// =========================
 // AI GENERATED DESIGNS
-// ==========================
+// =========================
 model AIDesign {
   id          Int      @id @default(autoincrement())
   userId      Int
