@@ -1,3 +1,6 @@
+// ==========================
+// DATASOURCE & CLIENT
+// ==========================
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
@@ -7,16 +10,91 @@ generator client {
   provider = "prisma-client-js"
 }
 
-Press y when asked
+// ==========================
+// USER (AUTH + OWNERSHIP)
+// ==========================
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  contact   String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
 
-Let it finish completely
+  designs   Design[]
+  requests  DesignRequest[]
+  aiDesigns AIDesign[]
+}
 
+// ==========================
+// CORE DESIGN (EDITOR / DASHBOARD)
+// ==========================
+model Design {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  title       String
+  imagePath   String
+  designState Json
+  createdAt   DateTime @default(now())
+
+  user     User            @relation(fields: [userId], references: [id])
+  requests DesignRequest[] // ✅ FIX (opposite relation)
+}
+
+// ==========================
+// MAKE-IT-REAL REQUEST
+// ==========================
+model DesignRequest {
+  id Int @id @default(autoincrement())
+
+  userId   Int
+  designId Int
+
+  city        String
+  budgetRange String
+  spaceType   String
+  timeline    String
+
+  designerName String
+  designerLink String?
+
+  status    String   @default("shared")
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  design Design @relation(fields: [designId], references: [id])
+}
+
+// ==========================
+// AI GENERATED DESIGNS
+// ==========================
+model AIDesign {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  style       String
+  roomType    String
+  colorMood   String?
+  lighting    String?
+  beforeImage String
+  afterImage  String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// ==========================
+// NEWSLETTER (OPTIONAL)
+// ==========================
 model NewsletterSubscriber {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   createdAt DateTime @default(now())
 }
 
+// ==========================
+// CONTACT FORM (OPTIONAL)
+// ==========================
 model ContactMessage {
   id         Int      @id @default(autoincrement())
   category   String
@@ -30,70 +108,4 @@ model ContactMessage {
   country    String
   message    String?
   createdAt  DateTime @default(now())
-}
-
-model Design {
-  id        Int      @id @default(autoincrement())
-  title     String
-  imagePath String
-  createdAt DateTime @default(now())
-}
-
-model UserNeeds {
-  id Int @id @default(autoincrement())
-
-  userId Int  @unique
-  user   User @relation(fields: [userId], references: [id])
-
-  city        String
-  budgetRange String
-  spaceType   String
-  timeline    String
-
-  createdAt DateTime @default(now())
-}
-
-model Designer {
-  id     Int    @id @default(autoincrement())
-  name   String
-  email  String
-  styles String
-  city   String
-
-  leads DesignLead[]
-}
-
-model DesignLead {
-  id Int @id @default(autoincrement())
-
-  userId     Int
-  designerId Int
-
-  user     User     @relation(fields: [userId], references: [id])
-  designer Designer @relation(fields: [designerId], references: [id])
-
-  city        String
-  budgetRange String
-  spaceType   String
-  timeline    String
-
-  designImageUrl String
-  style          String?
-
-  status    String   @default("shared")
-  createdAt DateTime @default(now())
-}
-
-model AIDesign {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  style       String
-  roomType    String
-  colorMood   String?
-  lighting    String?
-  beforeImage String
-  afterImage  String?
-  createdAt   DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id])
 }
