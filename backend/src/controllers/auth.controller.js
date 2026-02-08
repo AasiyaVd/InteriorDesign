@@ -1,7 +1,8 @@
-const prisma = require("../prisma"); // make sure path is correct
+const prisma = require("../prisma");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+/* ================= REGISTER ================= */
 exports.register = async (req, res) => {
   try {
     const { firstName, lastName, email, contact, password } = req.body;
@@ -30,8 +31,9 @@ exports.register = async (req, res) => {
       }
     });
 
+    // ✅ FIX: use id
     const token = jwt.sign(
-      { userId: user.id },
+      { id: user.id },            // ✅ IMPORTANT
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
@@ -47,6 +49,7 @@ exports.register = async (req, res) => {
   }
 };
 
+/* ================= LOGIN ================= */
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -69,8 +72,9 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    // ✅ FIX: use id
     const token = jwt.sign(
-      { userId: user.id },
+      { id: user.id },            // ✅ IMPORTANT
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );

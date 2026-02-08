@@ -710,6 +710,10 @@ async function generateDesign() {
 
     sessionStorage.setItem("preview_before", data.originalImage);
     sessionStorage.setItem("preview_after", data.generatedImage);
+sessionStorage.setItem("ai_style", style);
+sessionStorage.setItem("ai_roomType", room);
+sessionStorage.setItem("ai_colorMood", color);
+sessionStorage.setItem("ai_lighting", lighting);
 
     window.location.href = "preview1.html";
 

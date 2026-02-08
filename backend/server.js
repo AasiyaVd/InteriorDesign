@@ -30,8 +30,13 @@ app.use("/api/contact", require("./src/routes/contact.routes"));
 app.use("/api/newsletter", require("./src/routes/newsletter.routes"));
 app.use("/api/designs", require("./src/routes/design.routes"));
 app.use("/api/ai" , require("./src/routes/ai.route"));
+const authenticateToken = require("./src/middleware/auth.middleware");
 
-
+app.use(
+  "/api/ai-design",
+  authenticateToken,
+  require("./src/routes/aiDesign.routes")
+);
 // 🔥 SERVE AI IMAGE UPLOADS AND GENERATED IMAGES
 app.use("/uploads_ai", express.static(path.resolve(__dirname, "uploads_ai")));
 app.use("/generated_ai", express.static(path.resolve(__dirname, "generated_ai")));

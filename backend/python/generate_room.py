@@ -102,7 +102,7 @@ with open(input_path, "rb") as img:
     data={
         "prompt": prompt,
         "negative_prompt": negative_prompt,
-        "control_strength": 0.65,
+        "control_strength": 0.7,
         "seed": 42,
         "output_format": "png"
     }
