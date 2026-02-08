@@ -412,6 +412,17 @@ upload-step-content h3 {
   display: none;
   z-index: 1;
 }
+
+
+/* ===== LOADING STATE ===== */
+.generate-btn.loading {
+  pointer-events: none;
+  opacity: 0.85;
+  position: relative;
+}
+
+
+
   </style>
 </head>
 
@@ -568,9 +579,10 @@ upload-step-content h3 {
 
 
     <!-- BUTTON -->
-    <button class="generate-btn" onclick="generateDesign()">
-      Generate Design
-    </button>
+    <button class="generate-btn" id="generateBtn" onclick="generateDesign()">
+  Generate Design
+</button>
+
 
   </div>
 </div>
@@ -616,49 +628,68 @@ fileInput.addEventListener("change", async function (e) {
 });
 
 /* ================= GENERATE BUTTON (TEMP OUTPUT FLOW) ================= */
-function generateDesign() {
+async function generateDesign() {
+  const btn = document.getElementById("generateBtn");
 
-  // Get dropdown values
-  const style = document.getElementById("style").value;
-  const room = document.getElementById("room").value;
-  const color = document.getElementById("color").value;
-  const lighting = document.getElementById("lighting").value;
+  // Activate loading state
+  btn.classList.add("loading");
+  btn.innerText = "Generating…";
 
-  // Get image source
-  const imageSource = localStorage.getItem("imageSource");
+  try {
+    const style = document.getElementById("style").value;
+    const room = document.getElementById("room").value;
+    const color = document.getElementById("color").value;
+    const lighting = document.getElementById("lighting").value;
 
-  let finalImage = "";
+    const fileInput = document.getElementById("fileInput");
+    const file = fileInput.files[0];
 
-  if (imageSource === "upload") {
-    // Uploaded image preview
-    finalImage = document.getElementById("previewImage").src;
-  } else {
-    // Preset image
-    finalImage = localStorage.getItem("presetImage");
+    if (!file) {
+      alert("Please upload a room image.");
+      resetButton();
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("style", style);
+    formData.append("room", room);
+    formData.append("color", color);
+    formData.append("lighting", lighting);
+
+    const res = await fetch("http://localhost:5000/api/ai/generate", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "AI generation failed");
+      resetButton();
+      return;
+    }
+
+    sessionStorage.setItem("preview_before", data.originalImage);
+    sessionStorage.setItem("preview_after", data.generatedImage);
+
+    window.location.href = "preview1.html";
+
+  } catch (err) {
+    console.error(err);
+    alert("Server error");
+    resetButton();
   }
 
-  // Safety check
-  if (!finalImage) {
-    alert("Please select or upload an image before generating.");
-    return;
+  function resetButton() {
+    btn.classList.remove("loading");
+    btn.innerText = "Generate Design";
   }
-
-  // Store everything for preview page
-  localStorage.setItem("output_style", style);
-  localStorage.setItem("output_room", room);
-  localStorage.setItem("output_color", color);
-  localStorage.setItem("output_lighting", lighting);
-// BEFORE image = original uploaded / selected image
-sessionStorage.setItem("preview_before", finalImage);
-
-// TEMP: until AI generates new image,
-// AFTER image = same image (placeholder)
-sessionStorage.setItem("preview_after", finalImage);
-
-  // Redirect to output page
-  window.location.href = "preview1.html";
 }
+
+
 </script>
+
 
 
 <script>

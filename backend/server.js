@@ -33,8 +33,9 @@ app.use("/api/ai" , require("./src/routes/ai.route"));
 
 
 // 🔥 SERVE AI IMAGE UPLOADS AND GENERATED IMAGES
-app.use("/uploads_ai", express.static(path.join(__dirname, "uploads_ai")));
-app.use("/generated_ai", express.static(path.join(__dirname, "generated_ai")));
+app.use("/uploads_ai", express.static(path.resolve(__dirname, "uploads_ai")));
+app.use("/generated_ai", express.static(path.resolve(__dirname, "generated_ai")));
+
 
 // =====================
 // HEALTH CHECK

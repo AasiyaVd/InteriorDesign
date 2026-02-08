@@ -4,3 +4,5 @@ node_modules
 *.db
 
 /generated/prisma
+
+STABILITY_API_KEY=sk-TqrNFZdRIZggnDterHN1aDMKfcvnbk4PEcbbKY0nOnGCkSvG

@@ -394,12 +394,12 @@ designBtn.onclick = () => {
   afterImg.style.clipPath = "none";
 };
 
-// 🔥 LOAD BEFORE / AFTER IMAGES FROM GENERATOR PAGE
-// 🔥 BEFORE = uploaded image from Generator page
 const beforeSrc = sessionStorage.getItem("preview_before");
+const afterSrc  = sessionStorage.getItem("preview_after");
 
-// 🔥 AFTER = static redesigned sample image
-const afterSrc = "aa5.jpg"; // 👈 put your static image path here
+console.log("BEFORE:", beforeSrc);
+console.log("AFTER:", afterSrc);
+
 
 if (!beforeSrc) {
   alert("Preview data missing. Please generate again.");
