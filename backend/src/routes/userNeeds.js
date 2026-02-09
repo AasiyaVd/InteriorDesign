@@ -1,5 +1,5 @@
 const express = require("express");
-const prisma = require("../prisma");   // CommonJS import
+const prisma = require("../prisma");
 const authenticate = require("../middleware/auth.middleware");
 
 const router = express.Router();
@@ -15,32 +15,37 @@ router.post("/", authenticate, async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // one UserNeeds row per user (update if exists)
-    const needs = await prisma.userNeeds.upsert({
+    // ✅ Find latest design of user
+    const latestDesign = await prisma.design.findFirst({
       where: { userId: req.user.id },
-      update: {
-        city,
-        budgetRange,
-        spaceType,
-        timeline
-      },
-      create: {
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (!latestDesign) {
+      return res.status(400).json({ message: "No design found for this user" });
+    }
+
+    // ✅ Save into DesignRequest table (NOT userNeeds)
+    const request = await prisma.designRequest.create({
+      data: {
         userId: req.user.id,
+        designId: latestDesign.id,
         city,
         budgetRange,
         spaceType,
-        timeline
-      }
+        timeline,
+        designerName: "Not Assigned",
+      },
     });
 
     res.status(201).json({
-      message: "User needs saved successfully",
-      needs
+      message: "Design request saved successfully ✅",
+      request,
     });
 
   } catch (error) {
-    console.error("UserNeeds error:", error);
-    res.status(500).json({ message: "Server error" });
+    console.error("DesignRequest error:", error);
+    res.status(500).json({ message: "Server error ❌" });
   }
 });
 
