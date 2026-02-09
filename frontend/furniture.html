@@ -561,7 +561,6 @@ let designState = JSON.parse(sessionStorage.getItem("design_draft")) || {
   furniture: []
 };
 // 🔥 STOP REPEATING FURNITURE
-designState.furniture = [];
 
 console.log("LOADED DESIGN STATE =", designState);
 
@@ -798,6 +797,7 @@ persistDesignState();
 function createFurnitureFromState(item) {
   const wrapper = document.createElement("div");
 wrapper.className = "canvas-wrapper design-item";
+  wrapper.style.position = "absolute"; // 🔥 REQUIRED
   wrapper.style.left = item.left;
   wrapper.style.top = item.top;
 
@@ -810,7 +810,8 @@ wrapper.className = "canvas-wrapper design-item";
   img.style.cursor = "move";
 
   wrapper.appendChild(img);
-  canvas.appendChild(wrapper);
+  document.getElementById("furniture-layer").appendChild(wrapper);
+
 
   img.addEventListener("mousedown", e => {
     e.stopPropagation();
@@ -840,7 +841,7 @@ function stopDrag(){
   document.removeEventListener("mouseup", stopDrag);
 
   if (selectedWrapper) {
-    updateItemState(selectedWrapper);
+    updateFurnitureInState(selectedWrapper);
   }
 }
 
@@ -913,7 +914,7 @@ function stopResize(){
   document.removeEventListener("mouseup", stopResize);
 
   if (selectedWrapper) {
-    updateItemState(selectedWrapper);
+    updateFurnitureInState(selectedWrapper);
   }
 }
 
@@ -983,7 +984,7 @@ function stopRotate(){
   selectedItem.dataset.rotate = nearestAngle;
 
   if (selectedWrapper) {
-    updateItemState(selectedWrapper);
+    updateFurnitureInState(selectedWrapper);
   }
 }
 

@@ -887,12 +887,73 @@ previewBtn.onclick = () => {
   window.location.href = `preview.html?designId=${designId}`;
 };
 
+let DESIGN_CACHE = {};
+
+async function loadMyDesigns() {
+  try {
+    const token = sessionStorage.getItem("token");
+
+    const res = await fetch("http://localhost:5000/api/designs", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    const designs = await res.json();
+    const grid = document.getElementById("designsGrid");
+    grid.innerHTML = "";
+
+    designs.forEach(design => {
+      if (!design.imagePath) return;
+
+      DESIGN_CACHE[design.id] = design;
+
+      const card = document.createElement("div");
+      card.className = "design-card";
+
+      card.innerHTML = `
+        <img src="${design.imagePath}" />
+        <div class="design-info">
+          <h5>${design.title}</h5>
+          <span>${new Date(design.createdAt).toDateString()}</span>
+        </div>
+      `;
+
+      card.querySelector("img").onclick = () => {
+        lightboxImg.src = design.imagePath;
+        lightbox.classList.add("active");
+        document.body.classList.add("no-scroll");
+        lightbox.dataset.designId = design.id;
+      };
+
+      grid.appendChild(card);
+    });
+
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadMyDesigns);
+
 editBtn.onclick = () => {
   const designId = lightbox.dataset.designId;
   if (!designId) return;
 
+  const design = DESIGN_CACHE[designId];
+  if (!design) return;
+
+  sessionStorage.setItem(
+    "furnitureLayout",
+    JSON.stringify(design.furnitureLayout || [])
+  );
+
+  sessionStorage.setItem("activeDesignId", designId);
+
   window.location.href = `furniture.html?designId=${designId}`;
 };
+
+
 </script>
 
 
