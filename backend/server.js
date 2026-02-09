@@ -30,6 +30,8 @@ app.use("/api/contact", require("./src/routes/contact.routes"));
 app.use("/api/newsletter", require("./src/routes/newsletter.routes"));
 app.use("/api/designs", require("./src/routes/design.routes"));
 app.use("/api/ai" , require("./src/routes/ai.route"));
+const dashboardRoutes = require("./src/routes/dashboard.routes");
+app.use("/api/dashboard", dashboardRoutes);
 const authenticateToken = require("./src/middleware/auth.middleware");
 
 app.use(

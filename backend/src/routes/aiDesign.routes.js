@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
+const authenticate = require("../middleware/auth.middleware");
 
 const prisma = new PrismaClient();
 
 /* ================= SAVE AI DESIGN ================= */
-router.post("/save", async (req, res) => {
+router.post("/save", authenticate, async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -34,13 +35,25 @@ router.post("/save", async (req, res) => {
       }
     });
 
-    res.json({
-      message: "Design saved successfully",
-      design: savedDesign
-    });
+    res.json({ message: "Design saved successfully", design: savedDesign });
 
   } catch (err) {
     console.error("SAVE AI DESIGN ERROR:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* ================= GET USER AI DESIGNS ================= */
+router.get("/", authenticate, async (req, res) => {
+  try {
+    const designs = await prisma.aIDesign.findMany({
+      where: { userId: req.user.id },
+      orderBy: { createdAt: "desc" }
+    });
+
+    res.json(designs);
+  } catch (err) {
+    console.error("GET AI DESIGNS ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 });

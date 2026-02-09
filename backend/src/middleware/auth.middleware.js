@@ -18,8 +18,8 @@ function authenticateToken(req, res, next) {
 
     // attach user info to request
     req.user = {
-      id: decoded.id,
-      email: decoded.email
+      id: Number(decoded.id),   // 🔥 THIS FIXES STATS
+      email: decoded.email || null
     };
 
     next();

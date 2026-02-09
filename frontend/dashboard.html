@@ -196,12 +196,40 @@ body{
 
 
 /* RESPONSIVE */
-@media(max-width:900px){
-  .dashboard{grid-template-columns:1fr}
-  .sidebar{display:none}
-  .stats{grid-template-columns:1fr}
-  .actions{grid-template-columns:1fr}
+@media (max-width: 900px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
+
+@media (max-width: 500px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-box {
+    text-align: center;
+  }
+
+  .stat-box p {
+    font-size: 20px;
+  }
+}
+@media (max-width: 600px) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .action-box {
+    text-align: center;
+  }
+
+  .action-box p {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+}
+
      /* ================= YOUR ORIGINAL NAVBAR ================= */
     .navbar {
       position: fixed;
@@ -584,6 +612,23 @@ body.no-scroll {
 }
 
 
+
+@media (max-width: 600px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 24px;
+  }
+
+  .dashboard-header span {
+    font-size: 12px;
+  }
+}
+
   </style>
 </head>
 
@@ -596,64 +641,6 @@ protectPage();
 document.addEventListener("DOMContentLoaded", setupNavbarAuth);
 </script>
 
-<script>
-async function loadMyDesigns() {
-  try {
-    const token = sessionStorage.getItem("token");
-
-    const res = await fetch("http://localhost:5000/api/designs", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (!res.ok) {
-      throw new Error("Unauthorized or failed request");
-    }
-
-    const designs = await res.json();
-    const grid = document.getElementById("designsGrid");
-    grid.innerHTML = "";
-
-    if (!designs.length) {
-      grid.innerHTML = "<p>No designs yet.</p>";
-      return;
-    }
-
-    designs.forEach(design => {
-      if (!design.imagePath) return;
-
-      const card = document.createElement("div");
-      card.className = "design-card";
-
-      card.innerHTML = `
-<img src="${design.imagePath}" alt="Design"/>
-        <div class="design-info">
-          <h5>${design.title}</h5>
-          <span>${new Date(design.createdAt).toDateString()}</span>
-        </div>
-      `;
-
-card.querySelector("img").onclick = () => {
-  lightboxImg.src = design.imagePath;
-  lightbox.classList.add("active");
-  document.body.classList.add("no-scroll"); // 🔒 lock scroll
-
-  lightbox.dataset.designId = design.id;
-};
-
-
-
-      grid.appendChild(card);
-    });
-
-  } catch (err) {
-    console.error("Failed to load designs", err);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", loadMyDesigns);
-</script>
 
 
 
@@ -746,26 +733,30 @@ document.addEventListener("DOMContentLoaded", loadMyDesigns);
         </div>
 
         <!-- STATS -->
-        <div class="stats">
-          <div class="stat-box">
-            <h4>Designs Created</h4>
-            <p>3</p>
-          </div>
-          <div class="stat-box">
-            <h4>Rooms Designed</h4>
-            <p>5</p>
-          </div>
-          <div class="stat-box">
-            <h4>AI Credits Left</h4>
-            <p>12</p>
-          </div>
-        </div>
+<div class="stats">
+  <div class="stat-box">
+    <h4>Designs Created</h4>
+    <p id="designsCount">0</p>
+  </div>
+
+  <div class="stat-box">
+    <h4>Rooms Designed</h4>
+    <p id="roomsCount">0</p>
+  </div>
+
+  <div class="stat-box">
+    <h4>AI Credits Left</h4>
+    <p>12</p> <!-- static -->
+  </div>
+</div>
 
         <!-- DESIGNS -->
-        <h2 class="section-title">My Designs</h2>
-<div class="designs-grid" id="designsGrid">
+<h2 class="section-title">My Designs</h2>
+<div class="designs-grid" id="designsGrid"></div>
 
-        </div>
+<h2 class="section-title">AI Designs</h2>
+<div class="designs-grid" id="aiDesignsGrid"></div>
+
 
         <!-- ACTIONS -->
         <div class="actions">
@@ -870,8 +861,15 @@ const closeBtn=document.querySelector('.close-btn');
 closeBtn.onclick = e => {
   e.stopPropagation();
   lightbox.classList.remove("active");
-  document.body.classList.remove("no-scroll"); // 🔓 unlock
+  document.body.classList.remove("no-scroll");
+
+  // reset flags
+  delete lightbox.dataset.designId;
+  delete lightbox.dataset.aiPreview;
+  delete lightbox.dataset.before;
+  delete lightbox.dataset.after;
 };
+
 
 lightbox.onclick=()=>lightbox.classList.remove('active');
 document.body.classList.remove("no-scroll"); 
@@ -881,17 +879,27 @@ const previewBtn = document.getElementById("previewBtn");
 const editBtn = document.getElementById("editBtn");
 
 previewBtn.onclick = () => {
+  // AI design preview
+  if (lightbox.dataset.aiPreview === "true") {
+    sessionStorage.setItem("preview_before", lightbox.dataset.before);
+    sessionStorage.setItem("preview_after", lightbox.dataset.after);
+    window.location.href = "preview1.html";
+    return;
+  }
+
+  // Normal design preview
   const designId = lightbox.dataset.designId;
   if (!designId) return;
-
   window.location.href = `preview.html?designId=${designId}`;
 };
+
 
 let DESIGN_CACHE = {};
 
 async function loadMyDesigns() {
   try {
     const token = sessionStorage.getItem("token");
+    if (!token) return;
 
     const res = await fetch("http://localhost:5000/api/designs", {
       headers: {
@@ -899,44 +907,68 @@ async function loadMyDesigns() {
       }
     });
 
+    if (!res.ok) {
+      throw new Error("Failed to fetch designs");
+    }
+
     const designs = await res.json();
     const grid = document.getElementById("designsGrid");
     grid.innerHTML = "";
 
+    if (!designs.length) {
+      grid.innerHTML = "<p>No designs yet.</p>";
+      return;
+    }
+
     designs.forEach(design => {
       if (!design.imagePath) return;
 
+      // Cache design for Edit flow
       DESIGN_CACHE[design.id] = design;
 
       const card = document.createElement("div");
       card.className = "design-card";
 
       card.innerHTML = `
-        <img src="${design.imagePath}" />
+        <img src="${design.imagePath}" alt="Design Image" />
         <div class="design-info">
           <h5>${design.title}</h5>
           <span>${new Date(design.createdAt).toDateString()}</span>
         </div>
       `;
 
-      card.querySelector("img").onclick = () => {
-        lightboxImg.src = design.imagePath;
-        lightbox.classList.add("active");
-        document.body.classList.add("no-scroll");
-        lightbox.dataset.designId = design.id;
-      };
+card.querySelector("img").onclick = () => {
+  lightboxImg.src = design.imagePath;
+  lightbox.classList.add("active");
+  document.body.classList.add("no-scroll");
+
+  lightbox.dataset.designId = design.id;
+
+  delete lightbox.dataset.aiPreview;
+  delete lightbox.dataset.before;
+  delete lightbox.dataset.after;
+};
+
+
 
       grid.appendChild(card);
     });
 
-  } catch (e) {
-    console.error(e);
+  } catch (err) {
+    console.error("❌ Error loading My Designs:", err);
   }
 }
 
 document.addEventListener("DOMContentLoaded", loadMyDesigns);
 
+
 editBtn.onclick = () => {
+  // 🚫 AI designs cannot be edited
+  if (lightbox.dataset.aiPreview === "true") {
+    alert("AI designs cannot be edited. Please convert it to a design first.");
+    return;
+  }
+
   const designId = lightbox.dataset.designId;
   if (!designId) return;
 
@@ -949,9 +981,9 @@ editBtn.onclick = () => {
   );
 
   sessionStorage.setItem("activeDesignId", designId);
-
   window.location.href = `furniture.html?designId=${designId}`;
 };
+
 
 
 </script>
@@ -991,5 +1023,88 @@ document.querySelector(".newsletter-form")
     }
   });
 </script>
+
+
+<script>
+async function loadAIDesigns() {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) return;
+
+    const res = await fetch("http://localhost:5000/api/ai-design", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch AI designs");
+
+    const designs = await res.json();
+    const grid = document.getElementById("aiDesignsGrid");
+    grid.innerHTML = "";
+
+    if (!designs.length) {
+      grid.innerHTML = "<p>No AI designs yet.</p>";
+      return;
+    }
+
+    designs.forEach(d => {
+      if (!d.afterImage) return;
+
+      const card = document.createElement("div");
+      card.className = "design-card";
+
+      card.innerHTML = `
+        <img src="${d.afterImage}" />
+        <div class="design-info">
+          <h5>${d.roomType} · ${d.style}</h5>
+          <span>${new Date(d.createdAt).toDateString()}</span>
+        </div>
+      `;
+
+      grid.appendChild(card);
+      card.querySelector("img").onclick = () => {
+  sessionStorage.setItem("preview_before", d.beforeImage);
+  sessionStorage.setItem("preview_after", d.afterImage);
+  window.location.href = "preview1.html";
+};
+
+    });
+
+  } catch (err) {
+    console.error("AI Designs load error:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadAIDesigns);
+
+
+async function loadDashboardStats() {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) return;
+
+    const res = await fetch("http://localhost:5000/api/dashboard/stats", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) throw new Error("Failed to load stats");
+
+    const data = await res.json();
+
+    document.getElementById("designsCount").innerText = data.designsCreated;
+    document.getElementById("roomsCount").innerText = data.roomsDesigned;
+
+  } catch (err) {
+    console.error("Dashboard stats load error:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadDashboardStats);
+
+</script>
+
 </body>
 </html>

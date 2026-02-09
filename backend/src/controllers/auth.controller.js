@@ -31,12 +31,14 @@ exports.register = async (req, res) => {
       }
     });
 
-    // ✅ FIX: use id
-    const token = jwt.sign(
-      { id: user.id },            // ✅ IMPORTANT
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+const token = jwt.sign(
+  {
+    id: user.id,
+    email: user.email   // ✅ add this
+  },
+  process.env.JWT_SECRET,
+  { expiresIn: "1d" }
+);
 
     return res.status(201).json({
       message: "User registered successfully",
@@ -72,12 +74,15 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // ✅ FIX: use id
-    const token = jwt.sign(
-      { id: user.id },            // ✅ IMPORTANT
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+const token = jwt.sign(
+  {
+    id: user.id,
+    email: user.email   // ✅ add this
+  },
+  process.env.JWT_SECRET,
+  { expiresIn: "1d" }
+);
+
 
     return res.json({ token });
 
