@@ -11,7 +11,7 @@ const router = express.Router(); // ✅ REQUIRED
  */
 router.post("/save", authenticate, async (req, res) => {
   try {
-    const { image, title } = req.body;
+const { image, title, beforeImage, designState } = req.body;
 
     if (!image) {
       return res.status(400).json({ message: "Image required" });
@@ -34,14 +34,16 @@ router.post("/save", authenticate, async (req, res) => {
     fs.writeFileSync(filePath, buffer);
 
     // 🔹 Save to DB
-    const design = await prisma.design.create({
-      data: {
-        title: title || "My Interior Design",
-        imagePath: `/uploads/designs/${fileName}`,
-        designState: {},          // required by schema
-        userId: req.user.id       // from auth middleware
-      }
-    });
+const design = await prisma.design.create({
+  data: {
+    title: title || "My Interior Design",
+    imagePath: `/uploads/designs/${fileName}`, // AFTER
+    beforeImage: beforeImage,                 // BEFORE
+    designState: designState || {},           // FULL LAYOUT
+    userId: req.user.id
+  }
+});
+
 
     res.status(201).json({
       message: "Design saved successfully",

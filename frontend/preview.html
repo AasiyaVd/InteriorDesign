@@ -565,7 +565,10 @@ function downloadDesign(){
 
 <script>
 async function saveDesign() {
-  if (!afterSrc) {
+  const beforeImage = beforeImg.src;   // 👈 TAKE DIRECTLY FROM IMG
+  const afterImage  = afterImg.src;    // 👈 TAKE DIRECTLY FROM IMG
+
+  if (!afterImage) {
     alert("No design to save.");
     return;
   }
@@ -586,7 +589,9 @@ async function saveDesign() {
       },
       body: JSON.stringify({
         title: "My Interior Design",
-        image: afterSrc   // 👈 base64 image
+        image: afterImage,
+        beforeImage: beforeImage,  // 🔥 GUARANTEED VALUE
+        designState: JSON.parse(sessionStorage.getItem("design_draft")) || {}
       })
     });
 
@@ -603,6 +608,7 @@ async function saveDesign() {
     alert("Failed to save design");
   }
 }
+
 </script>
 <script>
   // Save the current preview URL so dashboard can reopen it

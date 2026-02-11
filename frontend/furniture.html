@@ -1243,28 +1243,15 @@ async function goToPreview() {
   }
 
   const canvasEl = document.getElementById("canvas");
-  const designItems = document.querySelectorAll(".design-item");
-
-  const ratio = window.devicePixelRatio || 1;
 
   /* ================= BEFORE ================= */
-  designItems.forEach(el => el.style.visibility = "hidden");
-
-  const beforeCanvas = await html2canvas(canvasEl, {
-    backgroundColor: null, 
-    useCORS: true,
-    scale: ratio
-  });
-
-  const beforeImage = beforeCanvas.toDataURL("image/png", 1.0);
+  const beforeImage = designState.roomImage;
 
   /* ================= AFTER ================= */
-  designItems.forEach(el => el.style.visibility = "visible");
-
   const afterCanvas = await html2canvas(canvasEl, {
     backgroundColor: null,
     useCORS: true,
-    scale: ratio
+    scale: window.devicePixelRatio || 1
   });
 
   const afterImage = afterCanvas.toDataURL("image/png");

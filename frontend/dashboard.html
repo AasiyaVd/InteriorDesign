@@ -1,1110 +1,1119 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>My Account | La Obsidiané</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>My Account | La Obsidiané</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-   <!-- Standard favicon -->
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <!-- Standard favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
-<!-- Apple iOS -->
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <!-- Apple iOS -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-<!-- Android / Chrome -->
-<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+  <!-- Android / Chrome -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
 
-<!-- Microsoft -->
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="/mstile-150x150.png">
+  <!-- Microsoft -->
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/mstile-150x150.png">
 
-<!-- Theme color for mobile browsers -->
-<meta name="theme-color" content="#ffffff">
+  <!-- Theme color for mobile browsers -->
+  <meta name="theme-color" content="#ffffff">
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:'Poppins',sans-serif;
-  background:#f5f4f2;
-  color:#1a1a1a;
-}
-
-/* ===== FRAME ===== */
-.frame-wrapper{
-  margin-top:110px;
-  padding:20px;
-  display:flex;
-  justify-content:center;
-}
-.dashboard-frame{
-  background:#4b0007;
-  padding:20px;
-  width:100%;
-  max-width:1300px;
-  border-radius:20px;
-}
-
-/* ===== DASHBOARD ===== */
-.dashboard{
-  background:#fff;
-  border-radius:16px;
-  display:grid;
-  grid-template-columns:220px 1fr;
-  min-height:72vh;
-}
-
-/* ===== SIDEBAR ===== */
-.sidebar{
-  background:#5a0a12;
-  padding:24px;
-  color:#fff;
-}
-.sidebar h3{
-  font-family:'Cormorant Garamond',serif;
-  font-size:20px;
-  margin-bottom:24px;
-}
-.sidebar ul{list-style:none}
-.sidebar li{margin-bottom:14px}
-.sidebar a{
-  color:#fff;
-  text-decoration:none;
-  font-size:14px;
-  opacity:.85;
-}
-.sidebar a:hover{opacity:1}
-
-/* ===== MAIN ===== */
-.main{
-  padding:28px;
-}
-
-/* HEADER */
-.dashboard-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-.dashboard-header h1{
-  font-family:'Cormorant Garamond',serif;
-  font-size:30px;
-}
-.dashboard-header span{
-  font-size:13px;
-  color:#777;
-}
-
-/* STATS */
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-  margin-bottom:24px;
-}
-.stat-box{
-  background:#fafafa;
-  border-radius:14px;
-  padding:16px;
-  box-shadow:0 8px 22px rgba(0,0,0,.05);
-}
-.stat-box h4{
-  font-size:12px;
-  color:#777;
-}
-.stat-box p{
-  font-size:22px;
-  font-weight:500;
-}
-
-/* DESIGNS */
-.section-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:24px;
-  margin-bottom:14px;
-}
-.designs-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:18px;
-}
-.design-card{
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:0 10px 26px rgba(0,0,0,.08);
-  transition:.3s;
-}
-.design-card:hover{transform:translateY(-4px)}
-.design-card img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  cursor:zoom-in;
-}
-.design-info{
-  padding:12px;
-}
-.design-info h5{
-  font-size:14px;
-}
-.design-info span{
-  font-size:12px;
-  color:#777;
-}
-
-/* ACTIONS */
-.actions{
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:18px;
-  margin-top:26px;
-}
-.action-box{
-  background:#fafafa;
-  padding:18px;
-  border-radius:14px;
-}
-.action-box h4{
-  font-size:16px;
-  margin-bottom:8px;
-}
-.action-box p{
-  font-size:13px;
-  color:#666;
-}
-.action-btn{
-  display:inline-block;
-  margin-top:10px;
-  padding:10px 16px;
-  background:#4b0007;
-  color:#fff;
-  font-size:12px;
-  text-decoration:none;
-  border-radius:20px;
-}
-
-
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 500px) {
-  .stats {
-    grid-template-columns: 1fr;
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+    <style>
+      *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Poppins',sans-serif;
+    background:#f5f4f2;
+    color:#1a1a1a;
   }
 
-  .stat-box {
-    text-align: center;
+  /* ===== FRAME ===== */
+  .frame-wrapper{
+    margin-top:110px;
+    padding:20px;
+    display:flex;
+    justify-content:center;
+  }
+  .dashboard-frame{
+    background:#4b0007;
+    padding:20px;
+    width:100%;
+    max-width:1300px;
+    border-radius:20px;
   }
 
-  .stat-box p {
-    font-size: 20px;
-  }
-}
-@media (max-width: 600px) {
-  .actions {
-    grid-template-columns: 1fr;
-  }
-
-  .action-box {
-    text-align: center;
+  /* ===== DASHBOARD ===== */
+  .dashboard{
+    background:#fff;
+    border-radius:16px;
+    display:grid;
+    grid-template-columns:220px 1fr;
+    min-height:72vh;
   }
 
-  .action-box p {
-    font-size: 12px;
-    line-height: 1.6;
+  /* ===== SIDEBAR ===== */
+  .sidebar{
+    background:#5a0a12;
+    padding:24px;
+    color:#fff;
   }
-}
+  .sidebar h3{
+    font-family:'Cormorant Garamond',serif;
+    font-size:20px;
+    margin-bottom:24px;
+  }
+  .sidebar ul{list-style:none}
+  .sidebar li{margin-bottom:14px}
+  .sidebar a{
+    color:#fff;
+    text-decoration:none;
+    font-size:14px;
+    opacity:.85;
+  }
+  .sidebar a:hover{opacity:1}
 
-     /* ================= YOUR ORIGINAL NAVBAR ================= */
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 15px 60px;
-      background: none;
-      color: black;
-      z-index: 1000;
-      transition: background 0.4s ease, padding 0.3s ease;
+  /* ===== MAIN ===== */
+  .main{
+    padding:28px;
+  }
+
+  /* HEADER */
+  .dashboard-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+  }
+  .dashboard-header h1{
+    font-family:'Cormorant Garamond',serif;
+    font-size:30px;
+  }
+  .dashboard-header span{
+    font-size:13px;
+    color:#777;
+  }
+
+  /* STATS */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-bottom:24px;
+  }
+  .stat-box{
+    background:#fafafa;
+    border-radius:14px;
+    padding:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,.05);
+  }
+  .stat-box h4{
+    font-size:12px;
+    color:#777;
+  }
+  .stat-box p{
+    font-size:22px;
+    font-weight:500;
+  }
+
+  /* DESIGNS */
+  .section-title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:24px;
+    margin-bottom:14px;
+  }
+  .designs-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:18px;
+  }
+  .design-card{
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 10px 26px rgba(0,0,0,.08);
+    transition:.3s;
+  }
+  .design-card:hover{transform:translateY(-4px)}
+  .design-card img{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    cursor:zoom-in;
+  }
+  .design-info{
+    padding:12px;
+  }
+  .design-info h5{
+    font-size:14px;
+  }
+  .design-info span{
+    font-size:12px;
+    color:#777;
+  }
+
+  /* ACTIONS */
+  .actions{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:18px;
+    margin-top:26px;
+  }
+  .action-box{
+    background:#fafafa;
+    padding:18px;
+    border-radius:14px;
+  }
+  .action-box h4{
+    font-size:16px;
+    margin-bottom:8px;
+  }
+  .action-box p{
+    font-size:13px;
+    color:#666;
+  }
+  .action-btn{
+    display:inline-block;
+    margin-top:10px;
+    padding:10px 16px;
+    background:#4b0007;
+    color:#fff;
+    font-size:12px;
+    text-decoration:none;
+    border-radius:20px;
+  }
+
+
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 500px) {
+    .stats {
+      grid-template-columns: 1fr;
     }
 
-    .navbar.scrolled {
-  background: rgba(75, 0, 7); 
-  color: #d0b75b;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 12px 50px;
-  height: 60px;
-  backdrop-filter: blur(6px); 
-}
-
-    
-.navbar.scrolled .menu {
-  margin-left: 610px; 
-  transition: margin-left 0.3s ease;
-}
-    .logo-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-right: 60px;
+    .stat-box {
+      text-align: center;
     }
 
-    .logo-group .crown-img {
-      height: 110px !important;
-      transition: height 0.25s ease;
+    .stat-box p {
+      font-size: 20px;
+    }
+  }
+  @media (max-width: 600px) {
+    .actions {
+      grid-template-columns: 1fr;
     }
 
-    .logo-group .label-img {
-      height: 40px !important;
-      transition: height 0.25s ease;
+    .action-box {
+      text-align: center;
     }
 
-    .navbar.scrolled .crown-img {
-      height: 55px !important;
+    .action-box p {
+      font-size: 12px;
+      line-height: 1.6;
     }
+  }
 
-    .navbar.scrolled .label-img {
-      height: 30px !important;
-    }
-
-    .menu {
-      list-style: none;
-      display: flex;
-      gap: 25px;
-      margin-left: 510px;
-    }
-
-    .menu a {
-      color: inherit;
-      text-decoration: none;
-      font-size: 15px;
-      font-family: 'Cormorant Garamond', serif;
-    }
-
-    .menu a:hover { color: #c0a062; }
-.navbar.scrolled a:hover{
- opacity:0.7; ;
-}
-/* When navbar is scrolled (auto color change) */
-.navbar.scrolled .user-icon {
-  stroke: currentColor; /* GOLD tone from navbar */
-}
-      /* ================= FOOTER BACKGROUND BAND ================= */
-      .footer-bg {
-        background: #f5f4f2; /* footer bg (separate band) */
+      /* ================= YOUR ORIGINAL NAVBAR ================= */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
-      }
-
-      /* ================= FOOTER ================= */
-      footer {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 90px 80px 35px;
-        color: #1A1A1A;
-      }
-
-      .footer-container {
-        display: grid;
-        grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
-        gap: 80px;
-      }
-
-      .footer-col h4 {
-        font-size: 13px;
-        letter-spacing: 2px;
-        font-weight: 600;
-        margin-bottom: 18px;
-        
-      }
-
-      .footer-col ul {
-        list-style: none;
-      }
-
-      .footer-col ul li {
-        margin-bottom: 10px;
-      }
-
-      .footer-col ul li a {
-        text-decoration: none;
-        font-size: 12px;
-        color: #666;
-        letter-spacing: 0.5px;
-        transition: color 0.3s ease;
-      }
-
-      .footer-col ul li a:hover {
-        color: #000;
-      }
-
-      /* Brand text */
-      .footer-brand {
-        font-size: 12px;
-        color: #444;
-        line-height: 1.7;
-        letter-spacing: 0.6px;
-        max-width: 280px;
-      }
-
-      /* Newsletter */
-      .newsletter-text {
-        font-size: 12px;
-        color: #444;
-        letter-spacing: 0.6px;
-        margin-bottom: 20px;
-        line-height: 1.6;
-
-      }
-
-      .newsletter-form {
         display: flex;
-        margin-bottom: 30px;
-
+        justify-content: flex-start;
+        align-items: center;
+        padding: 15px 60px;
+        background: none;
+        color: black;
+        z-index: 1000;
+        transition: background 0.4s ease, padding 0.3s ease;
       }
 
-      .newsletter-form input {
-        flex: 1;
-        padding: 14px;
-        border: 1px solid #000;
-        font-size: 11px;
-        letter-spacing: 1px;
-        outline: none;
-        background: transparent;
-
-      }
-
-      .newsletter-form button {
-        padding: 14px 24px;
-        border: 1px solid #000;
-        background: transparent;
-        font-size: 11px;
-        letter-spacing: 1px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .newsletter-form button:hover {
-        background: #000;
-        color: #fff;
-      }
-
-      /* Social */
-      .footer-newsletter h5 {
-        font-size: 12px;
-        letter-spacing: 2px;
-        margin-bottom: 15px;
-      }
-
-    .social-icons {
-    display: flex;
-    gap: 18px;
+      .navbar.scrolled {
+    background: rgba(75, 0, 7); 
+    color: #d0b75b;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 12px 50px;
+    height: 60px;
+    backdrop-filter: blur(6px); 
   }
 
-  .social-icons a {
-        color: #000;
-        font-size: 14px;
-        transition: opacity 0.3s ease;
+      
+  .navbar.scrolled .menu {
+    margin-left: 610px; 
+    transition: margin-left 0.3s ease;
+  }
+      .logo-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-right: 60px;
       }
 
-        .social-icons a:hover {
-        opacity: 0.6;
-      }
-      /* Bottom */
-      .footer-bottom {
-        margin-top: 60px;
-        text-align: center;
-        font-size: 11px;
-        color: #666;
-        letter-spacing: 0.5px;
+      .logo-group .crown-img {
+        height: 110px !important;
+        transition: height 0.25s ease;
       }
 
+      .logo-group .label-img {
+        height: 40px !important;
+        transition: height 0.25s ease;
+      }
 
-      /* ================= RESPONSIVE ================= */
-      @media (max-width: 900px) {
-        .footer-container {
-          grid-template-columns: 1fr 1fr;
-          gap: 50px;
+      .navbar.scrolled .crown-img {
+        height: 55px !important;
+      }
+
+      .navbar.scrolled .label-img {
+        height: 30px !important;
+      }
+
+      .menu {
+        list-style: none;
+        display: flex;
+        gap: 25px;
+        margin-left: 510px;
+      }
+
+      .menu a {
+        color: inherit;
+        text-decoration: none;
+        font-size: 15px;
+        font-family: 'Cormorant Garamond', serif;
+      }
+
+      .menu a:hover { color: #c0a062; }
+  .navbar.scrolled a:hover{
+  opacity:0.7; ;
+  }
+  /* When navbar is scrolled (auto color change) */
+  .navbar.scrolled .user-icon {
+    stroke: currentColor; /* GOLD tone from navbar */
+  }
+        /* ================= FOOTER BACKGROUND BAND ================= */
+        .footer-bg {
+          background: #f5f4f2; /* footer bg (separate band) */
+          width: 100%;
+          border-top: 1px solid rgba(0,0,0,0.08); /* subtle divider */
         }
-      }
 
-      @media (max-width: 600px) {
+        /* ================= FOOTER ================= */
         footer {
-          padding: 60px 30px 25px;
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 90px 80px 35px;
+          color: #1A1A1A;
         }
 
         .footer-container {
-          grid-template-columns: 1fr;
-          gap: 45px;
+          display: grid;
+          grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
+          gap: 80px;
         }
-      }
-
-      /* ================= LIGHTBOX ================= */
-
-.lightbox {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.92);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.lightbox.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.lightbox img {
-  max-width: 90%;
-  max-height: 90%;
-  object-fit: contain;
-  border-radius: 8px;
-}
-
-/* CENTERED CONTENT */
-.lightbox-content{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:22px;
-  max-width:90vw;
-  max-height:90vh;
-}
-
-/* IMAGE */
-.lightbox-content img{
-  max-width:100%;
-  max-height:70vh;
-  object-fit:contain;
-  border-radius:12px;
-}
-
-/* IMAGE WRAPPER */
-.image-wrapper{
-  position:relative;
-  max-width:90vw;
-  max-height:80vh;
-}
-
-/* IMAGE */
-.image-wrapper img{
-  max-width:100%;
-  max-height:80vh;
-  object-fit:contain;
-  border-radius:14px;
-}
-
-/* BUTTON OVERLAY */
-.lightbox-actions{
-  position:absolute;
-  bottom:18px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:16px;
-  padding:10px 14px;
-  border-radius:40px;
-}
-
-/* BUTTONS */
-.lb-btn{
-  padding:10px 24px;
-  border-radius:24px;
-  border:1px solid rgba(75,0,7,0.8);
-  background:transparent;
-  color:#fff;
-  font-size:12px;
-  cursor:pointer;
-  transition:all .3s ease;
-  width: 150px;
-}
-
-.lb-btn:hover{
-  background:rgba(75,0,7,0.8);
-  color:#fff;
-}
-
-.lb-btn.primary{
-  background:rgba(75,0,7,0.8);
-  color:#fff;
-  font-weight:500;
-
-}
-
-.lb-btn.primary:hover{
-opacity: 0.8;
-  background:rgba(94, 4, 13, 0.8);
-
-}
-/* CLOSE BUTTON */
-.close-btn {
-  position: absolute;
-  top: 30px;
-  right: 40px;
-  font-size: 36px;
-  color: #fff;
-  cursor: pointer;
-  font-weight: 300;
-  transition: opacity 0.3s ease;
-}
-
-.close-btn:hover {
-  opacity: 0.7;
-}
-
-.design-card img {
-  cursor: zoom-in;
-}
-
-
-
-       .logout-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.logout-icon {
-  width: 22px;
-  height: 22px;
-  stroke: #000;
-  stroke-width: 1.6;
-  fill: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.logout-btn:hover .logout-icon {
-  color:  #d0b75b ;
-  transform: translateX(2px);
-}
-.navbar.scrolled .logout-icon{
-  stroke: #d0b75b;/* GOLD tone from navbar */
-}
-
-
-/* LOCK SCROLL WHEN LIGHTBOX OPEN */
-body.no-scroll {
-  overflow: hidden;
-  height: 100vh;
-}
-
-
-
-@media (max-width: 600px) {
-  .dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .dashboard-header h1 {
-    font-size: 24px;
-  }
-
-  .dashboard-header span {
-    font-size: 12px;
-  }
-}
-
-  </style>
-</head>
-
-
-
-<body>
-<script src="auth.js"></script>
-<script>
-protectPage();
-document.addEventListener("DOMContentLoaded", setupNavbarAuth);
-</script>
-
-
-
-
-    <!-- NAVIGATION BAR -->
-  <nav class="navbar" id="navbar">
-    <div class="logo-group">
-      <a href="home.html"> <img class="crown-img" src="crown.png" alt="Crown Logo"></a>
-      <a href="home.html"><img class="label-img" src="label.png" alt="Label Logo"></a>
-    </div>
-
-    <ul class="menu">
-      <li><a href="AI.html">AI INSIGHTS </a></li>
-      <li><a href="template.html">DESIGN</a></li>
-      <li><a href="about.html">ABOUT</a></li>
-      <li><a href="contact.html">CONTACT</a></li>
-   
-  <!-- SIGNUP (hidden on dashboard automatically) -->
-  <li id="signupNav" style="display:none">
-    <a href="signup.html">SIGN UP</a>
-  </li>
-
-  <!-- DASHBOARD ICON -->
-  <li class="user-dashboard" id="dashboardNav" style="display:block">
-    <a href="dashboard.html">
-      <svg class="user-icon" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
-      </svg>
-    </a>
-  </li>
-
-  <!-- LOGOUT -->
-  <li id="logoutNav" style="display:block">
-    <button class="logout-btn" id="logoutBtn" title="Logout">
-      <svg class="logout-icon" viewBox="0 0 24 24" fill="none">
-        <path d="M16 17l5-5-5-5"/>
-        <path d="M21 12H9"/>
-        <path d="M13 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8"/>
-      </svg>
-    </button>
-  </li>
-
-    </ul>
-  </nav>
-
-
-<div class="lightbox" id="lightbox">
-  <span class="close-btn">&times;</span>
-
-  <div class="lightbox-content">
-    <div class="image-wrapper">
-      <img id="lightbox-img">
-
-      <div class="lightbox-actions">
-        <button id="previewBtn" class="lb-btn">Preview</button>
-        <button id="editBtn" class="lb-btn primary">Edit Design</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-<div class="frame-wrapper">
-  <div class="dashboard-frame">
-    <div class="dashboard">
-
-      <aside class="sidebar">
-        <h3>My Account</h3>
-        <ul>
-          <li><a href="#">Dashboard</a></li>
-          <li><a href="#">My Designs</a></li>
-          <li><a href="#">Profile</a></li>
-<li>
-  <a href="#" onclick="logout()">Logout</a>
-</li>
-
-        </ul>
-      </aside>
-
-      <main class="main">
-
-        <!-- HEADER -->
-        <div class="dashboard-header">
-          <h1>Welcome back</h1>
-          <span>Last login: Today</span>
-        </div>
-
-        <!-- STATS -->
-<div class="stats">
-  <div class="stat-box">
-    <h4>Designs Created</h4>
-    <p id="designsCount">0</p>
-  </div>
-
-  <div class="stat-box">
-    <h4>Rooms Designed</h4>
-    <p id="roomsCount">0</p>
-  </div>
-
-  <div class="stat-box">
-    <h4>AI Credits Left</h4>
-    <p>12</p> <!-- static -->
-  </div>
-</div>
-
-        <!-- DESIGNS -->
-<h2 class="section-title">My Designs</h2>
-<div class="designs-grid" id="designsGrid"></div>
-
-<h2 class="section-title">AI Designs</h2>
-<div class="designs-grid" id="aiDesignsGrid"></div>
-
-
-        <!-- ACTIONS -->
-        <div class="actions">
-          <div class="action-box">
-            <h4>Start a New Design</h4>
-            <p>Upload a room photo or start from scratch using AI.</p>
-            <a href="template.html" class="action-btn">Create Design</a>
-          </div>
-          <div class="action-box">
-            <h4>Account</h4>
-            <p>User Name<br>user@email.com</p>
-          </div>
-        </div>
-
-      </main>
-
-    </div>
-  </div>
-</div>
-
- <!-- FOOTER WITH SEPARATE BACKGROUND -->
-<section class="footer-bg">
-  <footer>
-    <div class="footer-container">
-
-      <!-- BRAND -->
-      <div class="footer-col">
-        <h4>La Obsidiané</h4>
-        <p class="footer-brand">
-          An AI-powered room design platform that helps you visualize, design,
-          and transform your space effortlessly. Upload your room, experiment
-          with layouts, and get smart design recommendations in minutes.
-        </p>
-      </div>
-
-      <!-- QUICK LINKS -->
-      <div class="footer-col">
-        <h4>QUICK LINKS</h4>
-        <ul>
-          <li><a href="AI.html">AI Insights</a></li>
-          <li><a href="template.html">Design Your Room</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </div>
-
-      <!-- FEATURES -->
-      <div class="footer-col">
-        <h4>FEATURES</h4>
-        <ul>
-          <li><a href="#ai">AI Room Design</a></li>
-          <li><a href="#drag">Drag & Drop Furniture</a></li>
-          <li><a href="#recommend">Smart Recommendations</a></li>
-          <li><a href="#beforeafter">Before & After Views</a></li>
-        </ul>
-      </div>
-
-      <!-- NEWSLETTER -->
-      <div class="footer-col footer-newsletter">
-        <p class="newsletter-text">
-          RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
-        </p>
-
-        <form class="newsletter-form">
-          <input type="email" placeholder="ENTER YOUR EMAIL*" required />
-          <button type="submit">SUBSCRIBE</button>
-        </form>
-
-        <h5>FOLLOW US</h5>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-pinterest-p"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      © La Obsidiané 2025. ALL RIGHTS RESERVED
-    </div>
-
-  </footer>
-</section>
-<script>
-
-    /* NAVBAR SCROLL — UNCHANGED */
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-const lightbox=document.getElementById('lightbox');
-const lightboxImg=document.getElementById('lightbox-img');
-const closeBtn=document.querySelector('.close-btn');
-
-
-closeBtn.onclick = e => {
-  e.stopPropagation();
-  lightbox.classList.remove("active");
-  document.body.classList.remove("no-scroll");
-
-  // reset flags
-  delete lightbox.dataset.designId;
-  delete lightbox.dataset.aiPreview;
-  delete lightbox.dataset.before;
-  delete lightbox.dataset.after;
-};
-
-
-lightbox.onclick=()=>lightbox.classList.remove('active');
-document.body.classList.remove("no-scroll"); 
-lightboxImg.onclick=e=>e.stopPropagation();
-
-const previewBtn = document.getElementById("previewBtn");
-const editBtn = document.getElementById("editBtn");
-
-previewBtn.onclick = () => {
-  // AI design preview
-  if (lightbox.dataset.aiPreview === "true") {
-    sessionStorage.setItem("preview_before", lightbox.dataset.before);
-    sessionStorage.setItem("preview_after", lightbox.dataset.after);
-    window.location.href = "preview1.html";
-    return;
-  }
-
-  // Normal design preview
-  const designId = lightbox.dataset.designId;
-  if (!designId) return;
-  window.location.href = `preview.html?designId=${designId}`;
-};
-
-
-let DESIGN_CACHE = {};
-
-async function loadMyDesigns() {
-  try {
-    const token = sessionStorage.getItem("token");
-    if (!token) return;
-
-    const res = await fetch("http://localhost:5000/api/designs", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (!res.ok) {
-      throw new Error("Failed to fetch designs");
+
+        .footer-col h4 {
+          font-size: 13px;
+          letter-spacing: 2px;
+          font-weight: 600;
+          margin-bottom: 18px;
+          
+        }
+
+        .footer-col ul {
+          list-style: none;
+        }
+
+        .footer-col ul li {
+          margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+          text-decoration: none;
+          font-size: 12px;
+          color: #666;
+          letter-spacing: 0.5px;
+          transition: color 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+          color: #000;
+        }
+
+        /* Brand text */
+        .footer-brand {
+          font-size: 12px;
+          color: #444;
+          line-height: 1.7;
+          letter-spacing: 0.6px;
+          max-width: 280px;
+        }
+
+        /* Newsletter */
+        .newsletter-text {
+          font-size: 12px;
+          color: #444;
+          letter-spacing: 0.6px;
+          margin-bottom: 20px;
+          line-height: 1.6;
+
+        }
+
+        .newsletter-form {
+          display: flex;
+          margin-bottom: 30px;
+
+        }
+
+        .newsletter-form input {
+          flex: 1;
+          padding: 14px;
+          border: 1px solid #000;
+          font-size: 11px;
+          letter-spacing: 1px;
+          outline: none;
+          background: transparent;
+
+        }
+
+        .newsletter-form button {
+          padding: 14px 24px;
+          border: 1px solid #000;
+          background: transparent;
+          font-size: 11px;
+          letter-spacing: 1px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+          background: #000;
+          color: #fff;
+        }
+
+        /* Social */
+        .footer-newsletter h5 {
+          font-size: 12px;
+          letter-spacing: 2px;
+          margin-bottom: 15px;
+        }
+
+      .social-icons {
+      display: flex;
+      gap: 18px;
     }
 
-    const designs = await res.json();
-    const grid = document.getElementById("designsGrid");
-    grid.innerHTML = "";
+    .social-icons a {
+          color: #000;
+          font-size: 14px;
+          transition: opacity 0.3s ease;
+        }
 
-    if (!designs.length) {
-      grid.innerHTML = "<p>No designs yet.</p>";
-      return;
+          .social-icons a:hover {
+          opacity: 0.6;
+        }
+        /* Bottom */
+        .footer-bottom {
+          margin-top: 60px;
+          text-align: center;
+          font-size: 11px;
+          color: #666;
+          letter-spacing: 0.5px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 900px) {
+          .footer-container {
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+          }
+        }
+
+        @media (max-width: 600px) {
+          footer {
+            padding: 60px 30px 25px;
+          }
+
+          .footer-container {
+            grid-template-columns: 1fr;
+            gap: 45px;
+          }
+        }
+
+        /* ================= LIGHTBOX ================= */
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  /* CENTERED CONTENT */
+  .lightbox-content{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:22px;
+    max-width:90vw;
+    max-height:90vh;
+  }
+
+  /* IMAGE */
+  .lightbox-content img{
+    max-width:100%;
+    max-height:70vh;
+    object-fit:contain;
+    border-radius:12px;
+  }
+
+  /* IMAGE WRAPPER */
+  .image-wrapper{
+    position:relative;
+    max-width:90vw;
+    max-height:80vh;
+  }
+
+  /* IMAGE */
+  .image-wrapper img{
+    max-width:100%;
+    max-height:80vh;
+    object-fit:contain;
+    border-radius:14px;
+  }
+
+  /* BUTTON OVERLAY */
+  .lightbox-actions{
+    position:absolute;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:16px;
+    padding:10px 14px;
+    border-radius:40px;
+  }
+
+  /* BUTTONS */
+  .lb-btn{
+    padding:10px 24px;
+    border-radius:24px;
+    border:1px solid rgba(75,0,7,0.8);
+    background:transparent;
+    color:#fff;
+    font-size:12px;
+    cursor:pointer;
+    transition:all .3s ease;
+    width: 150px;
+  }
+
+  .lb-btn:hover{
+    background:rgba(75,0,7,0.8);
+    color:#fff;
+  }
+
+  .lb-btn.primary{
+    background:rgba(75,0,7,0.8);
+    color:#fff;
+    font-weight:500;
+
+  }
+
+  .lb-btn.primary:hover{
+  opacity: 0.8;
+    background:rgba(94, 4, 13, 0.8);
+
+  }
+  /* CLOSE BUTTON */
+  .close-btn {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 36px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 300;
+    transition: opacity 0.3s ease;
+  }
+
+  .close-btn:hover {
+    opacity: 0.7;
+  }
+
+  .design-card img {
+    cursor: zoom-in;
+  }
+
+
+
+        .logout-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .logout-icon {
+    width: 22px;
+    height: 22px;
+    stroke: #000;
+    stroke-width: 1.6;
+    fill: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .logout-btn:hover .logout-icon {
+    color:  #d0b75b ;
+    transform: translateX(2px);
+  }
+  .navbar.scrolled .logout-icon{
+    stroke: #d0b75b;/* GOLD tone from navbar */
+  }
+
+
+  /* LOCK SCROLL WHEN LIGHTBOX OPEN */
+  body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+  }
+
+
+
+  @media (max-width: 600px) {
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
     }
 
-    designs.forEach(design => {
-      if (!design.imagePath) return;
+    .dashboard-header h1 {
+      font-size: 24px;
+    }
 
-      // Cache design for Edit flow
-      DESIGN_CACHE[design.id] = design;
+    .dashboard-header span {
+      font-size: 12px;
+    }
+  }
 
-      const card = document.createElement("div");
-      card.className = "design-card";
+    </style>
+  </head>
 
-      card.innerHTML = `
-        <img src="${design.imagePath}" alt="Design Image" />
-        <div class="design-info">
-          <h5>${design.title}</h5>
-          <span>${new Date(design.createdAt).toDateString()}</span>
+
+
+  <body>
+  <script src="auth.js"></script>
+  <script>
+  protectPage();
+  document.addEventListener("DOMContentLoaded", setupNavbarAuth);
+  </script>
+
+
+
+
+      <!-- NAVIGATION BAR -->
+    <nav class="navbar" id="navbar">
+      <div class="logo-group">
+        <a href="home.html"> <img class="crown-img" src="crown.png" alt="Crown Logo"></a>
+        <a href="home.html"><img class="label-img" src="label.png" alt="Label Logo"></a>
+      </div>
+
+      <ul class="menu">
+        <li><a href="AI.html">AI INSIGHTS </a></li>
+        <li><a href="template.html">DESIGN</a></li>
+        <li><a href="about.html">ABOUT</a></li>
+        <li><a href="contact.html">CONTACT</a></li>
+    
+    <!-- SIGNUP (hidden on dashboard automatically) -->
+    <li id="signupNav" style="display:none">
+      <a href="signup.html">SIGN UP</a>
+    </li>
+
+    <!-- DASHBOARD ICON -->
+    <li class="user-dashboard" id="dashboardNav" style="display:block">
+      <a href="dashboard.html">
+        <svg class="user-icon" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+        </svg>
+      </a>
+    </li>
+
+    <!-- LOGOUT -->
+    <li id="logoutNav" style="display:block">
+      <button class="logout-btn" id="logoutBtn" title="Logout">
+        <svg class="logout-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M16 17l5-5-5-5"/>
+          <path d="M21 12H9"/>
+          <path d="M13 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8"/>
+        </svg>
+      </button>
+    </li>
+
+      </ul>
+    </nav>
+
+
+  <div class="lightbox" id="lightbox">
+    <span class="close-btn">&times;</span>
+
+    <div class="lightbox-content">
+      <div class="image-wrapper">
+        <img id="lightbox-img">
+
+        <div class="lightbox-actions">
+          <button id="previewBtn" class="lb-btn">Preview</button>
+          <button id="editBtn" class="lb-btn primary">Edit Design</button>
         </div>
-      `;
-
-card.querySelector("img").onclick = () => {
-  lightboxImg.src = design.imagePath;
-  lightbox.classList.add("active");
-  document.body.classList.add("no-scroll");
-
-  lightbox.dataset.designId = design.id;
-
-  delete lightbox.dataset.aiPreview;
-  delete lightbox.dataset.before;
-  delete lightbox.dataset.after;
-};
+      </div>
+    </div>
+  </div>
 
 
 
-      grid.appendChild(card);
-    });
-
-  } catch (err) {
-    console.error("❌ Error loading My Designs:", err);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", loadMyDesigns);
 
 
-editBtn.onclick = () => {
-  // 🚫 AI designs cannot be edited
-  if (lightbox.dataset.aiPreview === "true") {
-    alert("AI designs cannot be edited. Please convert it to a design first.");
-    return;
-  }
 
+  <div class="frame-wrapper">
+    <div class="dashboard-frame">
+      <div class="dashboard">
+
+        <aside class="sidebar">
+          <h3>My Account</h3>
+          <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">My Designs</a></li>
+            <li><a href="#">Profile</a></li>
+  <li>
+    <a href="#" onclick="logout()">Logout</a>
+  </li>
+
+          </ul>
+        </aside>
+
+        <main class="main">
+
+          <!-- HEADER -->
+          <div class="dashboard-header">
+            <h1>Welcome back</h1>
+            <span>Last login: Today</span>
+          </div>
+
+          <!-- STATS -->
+  <div class="stats">
+    <div class="stat-box">
+      <h4>Designs Created</h4>
+      <p id="designsCount">0</p>
+    </div>
+
+    <div class="stat-box">
+      <h4>Rooms Designed</h4>
+      <p id="roomsCount">0</p>
+    </div>
+
+    <div class="stat-box">
+      <h4>AI Credits Left</h4>
+      <p>12</p> <!-- static -->
+    </div>
+  </div>
+
+          <!-- DESIGNS -->
+  <h2 class="section-title">My Designs</h2>
+  <div class="designs-grid" id="designsGrid"></div>
+
+  <h2 class="section-title">AI Designs</h2>
+  <div class="designs-grid" id="aiDesignsGrid"></div>
+
+
+          <!-- ACTIONS -->
+          <div class="actions">
+            <div class="action-box">
+              <h4>Start a New Design</h4>
+              <p>Upload a room photo or start from scratch using AI.</p>
+              <a href="template.html" class="action-btn">Create Design</a>
+            </div>
+            <div class="action-box">
+              <h4>Account</h4>
+              <p>User Name<br>user@email.com</p>
+            </div>
+          </div>
+
+        </main>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER WITH SEPARATE BACKGROUND -->
+  <section class="footer-bg">
+    <footer>
+      <div class="footer-container">
+
+        <!-- BRAND -->
+        <div class="footer-col">
+          <h4>La Obsidiané</h4>
+          <p class="footer-brand">
+            An AI-powered room design platform that helps you visualize, design,
+            and transform your space effortlessly. Upload your room, experiment
+            with layouts, and get smart design recommendations in minutes.
+          </p>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <div class="footer-col">
+          <h4>QUICK LINKS</h4>
+          <ul>
+            <li><a href="AI.html">AI Insights</a></li>
+            <li><a href="template.html">Design Your Room</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- FEATURES -->
+        <div class="footer-col">
+          <h4>FEATURES</h4>
+          <ul>
+            <li><a href="#ai">AI Room Design</a></li>
+            <li><a href="#drag">Drag & Drop Furniture</a></li>
+            <li><a href="#recommend">Smart Recommendations</a></li>
+            <li><a href="#beforeafter">Before & After Views</a></li>
+          </ul>
+        </div>
+
+        <!-- NEWSLETTER -->
+        <div class="footer-col footer-newsletter">
+          <p class="newsletter-text">
+            RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
+          </p>
+
+          <form class="newsletter-form">
+            <input type="email" placeholder="ENTER YOUR EMAIL*" required />
+            <button type="submit">SUBSCRIBE</button>
+          </form>
+
+          <h5>FOLLOW US</h5>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-pinterest-p"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        © La Obsidiané 2025. ALL RIGHTS RESERVED
+      </div>
+
+    </footer>
+  </section>
+  <script>
+
+      /* NAVBAR SCROLL — UNCHANGED */
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      });
+  const lightbox=document.getElementById('lightbox');
+  const lightboxImg=document.getElementById('lightbox-img');
+  const closeBtn=document.querySelector('.close-btn');
+
+
+  closeBtn.onclick = e => {
+    e.stopPropagation();
+    lightbox.classList.remove("active");
+    document.body.classList.remove("no-scroll");
+
+    // reset flags
+    delete lightbox.dataset.designId;
+    delete lightbox.dataset.aiPreview;
+    delete lightbox.dataset.before;
+    delete lightbox.dataset.after;
+  };
+
+
+  lightbox.onclick=()=>lightbox.classList.remove('active');
+  document.body.classList.remove("no-scroll"); 
+  lightboxImg.onclick=e=>e.stopPropagation();
+
+  const previewBtn = document.getElementById("previewBtn");
+  const editBtn = document.getElementById("editBtn");
+
+  previewBtn.onclick = () => {
   const designId = lightbox.dataset.designId;
   if (!designId) return;
 
   const design = DESIGN_CACHE[designId];
   if (!design) return;
 
+  // 🔥 Restore full draft
   sessionStorage.setItem(
-    "furnitureLayout",
-    JSON.stringify(design.furnitureLayout || [])
+    "design_draft",
+    JSON.stringify(design.designState || {})
   );
 
-  sessionStorage.setItem("activeDesignId", designId);
-  window.location.href = `furniture.html?designId=${designId}`;
+  sessionStorage.setItem(
+    "preview_before",
+    design.beforeImage || design.designState?.roomImage
+  );
+
+  sessionStorage.setItem(
+    "preview_after",
+    design.imagePath
+  );
+
+  window.location.href = "preview.html";
 };
 
 
 
-</script>
 
+  let DESIGN_CACHE = {};
 
-
-<script>
-document.querySelector(".newsletter-form")
-  .addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const emailInput = e.target.querySelector("input[type='email']");
-    const email = emailInput.value.trim();
-
-    if (!email) return;
-
+  async function loadMyDesigns() {
     try {
-      const res = await fetch("http://localhost:5000/api/newsletter/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
+      const token = sessionStorage.getItem("token");
+      if (!token) return;
+
+      const res = await fetch("http://localhost:5000/api/designs", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        alert(data.message || "Subscription failed");
+        throw new Error("Failed to fetch designs");
+      }
+
+      const designs = await res.json();
+      const grid = document.getElementById("designsGrid");
+      grid.innerHTML = "";
+
+      if (!designs.length) {
+        grid.innerHTML = "<p>No designs yet.</p>";
         return;
       }
 
-      alert("You're subscribed! ✨");
-      emailInput.value = "";
+      designs.forEach(design => {
+        if (!design.imagePath) return;
+
+        // Cache design for Edit flow
+        DESIGN_CACHE[design.id] = design;
+
+        const card = document.createElement("div");
+        card.className = "design-card";
+
+        card.innerHTML = `
+  <img src="${design.imagePath}" 
+       alt="Design Image"
+       onerror="this.style.display='none'" />
+  <div class="design-info">
+    <h5>${design.title}</h5>
+    <span>${new Date(design.createdAt).toDateString()}</span>
+  </div>
+`;
+
+
+  card.querySelector("img").onclick = () => {
+    lightboxImg.src = design.imagePath;
+    lightbox.classList.add("active");
+    document.body.classList.add("no-scroll");
+
+    lightbox.dataset.designId = design.id;
+  };
+
+
+
+        grid.appendChild(card);
+      });
 
     } catch (err) {
-      console.error(err);
-      alert("Server not reachable");
+      console.error("❌ Error loading My Designs:", err);
     }
-  });
-</script>
+  }
+
+  document.addEventListener("DOMContentLoaded", loadMyDesigns);
 
 
-<script>
-async function loadAIDesigns() {
-  try {
-    const token = sessionStorage.getItem("token");
-    if (!token) return;
+  editBtn.onclick = () => {
+    const designId = lightbox.dataset.designId;
+    if (!designId) return;
 
-    const res = await fetch("http://localhost:5000/api/ai-design", {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const design = DESIGN_CACHE[designId];
+    if (!design) return;
+
+    // 🔥 restore editor state
+    sessionStorage.setItem(
+      "design_draft",
+      JSON.stringify(design.designState || {})
+    );
+
+    sessionStorage.setItem("activeDesignId", designId);
+
+    window.location.href = "template.html";
+  };
+
+
+
+
+  </script>
+
+
+
+  <script>
+  document.querySelector(".newsletter-form")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const emailInput = e.target.querySelector("input[type='email']");
+      const email = emailInput.value.trim();
+
+      if (!email) return;
+
+      try {
+        const res = await fetch("http://localhost:5000/api/newsletter/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert(data.message || "Subscription failed");
+          return;
+        }
+
+        alert("You're subscribed! ✨");
+        emailInput.value = "";
+
+      } catch (err) {
+        console.error(err);
+        alert("Server not reachable");
       }
     });
-
-    if (!res.ok) throw new Error("Failed to fetch AI designs");
-
-    const designs = await res.json();
-    const grid = document.getElementById("aiDesignsGrid");
-    grid.innerHTML = "";
-
-    if (!designs.length) {
-      grid.innerHTML = "<p>No AI designs yet.</p>";
-      return;
-    }
-
-    designs.forEach(d => {
-      if (!d.afterImage) return;
-
-      const card = document.createElement("div");
-      card.className = "design-card";
-
-      card.innerHTML = `
-        <img src="${d.afterImage}" />
-        <div class="design-info">
-          <h5>${d.roomType} · ${d.style}</h5>
-          <span>${new Date(d.createdAt).toDateString()}</span>
-        </div>
-      `;
-
-      grid.appendChild(card);
-      card.querySelector("img").onclick = () => {
-  sessionStorage.setItem("preview_before", d.beforeImage);
-  sessionStorage.setItem("preview_after", d.afterImage);
-  window.location.href = "preview1.html";
-};
-
-    });
-
-  } catch (err) {
-    console.error("AI Designs load error:", err);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", loadAIDesigns);
+  </script>
 
 
-async function loadDashboardStats() {
-  try {
-    const token = sessionStorage.getItem("token");
-    if (!token) return;
+  <script>
+  async function loadAIDesigns() {
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) return;
 
-    const res = await fetch("http://localhost:5000/api/dashboard/stats", {
-      headers: {
-        Authorization: `Bearer ${token}`
+      const res = await fetch("http://localhost:5000/api/ai-design", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) throw new Error("Failed to fetch AI designs");
+
+      const designs = await res.json();
+      const grid = document.getElementById("aiDesignsGrid");
+      grid.innerHTML = "";
+
+      if (!designs.length) {
+        grid.innerHTML = "<p>No AI designs yet.</p>";
+        return;
       }
-    });
 
-    if (!res.ok) throw new Error("Failed to load stats");
+      designs.forEach(d => {
+        if (!d.afterImage) return;
 
-    const data = await res.json();
+        const card = document.createElement("div");
+        card.className = "design-card";
 
-    document.getElementById("designsCount").innerText = data.designsCreated;
-    document.getElementById("roomsCount").innerText = data.roomsDesigned;
+        card.innerHTML = `
+          <img src="${d.afterImage}" />
+          <div class="design-info">
+            <h5>${d.roomType} · ${d.style}</h5>
+            <span>${new Date(d.createdAt).toDateString()}</span>
+          </div>
+        `;
 
-  } catch (err) {
-    console.error("Dashboard stats load error:", err);
+        grid.appendChild(card);
+        card.querySelector("img").onclick = () => {
+    sessionStorage.setItem("preview_before", d.beforeImage);
+    sessionStorage.setItem("preview_after", d.afterImage);
+    window.location.href = "preview1.html";
+  };
+
+      });
+
+    } catch (err) {
+      console.error("AI Designs load error:", err);
+    }
   }
-}
 
-document.addEventListener("DOMContentLoaded", loadDashboardStats);
+  document.addEventListener("DOMContentLoaded", loadAIDesigns);
 
-</script>
 
-</body>
-</html>
+  async function loadDashboardStats() {
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) return;
+
+      const res = await fetch("http://localhost:5000/api/dashboard/stats", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!res.ok) throw new Error("Failed to load stats");
+
+      const data = await res.json();
+
+      document.getElementById("designsCount").innerText = data.designsCreated;
+      document.getElementById("roomsCount").innerText = data.roomsDesigned;
+
+    } catch (err) {
+      console.error("Dashboard stats load error:", err);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadDashboardStats);
+
+  </script>
+
+  </body>
+  </html>
