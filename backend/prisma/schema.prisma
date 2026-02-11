@@ -35,6 +35,7 @@ model Design {
   userId      Int
   title       String
   imagePath   String
+   beforeImage String?  
   designState Json
   createdAt   DateTime @default(now())
 

@@ -15,6 +15,7 @@ CREATE TABLE "Design" (
     "userId" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "imagePath" TEXT NOT NULL,
+    "beforeImage" TEXT,
     "designState" JSONB NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Design_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
