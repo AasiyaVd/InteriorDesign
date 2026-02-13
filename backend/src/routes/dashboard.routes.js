@@ -11,9 +11,9 @@ router.get("/stats", authenticateToken, async (req, res) => {
       where: { userId }
     });
 
-    const roomsDesigned = await prisma.aiDesign.count({
-      where: { userId }
-    });
+    const roomsDesigned = await prisma.aIDesign.count({
+  where: { userId }
+});
 
     res.json({
       designsCreated,
