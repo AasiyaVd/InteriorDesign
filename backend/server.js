@@ -33,11 +33,13 @@ app.use("/api/ai" , require("./src/routes/ai.route"));
 const dashboardRoutes = require("./src/routes/dashboard.routes");
 app.use("/api/dashboard", dashboardRoutes);
 const authenticateToken = require("./src/middleware/auth.middleware");
-
+const userRoutes = require("./src/routes/user.routes");
+app.use("/api/user", userRoutes);
 app.use(
   "/api/ai-design",
   authenticateToken,
   require("./src/routes/aiDesign.routes")
+  
 );
 // 🔥 SERVE AI IMAGE UPLOADS AND GENERATED IMAGES
 app.use("/uploads_ai", express.static(path.resolve(__dirname, "uploads_ai")));

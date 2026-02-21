@@ -75,7 +75,7 @@ body {
 
     
 .navbar.scrolled .menu {
-  margin-left: 520px; 
+  margin-left: 690px; 
   transition: margin-left 0.3s ease;
 }
     .logo-group {
@@ -107,7 +107,7 @@ body {
       list-style: none;
       display: flex;
       gap: 25px;
-      margin-left: 430px;
+      margin-left: 600px;
     }
 
     .menu a {
@@ -583,13 +583,13 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
       <!-- FEATURES -->
-      <div class="footer-col">
+      <div class="footer-col footer-brand">
         <h4>FEATURES</h4>
         <ul>
-          <li><a href="#ai">AI Room Design</a></li>
-          <li><a href="#drag">Drag & Drop Furniture</a></li>
-          <li><a href="#recommend">Smart Recommendations</a></li>
-          <li><a href="#beforeafter">Before & After Views</a></li>
+          <li>AI Room Design</li>
+          <li>Drag & Drop Furniture</li>
+          <li>Smart Recommendations</li>
+          <li>Before & After Views</li>
         </ul>
       </div>
 
@@ -599,10 +599,11 @@ document.addEventListener("DOMContentLoaded", () => {
           RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
         </p>
 
-        <form class="newsletter-form">
-          <input type="email" placeholder="ENTER YOUR EMAIL*" required />
+        <form id="myForm"    class="newsletter-form">
+          <input id="myInput" type="email" placeholder="ENTER YOUR EMAIL*" required />
           <button type="submit">SUBSCRIBE</button>
         </form>
+
 
         <h5>FOLLOW US</h5>
         <div class="social-icons">
@@ -750,6 +751,14 @@ document.querySelector(".newsletter-form")
       alert("Server not reachable");
     }
   });
+
+  document.getElementById("myForm").addEventListener("submit", function(e) {
+    e.preventDefault(); // Prevent page reload
+    
+    // Your submit logic here
+    
+    document.getElementById("myInput").value = ""; // ✅ Clears input
+});
 </script>
 
 

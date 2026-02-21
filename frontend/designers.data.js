@@ -13,7 +13,7 @@ const designers = [
   timeline: "1-2",
   cost: "₹3–4.5 Lakhs",
   experience: "4 years",
-  link: "#"
+  link: "https://www.urbannestdesignstudio.com/"
 },
 {
   name: "UrbanNest Studio",
@@ -23,7 +23,7 @@ const designers = [
   timeline: "1-2",
   cost: "₹4–5 Lakhs",
   experience: "4 years",
-  link: "#"
+  link: "https://www.urbannestdesignstudio.com/"
 },
 {
   name: "Compact Living Co.",
@@ -33,7 +33,7 @@ const designers = [
   timeline: "1-2",
   cost: "₹3–4 Lakhs",
   experience: "3 years",
-  link: "#"
+  link: "https://compactliving.in/"
 },
 
 // 3–6 MONTHS
@@ -45,27 +45,27 @@ const designers = [
   timeline: "3-6",
   cost: "₹4–5 Lakhs",
   experience: "3 years",
-  link: "#"
+  link: "https://spacewiseindia.com/"
 },
 {
-  name: "MinimalCraft",
+  name: "Canwill Design",
   variant: "Classic",
   budget: "under5",
   spaces: ["1bhk"],
   timeline: "3-6",
   cost: "₹4–5 Lakhs",
   experience: "5 years",
-  link: "#"
+  link: "https://www.canwilldesign.com/?gad_source=1&gad_campaignid=20363999248&gbraid=0AAAAApzv6y1WCjYljEsl6lrjRLxX6nhMr&gclid=Cj0KCQiAqeDMBhDcARIsAJEbU9SlYdGePOShTJEMRSIA6Z7CrLHVCx5v9ShOdIXvZ_DDkrNMPZ-P-KsaAvZIEALw_wcB"
 },
 {
-  name: "HomeLite Studio",
+  name: "DLife Studio",
   variant: "Value Pack",
   budget: "under5",
   spaces: ["studio"],
   timeline: "3-6",
   cost: "₹3.5–4.5 Lakhs",
   experience: "4 years",
-  link: "#"
+  link: "https://dlifeinteriors.com/mumbai/?gad_source=1&gad_campaignid=22408577458&gbraid=0AAAAADF8TOFihmYZp1liNx9MpIFPKJZz1&gclid=Cj0KCQiAqeDMBhDcARIsAJEbU9SGJwPiBB-rr8PNr2F4-ocR1zLRxsexemQALE0MhyNil2xIAVYrRekaAmktEALw_wcB"
 },
 
 /* ================= 5–10 LAKHS ================= */
@@ -89,7 +89,7 @@ const designers = [
   timeline: "1-2",
   cost: "₹7–9 Lakhs",
   experience: "8 years",
-  link: "#"
+  link: "https://thedesignhive.in/"
 },
 {
   name: "CasaForma",
@@ -99,7 +99,7 @@ const designers = [
   timeline: "1-2",
   cost: "₹8–10 Lakhs",
   experience: "7 years",
-  link: "#"
+  link: "https://www.casaforma.co/home"
 },
 
 // 3–6 MONTHS
@@ -111,7 +111,7 @@ const designers = [
   timeline: "3-6",
   cost: "₹8–10 Lakhs",
   experience: "8 years",
-  link: "#"
+  link: "https://thedesignhive.in/"
 },
 {
   name: "CasaForma",
@@ -121,7 +121,7 @@ const designers = [
   timeline: "3-6",
   cost: "₹7–9 Lakhs",
   experience: "7 years",
-  link: "#"
+  link: "https://www.casaforma.co/home"
 },
 {
   name: "Urban Aura",
@@ -131,7 +131,7 @@ const designers = [
   timeline: "3-6",
   cost: "₹6–8 Lakhs",
   experience: "6 years",
-  link: "#"
+  link: "https://urbanaurainteriyars.com/"
 },
 
 /* ================= 10–20 LAKHS ================= */
@@ -145,7 +145,7 @@ const designers = [
   timeline: "1-2",
   cost: "₹12–15 Lakhs",
   experience: "8+ years",
-  link: "#"
+  link: "https://noirinterior.in/"
 },
 {
   name: "Aura Atelier",
@@ -165,7 +165,7 @@ const designers = [
   timeline: "1-2",
   cost: "₹15–19 Lakhs",
   experience: "12 years",
-  link: "#"
+  link: "https://www.studiolineainterior.it/"
 },
 
 // 3–6 MONTHS
@@ -177,7 +177,7 @@ const designers = [
   timeline: "3-6",
   cost: "₹14–18 Lakhs",
   experience: "8+ years",
-  link: "https://www.studionoir.com.au/"
+  link: "https://noirinterior.in/"
 },
 {
   name: "Linea Studio",
@@ -187,7 +187,7 @@ const designers = [
   timeline: "3-6",
   cost: "₹16–20 Lakhs",
   experience: "12 years",
-  link: "#"
+  link: "https://www.studiolineainterior.it/"
 },
 {
   name: "Aura Atelier",
@@ -197,7 +197,7 @@ const designers = [
   timeline: "3-6",
   cost: "₹15–18 Lakhs",
   experience: "10 years",
-  link: "#"
+  link: "https://auraatelier.in/"
 },
 
 /* ================= LUXURY ================= */
@@ -221,7 +221,7 @@ const designers = [
   timeline: "1-2",
   cost: "₹30–40 Lakhs",
   experience: "18 years",
-  link: "#"
+  link: "https://auraatelier.in/"
 },
 {
   name: "Opulence Studio",
@@ -231,7 +231,7 @@ const designers = [
   timeline: "1-2",
   cost: "₹28–38 Lakhs",
   experience: "15 years",
-  link: "#"
+  link: "https://theopulenceinteriors.com/"
 },
 
 // 3–6 MONTHS
@@ -243,7 +243,7 @@ const designers = [
   timeline: "3-6",
   cost: "₹35–50 Lakhs",
   experience: "10+ years",
-  link: "#"
+  link: "https://studia-54.com/en?utm_source=google.brand.search&utm_medium=en&utm_campaign=g&utm_content=782970841636&utm_term=studia%2054&gad_source=1&gad_campaignid=23237362709&gbraid=0AAAABByqj1DKntFwYtjiscgxiXfEUALqk&gclid=Cj0KCQiAqeDMBhDcARIsAJEbU9RIBG83wj9bnoRK8aDX7WkxukCnlCqVRuI3pZt2jOC4txaPOaPdpdEaAu6HEALw_wcB"
 },
 {
   name: "Atelier One",
@@ -253,7 +253,7 @@ const designers = [
   timeline: "3-6",
   cost: "₹40–60 Lakhs",
   experience: "18 years",
-  link: "#"
+  link: "https://auraatelier.in/"
 },
 {
   name: "Opulence Studio",
@@ -263,7 +263,7 @@ const designers = [
   timeline: "3-6",
   cost: "₹32–45 Lakhs",
   experience: "15 years",
-  link: "#"
+  link: "https://theopulenceinteriors.com/"
 }
 
 ];

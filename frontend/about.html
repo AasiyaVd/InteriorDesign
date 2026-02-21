@@ -62,7 +62,7 @@
 
     
 .navbar.scrolled .menu {
-  margin-left: 530px; 
+  margin-left: 690px; 
   transition: margin-left 0.3s ease;
 }
     .logo-group {
@@ -94,7 +94,7 @@
       list-style: none;
       display: flex;
       gap: 25px;
-      margin-left: 430px;
+      margin-left: 600px;
     }
 
     .menu a {
@@ -713,6 +713,14 @@ document.querySelector(".newsletter-form")
       alert("Server not reachable");
     }
   });
+
+  document.getElementById("myForm").addEventListener("submit", function(e) {
+    e.preventDefault(); // Prevent page reload
+    
+    // Your submit logic here
+    
+    document.getElementById("myInput").value = ""; // ✅ Clears input
+});
 </script>
 </head>
 </body>

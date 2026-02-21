@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>La Obsidiané | Design Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+<script src="ai-room-check.js"></script>
+
+<style>
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#fff;
+  color:#f5f5f5;
+  overflow:hidden;
+}
+
+/* NAVBAR */
+.navbar{
+  height:60px;
+  background:rgba(75,0,7);
+  border-bottom:1px solid rgba(255,215,160,0.15);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  font-family:'Cormorant Garamond',serif;
+  letter-spacing:1px;
+  font-size:20px;
+}
+
+/* RIGHT ACTION GROUP */
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* RENDER BUTTON (PRIMARY) */
+.render-nav-btn{
+  background:rgba(75,0,7);
+  border:1px solid rgba(255,215,160,0.45);
+  color:#d4af37;
+  padding:8px 16px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:13px;
+  transition:0.3s;
+}
+
+.render-nav-btn:hover{
+  background:#d4af37;
+  color:#000;
+}
+
+/* ICON BUTTONS */
+.nav-icon{
+  background:transparent;
+  border:1px solid rgba(255,215,160,0.25);
+  width:36px;
+  height:36px;
+  border-radius:8px;
+  color:#d4af37;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.nav-icon:hover{
+  background:#d4af37;
+  color:#000;
+}
+
+/* DANGER ACTION (DELETE) */
+.nav-icon.danger{
+  color:#d4af37;
+  border-color:rgba(178,58,58,0.5);
+}
+
+.nav-icon.danger:hover{
+  background:#b23a3a;
+  color:#fff;
+}
+
+/* APP LAYOUT */
+.app{
+  display:grid;
+  grid-template-columns:50px 0px 1fr; /* sidebar | toolpanel | canvas */
+  height:calc(100vh - 60px);
+  transition: grid-template-columns .35s ease;
+}
+
+/* SIDEBAR */
+.sidebar{
+  background:rgba(75, 0, 7);
+  border-right:1px solid rgba(255,215,160,0.12);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:20px;
+  gap:26px;
+  width: 50px;
+}
+
+.side-btn{
+  font-size:20px;
+  color:#d4af37;
+  cursor:pointer;
+  transition:0.3s;
+  background:rgba(75, 0, 7);
+  border: none;
+}
+
+.sidebar i:hover{
+  color:#f5f4f2
+}
+
+/* CANVAS */
+.canvas-area{
+  position:relative;
+  background:#f5f4f2;
+  margin:15px;
+  border-radius:22px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+  height:95%;
+  transition: .35s ease; /* smooth resize */
+}
+
+/* FLOATING ACTION BAR */
+.action-bar{
+  position:absolute;
+  bottom:24px;
+  right:24px;
+  background:#111;
+  border:1px solid rgba(255,215,160,0.2);
+  border-radius:12px;
+  padding:8px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.action-bar button{
+  background:#0e0e0e;
+  border:1px solid rgba(255,215,160,0.25);
+  color:#f5f5f5;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
+  transition:0.3s;
+}
+
+.action-bar button:hover{
+  background:#d4af37;
+  color:#000;
+}
+
+.logo-group{display:flex;gap:10px}
+.crown-img{height:48px}
+.label-img{
+height:30px;
+margin-top: 10px;
+}
+
+/* PROJECT TITLE (CENTER) */
+.project-title-wrapper{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.project-title-input{
+  background:transparent;
+  border:none;
+  outline:none;
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:15px;
+  letter-spacing:1px;
+  color:#f5f5f5;
+  padding:4px 10px;
+  border-radius:6px;
+  transition:0.3s;
+  min-width:220px;
+}
+
+/* Hover & Focus */
+.project-title-input:hover{
+  background:rgba(255,255,255,0.06);
+}
+
+.project-title-input:focus{
+  background:rgba(255,255,255,0.1);
+  box-shadow:0 0 0 1px rgba(255,215,160,0.4);
+}
+
+.sidebar i.active{
+  color:#d4af37;
+}
+
+.canvas{
+  width:100%;height:100%;
+  background:#f5f4f2;border-radius:20px;
+  position:relative;display:flex;justify-content:center;align-items:center
+}
+
+#room{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;border-radius:20px
+}
+.category-item{
+  padding:12px;border-radius:8px;background:#e9e7e3;
+  cursor:pointer;font-size:14px
+}
+.category-item:hover{background:#ddd}
+.furniture-thumb{width:100%;border-radius:10px}
+
+.furniture-card{
+  background:#f5f4f2;
+  border-radius:14px;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+.furniture-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 25px rgba(0,0,0,.08);
+}
+
+.furniture-card img{
+  width:100%;
+  border-radius:12px;
+}
+
+.furniture-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;
+  color:#4b0007;
+  letter-spacing:.3px;
+}
+
+#room{
+  pointer-events:none;
+    z-index:1;
+
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  -user-drag: none;
+
+}
+.canvas {
+  user-select: none;
+}
+.canvas-item{
+  height:auto;
+  max-width:none;  
+  transition: width .05s linear;
+}
+
+.canvas-item.selected{
+  outline:2px solid #c0a062;
+  outline-offset:4px;
+}
+.resize-handle{
+  width:12px;
+  height:12px;
+  background:#c0a062;
+  border-radius:50%;
+  position:absolute;
+  right:-6px;
+  bottom:-6px;
+  cursor:nwse-resize;
+}
+.rotate-btn{
+  position:absolute;
+  top:-12px;
+  left:-12px;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:#c0a062;
+  color:#4b0007;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:30;
+  font-size:13px;
+}
+
+.rotate-btn:hover{
+  background:#d6bb6e;
+}
+
+.canvas-wrapper{
+  position:absolute;
+  z-index:10;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:2px;
+  box-sizing:content-box;
+}
+
+.canvas-wrapper.selected{
+  outline:2px solid #c0a062;
+}
+
+.delete-btn{
+  position:absolute;
+  top:-11px;
+  right:-11px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#6b0008;
+  color:#fff;
+  font-size:16px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:20;
+}
+
+.canvas-wrapper.selected .delete-btn{
+  display:flex;
+}
+
+.canvas-wrapper img{
+  display:block;              /* removes inline gap */
+  max-width:100%;
+  height:auto;
+    position:relative;
+  z-index:1;
+}
+
+#room{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:20px;
+  z-index:1;
+  pointer-events:none;
+}
+
+#furniture-layer{
+  position:absolute;
+  inset:0;
+  z-index:5;
+}
+
+/* TOOL PANEL */
+.tool-panel{
+  background:#f5f4f2;
+  border-right:1px solid rgba(0,0,0,.08);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-panel.active{width:260px}
+
+.tool-panel-header{
+  padding:18px;font-size:14px;font-weight:500;
+  border-bottom:1px solid rgba(0,0,0,.1);
+  display:flex;align-items:center;gap:12px;
+}
+.panel-back{background:none;border:none;cursor:pointer;color:rgba(75,0,7)}
+.panel-back:hover{opacity:.7}
+
+.tool-panel-content{
+  padding:16px;display:grid;gap:14px;color: black;
+  max-height:calc(100vh - 140px);overflow-y:auto;
+}
+.tool-panel-content img{width:100%;border-radius:10px;cursor:pointer}
+
+.canvas-error{
+  position:absolute;
+  top:24px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#6b0008;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:10px;
+  font-size:13px;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s ease;
+  z-index:30;
+}
+.canvas-error.show{
+  opacity:1;
+}
+
+#floor-layer{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:auto;   /* ✅ ALLOW INTERACTION */
+}
+
+#furniture-layer{
+  position:absolute;
+  inset:0;
+  z-index:5;
+}
+
+.rug-item{
+position:absolute;
+  cursor:grab;
+  pointer-events:auto;
+  touch-action:none;      /* 🔑 REQUIRED */
+  user-select:none;
+
+  /* 🔑 FLOOR ILLUSION */
+  transform-origin:center center;
+
+  /* 🔑 SHADOW = CONTACT WITH FLOOR */
+  filter: drop-shadow(0 18px 22px rgba(0,0,0,0.18));
+}
+.rug-item:active{
+  cursor:grabbing;
+}
+
+</style>
+</head>
+
+<body>
+<div class="navbar">
+
+  <!-- LEFT: LOGO -->
+  <a href="home.html" style="text-decoration:none;">
+    <div class="logo-group">
+      <img class="crown-img" src="crown.png">
+      <img class="label-img" src="label.png">
+    </div>
+  </a>
+
+  <!-- CENTER: PROJECT TITLE -->
+  <div class="project-title-wrapper">
+    <input 
+      type="text" 
+      class="project-title-input" 
+      value="Untitled Design"
+      spellcheck="false"
+    />
+  </div>
+
+  <!-- RIGHT: ACTIONS -->
+  <div class="nav-right">
+<button class="render-nav-btn" onclick="goToPreview()" type="button">Preview</button>
+
+<button class="nav-icon" id="undoBtn" title="Undo" type="button">
+  <i class="fa-solid fa-rotate-left"></i>
+</button>
+
+<button class="nav-icon danger" id="deleteBtn" title="Delete" type="button" onclick="deleteAllItems()"
+>
+  <i class="fa-solid fa-trash"></i>
+</button>
+
+<i>
+  <svg
+    class="user-icon"
+    viewBox="0 0 24 24"
+    onclick="event.stopPropagation(); window.location.href='dashboard.html';"
+    style="cursor:pointer"
+  >
+    <circle cx="12" cy="8" r="4"></circle>
+    <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+  </svg>
+</i>
+</div>
+</div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+       <button class="side-btn" data-tooltip="Furniture" onclick="openFurnitureCategories()">
+    <i class="fa-solid fa-couch"></i>
+  </button>
+
+  <button class="side-btn" data-tooltip="Decor" onclick="openDecorCategories()" title="Decor">
+    <i class="fa-solid fa-leaf"></i>
+  </button>
+
+
+</div>
+
+<div class="tool-panel" id="toolPanel">
+  <div class="tool-panel-header">
+    <button class="panel-back" onclick="panelBack()">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <span id="panelTitle"></span>
+  </div>
+  <div class="tool-panel-content" id="panelContent"></div>
+</div>
+
+<div class="canvas-area">
+  <div id="canvas" class="canvas">
+   
+  </div>
+</div>
+
+<script>
+let selectedWrapper = null;
+let selectedItem = null; // image
+let offsetX = 0;
+let offsetY = 0;
+let roomReady = false;
+let activeRug = null;
+let rugOffsetX = 0;
+let rugOffsetY = 0;
+let beforeRoomImage = null;
+let panelState = "root";
+
+
+/* LOAD SAVED TEMPLATE */
+let designState = JSON.parse(sessionStorage.getItem("design_draft")) || {
+  roomImage: null,
+  title: "Untitled Design",
+  furniture: []
+};
+// 🔥 STOP REPEATING FURNITURE
+
+console.log("LOADED DESIGN STATE =", designState);
+
+
+//FURNITURE + DECOR + WALL LIBARIES
+const furnitureLibrary = {
+  sofa:[
+    {id:"sofa1", name:"Obsidian Crest Sofa", src:"furniture/sofa1.png"},
+    {id:"sofa2", name:"Aurum Royale Sofa", src:"furniture/sofa2.png"},
+    {id:"sofa3", name:"Noir Empress Sofa", src:"furniture/sofa3.png"},
+    {id:"sofa6", name:"Velour Monarch Sofa", src:"furniture/sofa6.png"},
+    {id:"sofa5", name:"Imperial Curve Sofa", src:"furniture/sofa5.png"},
+    {id:"sofa4", name:"Ébène Luxe Sofa", src:"furniture/sofa4.png"},
+    {id:"sofa7", name:"Gilded Obsidian Sofa", src:"furniture/sofa7.png"},
+    {id:"sofa8", name:"Midnight Throne Sofa", src:"furniture/sofa8.png"},
+    {id:"sofa9", name:"Velvet Dominion Sofa", src:"furniture/sofa9.png"},
+    {id:"sofa10", name:"Crownstone Signature Sofa", src:"furniture/sofa10.png"}
+  ],
+
+
+  armchair:[
+  {id:"chair1", name:"Obsidian Throne Chair", src:"furniture/chair1.png"},
+  {id:"chair2", name:"Aurum Accent Chair", src:"furniture/chair2.png"},
+  {id:"chair3", name:"Velour Empress Chair", src:"furniture/chair3.png"},
+  {id:"chair4", name:"Noir Sculpt Chair", src:"furniture/chair4.png"},
+  {id:"chair5", name:"Gilded Halo Armchair", src:"furniture/chair5.png"},
+  {id:"chair6", name:"Midnight Crown Chair", src:"furniture/chair6.png"},
+  {id:"chair7", name:"Ébène Royale Chair", src:"furniture/chair7.png"},
+  {id:"chair8", name:"Imperial Curve Armchair", src:"furniture/chair8.png"}
+],
+
+  table1:[
+ {id:"console1", name:"Aurum Obsidian Console", src:"furniture/con1.png"},
+  {id:"console2", name:"Noir Royale Console", src:"furniture/con2.png"},
+  {id:"console3", name:"Gilded Crest Console", src:"furniture/con3.png"},
+  {id:"console4", name:"Ébène Sculpt Console", src:"furniture/con4.png"},
+  {id:"console5", name:"Imperial Vein Console", src:"furniture/con5.png"}
+],
+  table2:[
+{id:"dining1", name:"Aurum Monarch Dining Table", src:"furniture/d1.png"},
+  {id:"dining2", name:"Noir Empress Dining Table", src:"furniture/d2.png"},
+  {id:"dining3", name:"Ébène Royale Dining Table", src:"furniture/d3.png"},
+  {id:"dining4", name:"Gilded Vein Dining Table", src:"furniture/d4.png"},
+  {id:"dining5", name:"Imperial Obsidian Dining Table", src:"furniture/d5.png"} 
+ ],
+
+  bed:[
+{id:"bed1", name:"Obsidian Crown Bed", src:"furniture/bed1.png"},
+  {id:"bed2", name:"Aurum Royale Bed", src:"furniture/bed2.png"},
+  {id:"bed3", name:"Velour Empress Bed", src:"furniture/bed3.png"},
+  {id:"bed4", name:"Noir Canopy Bed", src:"furniture/bed4.png"},
+  {id:"bed5", name:"Ébène Sovereign Bed", src:"furniture/bed5.png"} 
+ ],
+
+ sideboard:[
+  {id:"sideboard1", name:"Aurum Crest Sideboard", src:"furniture/sd1.png"},
+  {id:"sideboard2", name:"Noir Obsidian Sideboard", src:"furniture/sd2.png"},
+  {id:"sideboard3", name:"Ébène Royale Sideboard", src:"furniture/sd3.png"},
+  {id:"sideboard4", name:"Gilded Monarch Sideboard", src:"furniture/sd4.png"},
+  {id:"sideboard5", name:"Imperial Vein Sideboard", src:"furniture/sd5.png"}
+]
+};
+
+const decorLibrary = {
+  plants: [
+    { id: "plant1", src: "furniture/p1.png" },
+    { id: "plant2", src: "furniture/p2.png" },
+    { id: "plant3", src: "furniture/p3.png" },
+    { id: "plant4", src: "furniture/p4.png" },
+    { id: "plant5", src: "furniture/p5.png" },
+    { id: "plant6", src: "furniture/p6.png" },
+    { id: "plant7", src: "furniture/p7.png" },
+    { id: "plant8", src: "furniture/p8.png" }
+  ],
+  lamps: [
+    { id: "lamp1", src: "furniture/lamp1.png" },
+    { id: "lamp2", src: "furniture/lamp2.png" },
+    { id: "lamp3", src: "furniture/lamp3.png" },
+    { id: "lamp4", src: "furniture/lamp4.png" },
+    { id: "lamp5", src: "furniture/lamp5.png" },
+    { id: "lamp6", src: "furniture/lamp6.png" }
+  ],
+  tablelamps: [
+    { id: "tablelamp1", src: "furniture/tblam1.png" },
+    { id: "tablelamp2", src: "furniture/tblam2.png" },
+    { id: "tablelamp3", src: "furniture/tblam3.png" },
+    { id: "tablelamp4", src: "furniture/tblam4.png" },
+    { id: "tablelamp5", src: "furniture/tblam5.png" },
+    { id: "tablelamp6", src: "furniture/tblam6.png" },
+    { id: "tablelamp7", src: "furniture/tblam7.png" },
+  ],
+  chandeliers: [
+    { id: "chandelier1", src: "furniture/chan1.png" },
+    { id: "chandelier2", src: "furniture/chan2.png" },
+    { id: "chandelier3", src: "furniture/chan3.png" },
+    { id: "chandelier4", src: "furniture/chan4.png" },
+    { id: "chandelier5", src: "furniture/chan5.png" },
+    { id: "chandelier6", src: "furniture/chan6.png" },
+    { id: "chandelier7", src: "furniture/chan7.png" }
+  ],
+  wallart: [
+    { id: "art1", src: "furniture/w1.png" },
+    { id: "art2", src: "furniture/w2.png" },
+    { id: "art3", src: "furniture/w3.png" },
+    { id: "art4", src: "furniture/w4.png" },
+    { id: "art5", src: "furniture/w5.png" },
+    { id: "art6", src: "furniture/w6.png" },
+    { id: "art7", src: "furniture/w7.png" }
+  ],
+  rugs: [
+    { id: "rug1", src: "furniture/r1.png" },
+    { id: "rug2", src: "furniture/r2.png" },
+    { id: "rug3", src: "furniture/r3.png" },
+    { id: "rug4", src: "furniture/r4.png" },
+    { id: "rug6", src: "furniture/r6.png" },
+    { id: "rug8", src: "furniture/r8.png" }
+  ]
+};
+
+const canvas=document.getElementById("canvas");
+const panel=document.getElementById("toolPanel");
+const panelTitle=document.getElementById("panelTitle");
+const panelContent=document.getElementById("panelContent");
+
+// LOAD SAVED DESIGN STATE
+const savedState = sessionStorage.getItem("design_draft");
+
+if (savedState) {
+  designState = JSON.parse(savedState);
+  renderCanvas(); // redraw everything correctly
+}
+else {
+  renderCanvas();
+}
+function saveHistory() {
+  sessionStorage.setItem("design_draft", JSON.stringify(designState));
+  console.log("💾 History saved");
+}
+
+//ADD FURNITURE
+function addFurniture(src){
+if(!roomReady){
+    showCanvasError("Please upload or select a room image first");
+    return;
+  }
+
+  const empty = canvas.querySelector(".empty-state");
+  if (empty) empty.remove();
+  saveHistory();
+
+
+  // WRAPPER
+const wrapper = document.createElement("div");
+wrapper.className = "canvas-wrapper design-item";
+
+// 🔥 ADD THIS
+const itemId = Date.now();
+wrapper.dataset.id = itemId;
+
+// Smart stagger spawn
+const existingItems = designState.furniture.length;wrapper.style.left = 200 + (existingItems * 20) + "px";
+wrapper.style.top  = 150 + (existingItems * 20) + "px";
+  
+  // IMAGE BOX (THIS CLIPS THE COLOR)
+  const imageBox = document.createElement("div");
+  imageBox.className = "image-box";
+
+  // IMAGE
+  const img = document.createElement("img");
+  img.src = src;
+  img.className = "canvas-item";
+  img.style.width = "220px";
+  img.style.cursor = "move";
+img.dataset.id = itemId;
+
+  // COLOR OVERLAY (ONLY IMAGE SIZE)
+  const overlay = document.createElement("div");
+  overlay.className = "color-overlay";
+
+  // DELETE BUTTON
+  const del = document.createElement("div");
+  del.className = "delete-btn";
+  del.innerHTML = "&times;";
+  del.onclick = (e)=>{
+    e.stopPropagation();
+    wrapper.remove();
+    selectedWrapper = null;
+    selectedItem = null;
+    hideColorPalette();
+    saveHistory();
+
+  };
+
+  // BUILD STRUCTURE
+  imageBox.appendChild(img);
+  imageBox.appendChild(overlay);
+  wrapper.appendChild(imageBox);
+  wrapper.appendChild(del);
+document.getElementById("furniture-layer").appendChild(wrapper);  selectItem(wrapper);
+
+  /// ✅ SAVE ONLY ONCE
+const item = {
+  id: itemId,
+  src,
+  left: wrapper.style.left,
+  top: wrapper.style.top,
+  width: img.style.width,
+  rotate: 0
+}; 
+
+designState.furniture.push(item); // only this
+persistDesignState();
+
+  // DRAG
+  img.addEventListener("mousedown", e=>{
+    e.stopPropagation();
+    selectItem(wrapper);
+
+    const rect = canvas.getBoundingClientRect();
+    offsetX = e.clientX - rect.left - wrapper.offsetLeft;
+    offsetY = e.clientY - rect.top  - wrapper.offsetTop;
+
+    document.addEventListener("mousemove", dragItem);
+    document.addEventListener("mouseup", stopDrag);
+});
+}
+
+//CREATE FURNITURE
+function createFurnitureFromState(item) {
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "canvas-wrapper design-item";
+  wrapper.style.position = "absolute";
+  wrapper.style.left = item.left;
+  wrapper.style.top = item.top;
+  wrapper.dataset.id = item.id;   // 🔥 IMPORTANT
+
+  const img = document.createElement("img");
+  img.src = item.src;
+  img.className = "canvas-item";
+  img.style.width = item.width;
+  img.style.cursor = "move";
+
+  // 🔥 Restore rotation correctly
+  const rotateValue = item.rotate || 0;
+  img.style.transform = `rotate(${rotateValue}deg)`;
+  img.dataset.rotate = rotateValue;
+
+  wrapper.appendChild(img);
+
+  document.getElementById("furniture-layer").appendChild(wrapper);
+
+  // DRAG
+  img.addEventListener("mousedown", e => {
+    e.stopPropagation();
+    selectItem(wrapper);
+
+    const rect = canvas.getBoundingClientRect();
+    offsetX = e.clientX - rect.left - wrapper.offsetLeft;
+    offsetY = e.clientY - rect.top - wrapper.offsetTop;
+
+    document.addEventListener("mousemove", dragItem);
+    document.addEventListener("mouseup", stopDrag);
+  });
+}
+
+//DRAG ITEM
+function dragItem(e){
+  if(!selectedWrapper) return;
+
+  const rect = canvas.getBoundingClientRect();
+
+    selectedWrapper.style.left = `${e.clientX - rect.left - offsetX}px`;
+selectedWrapper.style.top  = `${e.clientY - rect.top - offsetY}px`;
+}
+
+//STOP DRAG
+function stopDrag(){
+  document.removeEventListener("mousemove", dragItem);
+  document.removeEventListener("mouseup", stopDrag);
+
+  if (selectedWrapper) {
+    updateFurnitureInState(selectedWrapper);
+  }
+}
+
+//SELECT ITEM(WRAPPER)
+function selectItem(wrapper){
+  document.querySelectorAll(".canvas-wrapper").forEach(w=>{
+    w.classList.remove("selected");
+    w.querySelectorAll(".resize-handle, .rotate-btn").forEach(el=>el.remove());
+  });
+
+  selectedWrapper = wrapper;
+  selectedItem = wrapper.querySelector("img");
+
+  wrapper.classList.add("selected");
+
+
+/* Resize handle */
+  const resize = document.createElement("div");
+  resize.className = "resize-handle";
+  resize.addEventListener("mousedown", startResize);
+  wrapper.appendChild(resize);
+
+  /* Rotate button (undo icon) */
+  const rotate = document.createElement("div");
+  rotate.className = "rotate-btn";
+  rotate.innerHTML = '<i class="fa-solid fa-rotate-right"></i>';
+  rotate.addEventListener("mousedown", startRotate);
+  wrapper.appendChild(rotate);
+
+  // ✅ ADD CROSS ICON HERE (JUST BELOW ROTATE)
+  const delBtn = document.createElement("div");
+  delBtn.className = "delete-btn";
+  delBtn.innerHTML = "✕";
+
+  delBtn.onclick = (e) => {
+    e.stopPropagation();
+    wrapper.remove();
+  };
+  wrapper.appendChild(delBtn);
+}
+
+//START & STOP RESIZE
+let startX, startWidth;
+
+function startResize(e){
+  e.stopPropagation();
+  startX = e.clientX;
+  startWidth = selectedItem.getBoundingClientRect().width;
+
+  document.addEventListener("mousemove", resizeItem);
+  document.addEventListener("mouseup", stopResize);
+}
+function resizeItem(e){
+  if(!selectedItem) return;
+
+  const dx = e.clientX - startX;
+  let newWidth = startWidth + dx;
+
+  // 🔒 limits (tweak freely)
+  const MIN = 80;
+  const MAX = 900;
+
+  newWidth = Math.max(MIN, Math.min(MAX, newWidth));
+
+  selectedItem.style.width = newWidth + "px";
+
+}
+function stopResize(){
+  document.removeEventListener("mousemove", resizeItem);
+  document.removeEventListener("mouseup", stopResize);
+
+  if (selectedWrapper) {
+    updateFurnitureInState(selectedWrapper);
+  }
+}
+
+//START & STOP ROTATE
+let startAngle = 0;
+let centerX, centerY;
+
+function startRotate(e){
+  e.stopPropagation();
+
+  const rect = selectedItem.getBoundingClientRect();
+  centerX = rect.left + rect.width / 2;
+  centerY = rect.top + rect.height / 2;
+
+  startAngle = Math.atan2(
+    e.clientY - centerY,
+    e.clientX - centerX
+  );
+
+  document.addEventListener("mousemove", rotateItem);
+  document.addEventListener("mouseup", stopRotate);
+}
+
+function rotateItem(e){
+  if(!selectedItem) return;
+
+  const angle = Math.atan2(
+    e.clientY - centerY,
+    e.clientX - centerX
+  );
+
+  const deg = (angle - startAngle) * (180 / Math.PI);
+  const current = selectedItem.dataset.rotate
+    ? parseFloat(selectedItem.dataset.rotate)
+    : 0;
+
+  const total = current + deg;
+  selectedItem.style.transform = `rotate(${total}deg)`;
+  selectedItem.dataset.rotate = total;
+
+  startAngle = angle;
+}
+
+function stopRotate(){
+  document.removeEventListener("mousemove", rotateItem);
+  document.removeEventListener("mouseup", stopRotate);
+
+  if(!selectedItem) return;
+
+  // Allowed rotation angles
+  const allowedAngles = [0];
+
+  let currentRotation = parseFloat(selectedItem.dataset.rotate) || 0;
+
+  // Normalize angle between 0–360
+  currentRotation = ((currentRotation % 360) + 360) % 360;
+
+  // Find nearest allowed angle
+  let nearestAngle = allowedAngles.reduce((prev, curr) =>
+    Math.abs(curr - currentRotation) < Math.abs(prev - currentRotation)
+      ? curr
+      : prev
+  );
+
+  // 🔒 Snap back to valid angle
+  selectedItem.style.transform = `rotate(${nearestAngle}deg)`;
+  selectedItem.dataset.rotate = nearestAngle;
+
+  if (selectedWrapper) {
+    updateFurnitureInState(selectedWrapper);
+  }
+}
+
+canvas.addEventListener("mousedown", e => {
+  if (!e.target.closest(".canvas-wrapper")) {
+    clearSelection();
+  }
+});
+
+//CLEAR SELECTION
+function clearSelection(){
+  document.querySelectorAll(".canvas-wrapper").forEach(w=>{
+    w.classList.remove("selected");
+
+    w.querySelectorAll(".resize-handle, .rotate-btn").forEach(el=>{
+      el.remove();
+    });
+  });
+  selectedWrapper = null;
+  selectedItem = null;
+}
+
+//FURNITURE + DECOR CATEGORY
+function openFurnitureCategories(){
+ openPanelGrid();
+  panel.classList.add("active");
+  
+  panelState = "furniture-categories";
+  panelTitle.innerText = "Furniture";
+  panelContent.innerHTML=`
+    <div class="category-item" onclick="openFurnitureCategory('sofa')">Sofa</div>
+    <div class="category-item" onclick="openFurnitureCategory('armchair')">Arm Chair</div>
+    <div class="category-item" onclick="openFurnitureCategory('table1')">Consoles Table</div>
+    <div class="category-item" onclick="openFurnitureCategory('table2')">Dinning Table</div>
+    <div class="category-item" onclick="openFurnitureCategory('bed')">Bed</div>
+    <div class="category-item" onclick="openFurnitureCategory('sideboard')">Sidebaord</div>
+  `;
+}
+function openDecorCategory(type){
+  panelState = "decor-items";
+  panelTitle.innerText = type.toUpperCase();
+
+  panelContent.innerHTML = decorLibrary[type]
+    .map(i => {
+      // 🧠 IF rug → addRug
+      const action = type === "rugs"
+  ? `addRug('${i.src}')`
+  : `addFurniture('${i.src}')`;
+
+      return `
+        <div class="furniture-card" onclick="${action}">
+          <img src="${i.src}">
+          <div class="furniture-name">${type}</div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function openFurnitureCategory(type){
+  panelState = "furniture-items";
+
+  panelTitle.innerText = type.toUpperCase();
+
+  panelContent.innerHTML = furnitureLibrary[type]
+    .map(i => `
+      <div class="furniture-card" onclick="addFurniture('${i.src}')">
+        <img src="${i.src}">
+        <div class="furniture-name">${i.name}</div>
+      </div>
+    `).join("");
+}
+
+function openDecorCategories(){
+openPanelGrid();
+  panel.classList.add("active");
+
+  panelState = "decor-categories";
+  panelTitle.innerText = "Decor";
+
+  panelContent.innerHTML = `
+    <div class="category-item" onclick="openDecorCategory('plants')">Plants</div>
+    <div class="category-item" onclick="openDecorCategory('lamps')">Wall Lamps</div>
+    <div class="category-item" onclick="openDecorCategory('tablelamps')">Table Lamps</div>
+    <div class="category-item" onclick="openDecorCategory('chandeliers')">Chandeliers</div>
+    <div class="category-item" onclick="openDecorCategory('wallart')">Wall Art</div>
+  `;
+}
+
+//PANEL BACK
+function panelBack(){
+
+  // 🔙 SUB-LEVEL → MAIN LEVEL
+  if(panelState === "furniture-items"){
+    openFurnitureCategories();
+    return;
+  }
+
+  if(panelState === "decor-items"){
+    openDecorCategories();
+    return;
+  }
+
+  // ❌ MAIN LEVEL → CLOSE PANEL
+  if(
+    panelState === "furniture-categories" ||
+    panelState === "decor-categories" ||
+    panelState === "templates" ||
+    panelState === "wall"
+  ){
+    panel.classList.remove("active");
+    panelContent.innerHTML = "";
+    panelTitle.innerText = "";
+    panelState = "root";
+
+    closePanelGrid(); // ✅ THIS WAS MISSING
+    return;
+  }
+}
+
+//SHOW CANVAS ERROR
+function showCanvasError(msg) {
+  const el = document.getElementById("canvasError");
+  if (!el) return;
+
+  el.innerText = msg;
+  el.classList.add("show");
+
+  clearTimeout(el._timeout);
+  el._timeout = setTimeout(() => {
+    el.classList.remove("show");
+  }, 2500);
+}
+
+//HIDE EMPTY STATE
+function hideEmptyState(){
+  const empty = canvas.querySelector(".empty-state");
+  if(empty) empty.remove();
+}
+
+//PERSIST DESIGN STATE
+function persistDesignState() {
+  sessionStorage.setItem(
+    "design_draft",
+    JSON.stringify(designState)
+  );
+}
+
+function updateFurnitureInState(wrapper) {
+
+  const id = wrapper.dataset.id;
+  if (!id) return;
+
+  const item = designState.furniture.find(f => f.id == id);
+  if (!item) return;
+
+  const img = wrapper.querySelector("img");
+
+  item.left = wrapper.style.left;
+  item.top = wrapper.style.top;
+  item.width = img.style.width;
+  item.rotate = parseFloat(img.dataset.rotate) || 0;
+
+  persistDesignState();
+}
+const app = document.querySelector(".app");
+
+//OPEN & CLOSE PANEL GRID
+function openPanelGrid(){
+  app.style.gridTemplateColumns = "50px 260px 1fr";
+}
+
+function closePanelGrid(){
+  app.style.gridTemplateColumns = "50px 0px 1fr";
+}
+
+//ADD + DRAG + STOP
+function addRug(src){
+  if(!roomReady){
+    showCanvasError("Upload a room image first");
+    return;
+  }
+
+  const floor = document.getElementById("floor-layer");
+  const canvasRect = canvas.getBoundingClientRect();
+
+  const rug = document.createElement("img");
+  rug.src = src;
+  rug.className = "rug-item";
+
+  rug.style.width = "420px";
+  rug.style.left = (canvasRect.width / 2 - 210) + "px";
+  rug.style.top = (canvasRect.height * 0.68) + "px";
+  rug.style.transform = "perspective(800px) rotateX(65deg)";
+
+  let offsetX = 0;
+  let offsetY = 0;
+
+  rug.addEventListener("pointerdown", e => {
+    e.preventDefault();
+
+    document.querySelectorAll(".rug-item")
+      .forEach(r => r.classList.remove("selected"));
+
+    rug.classList.add("selected");
+
+    const rect = rug.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
+    rug.setPointerCapture(e.pointerId);
+  });
+
+  rug.addEventListener("pointermove", e => {
+    if(!rug.hasPointerCapture(e.pointerId)) return;
+
+    const canvasRect = canvas.getBoundingClientRect();
+    rug.style.left = (e.clientX - canvasRect.left - offsetX) + "px";
+    rug.style.top  = (e.clientY - canvasRect.top  - offsetY) + "px";
+  });
+
+  rug.addEventListener("pointerup", e => {
+    rug.releasePointerCapture(e.pointerId);
+  });
+
+  rug.addEventListener("wheel", e => {
+    e.preventDefault();
+    rug.style.width =
+      (rug.offsetWidth + (e.deltaY < 0 ? 20 : -20)) + "px";
+  });
+
+  floor.appendChild(rug);
+
+}
+
+function dragRug(e){
+  if(!activeRug) return;
+
+  const canvasRect = canvas.getBoundingClientRect();
+
+  activeRug.style.left =
+    (e.clientX - canvasRect.left - rugOffsetX) + "px";
+
+  activeRug.style.top =
+    (e.clientY - canvasRect.top - rugOffsetY) + "px";
+}
+
+function stopDragRug(){
+  document.removeEventListener("mousemove", dragRug);
+  document.removeEventListener("mouseup", stopDragRug);
+  activeRug = null;
+}
+
+async function goToPreview() {
+  if (!roomReady) {
+    showCanvasError("Please select a room template first");
+    return;
+  }
+
+  const canvasEl = document.getElementById("canvas");
+
+  /* ================= BEFORE ================= */
+  const beforeImage = designState.roomImage;
+
+  /* ================= AFTER ================= */
+  const afterCanvas = await html2canvas(canvasEl, {
+    backgroundColor: null,
+    useCORS: true,
+    scale: window.devicePixelRatio || 1
+  });
+
+  const afterImage = afterCanvas.toDataURL("image/png");
+
+  /* ================= SAVE ================= */
+  sessionStorage.setItem("preview_before", beforeImage);
+  sessionStorage.setItem("preview_after", afterImage);
+
+  window.location.href = "preview.html";
+}
+
+  //TOAST MESSAGE
+  function showToast(msg) {
+  const toast = document.getElementById("toast");
+
+  toast.innerText = msg;
+  toast.style.opacity = "1";
+  toast.style.transform = "translateY(0)";
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+  }, 2200);
+}
+
+//RENDER CANVAS
+function renderCanvas() {
+
+  canvas.innerHTML = "";
+
+  if (designState.roomImage) {
+    const room = document.createElement("img");
+    room.id = "room";
+    room.src = designState.roomImage;
+    canvas.appendChild(room);
+
+    roomReady = true;
+  }
+
+  const floor = document.createElement("div");
+  floor.id = "floor-layer";
+  canvas.appendChild(floor);
+
+  const furnitureLayer = document.createElement("div");
+  furnitureLayer.id = "furniture-layer";
+  canvas.appendChild(furnitureLayer);
+
+  // 🔥 Rebuild ALL saved furniture
+  designState.furniture.forEach(item => {
+    createFurnitureFromState(item);
+  });
+}
+
+//SAVE LOCAL DRAFT
+function saveLocalDraft() {
+  localStorage.setItem(
+    "design_draft",
+    JSON.stringify(designState)
+  );
+}
+
+//UNDO
+function undo() {
+  if (historyStack.length === 0) return;
+
+  const prev = historyStack.pop();
+  designState = JSON.parse(prev);
+
+  selectedWrapper = null;
+  selectedItem = null;
+
+  renderCanvas();
+}
+
+document.getElementById("undoBtn").addEventListener("click", undo);
+
+const historyStack = [];
+const MAX_HISTORY = 30;
+
+function saveHistory() {
+  historyStack.push(JSON.stringify(designState));
+  if (historyStack.length > MAX_HISTORY) {
+    historyStack.shift();
+  }
+}
+
+function deleteAllItems() {
+  console.log("🔥 DELETE ALL FURNITURE");
+
+  // 1️⃣ Clear state
+  designState.furniture = [];
+
+  // 2️⃣ Remove ONLY furniture & rugs
+  document.querySelectorAll(".canvas-wrapper").forEach(el => el.remove());
+  document.querySelectorAll(".rug-item").forEach(el => el.remove());
+
+  // 3️⃣ Keep room image untouched
+  selectedWrapper = null;
+  selectedItem = null;
+
+  // 4️⃣ Persist
+  persistDesignState();
+}
+
+
+</script>
+
+</body>
+</html>

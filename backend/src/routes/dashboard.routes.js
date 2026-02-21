@@ -6,6 +6,19 @@ const prisma = require("../prisma");
 router.get("/stats", authenticateToken, async (req, res) => {
   try {
     const userId = Number(req.user.id);
+    
+    // ✅ Fetch user info
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        firstName: true,
+        lastName: true,
+        email: true,
+        contact: true,
+      },
+    });
+
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     const designsCreated = await prisma.design.count({
       where: { userId }
@@ -16,8 +29,10 @@ router.get("/stats", authenticateToken, async (req, res) => {
 });
 
     res.json({
+      user,
+      stats:{
       designsCreated,
-      roomsDesigned
+      roomsDesigned},
     });
 
   } catch (err) {

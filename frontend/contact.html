@@ -59,7 +59,7 @@
 
     
 .navbar.scrolled .menu {
-  margin-left: 570px; 
+  margin-left: 700px; 
   transition: margin-left 0.3s ease;
 }
     .logo-group {
@@ -91,7 +91,7 @@
       list-style: none;
       display: flex;
       gap: 25px;
-      margin-left: 490px;
+      margin-left: 630px;
     }
 
     .menu a {
@@ -660,27 +660,24 @@ body {
       </div>
 
       <!-- FEATURES -->
-      <div class="footer-col" style="  font-family: poppins;
-">
+      <div class="footer-col footer-brand">
         <h4>FEATURES</h4>
         <ul>
-          <li><a href="#ai">AI Room Design</a></li>
-          <li><a href="#drag">Drag & Drop Furniture</a></li>
-          <li><a href="#recommend">Smart Recommendations</a></li>
-          <li><a href="#beforeafter">Before & After Views</a></li>
+          <li>AI Room Design</li>
+          <li>Drag & Drop Furniture</li>
+          <li>Smart Recommendations</li>
+          <li>Before & After Views</li>
         </ul>
       </div>
 
       <!-- NEWSLETTER -->
       <div class="footer-col footer-newsletter">
-        <p class="newsletter-text" style="  font-family: poppins;
-">
+        <p class="newsletter-text">
           RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
         </p>
 
-        <form class="newsletter-form" style="  font-family: poppins;
-">
-          <input type="email" placeholder="ENTER YOUR EMAIL*" required />
+        <form id="myForm"    class="newsletter-form">
+          <input id="myInput" type="email" placeholder="ENTER YOUR EMAIL*" required />
           <button type="submit">SUBSCRIBE</button>
         </form>
 
@@ -797,6 +794,14 @@ document.getElementById("contactForm")
       alert("Server not reachable");
     }
   });
+
+  document.getElementById("myForm").addEventListener("submit", function(e) {
+    e.preventDefault(); // Prevent page reload
+    
+    // Your submit logic here
+    
+    document.getElementById("myInput").value = ""; // ✅ Clears input
+});
 </script>
 
 </body>

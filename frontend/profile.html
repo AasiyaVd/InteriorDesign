@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Profile | La Obsidiané</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+    /* NAVBAR */
+.navbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:70px;
+  background:rgba(75,0,7);
+  color:#d0b75b;
+  display:flex;
+  align-items:center;
+  padding:0 60px;
+  z-index:1000;
+  font-family:'Cormorant Garamond', serif;
+}
+
+.logo-group{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.crown-img{
+  height:48px;
+}
+
+.label-img{
+  height:30px;
+}
+
+    .menu {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin-left: 780px;
+
+    }
+.menu a{
+  color:#d0b75b;
+  font-size:16px;
+  text-decoration:none;
+}
+
+.menu a:hover{
+  opacity:0.7;
+}
+
+.user-icon{
+  width:22px;
+  height:22px;
+  stroke:#d0b75b;
+  stroke-width:1.4;
+  fill:none;
+}
+/* SVG ICON */
+.user-icon {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;   /* INHERITS NAVBAR COLOR */
+  stroke-width: 1.4;
+  fill: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+
+       .logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-icon {
+  width: 22px;
+  height: 22px;
+  stroke: #d0b75b;
+  stroke-width: 1.6;
+  fill: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.logout-btn:hover .logout-icon {
+  color:  #d0b75b ;
+  transform: translateX(2px);
+}
+
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#f5f4f2;
+  color:#1a1a1a;
+}
+
+/* ===== FRAME ===== */
+.frame-wrapper{
+  margin-top:110px;
+  padding:20px;
+  display:flex;
+  justify-content:center;
+
+}
+.dashboard-frame{
+  background:#4b0007;
+  padding:20px;
+  width:80%;
+  border-radius:20px;
+}
+
+/* ===== DASHBOARD GRID ===== */
+.dashboard{
+  background:#fff;
+  border-radius:16px;
+  display:grid;
+  grid-template-columns:220px 1fr;
+    height:500px ;
+    }
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  background:#5a0a12;
+  padding:24px;
+  color:#fff;
+}
+.sidebar h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;
+  margin-bottom:24px;
+}
+.sidebar ul{list-style:none}
+.sidebar li{margin-bottom:14px}
+.sidebar a{
+  color:#fff;
+  text-decoration:none;
+  font-size:14px;
+  opacity:.85;
+}
+.sidebar a:hover{opacity:1}
+
+/* ===== MAIN ===== */
+.main{
+  padding:40px;
+}
+
+/* HEADER */
+.profile-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.profile-header h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:30px;
+}
+
+/* PROFILE CARD */
+.profile-card{
+  background:#fafafa;
+  padding:30px;
+  border-radius:14px;
+  box-shadow:0 10px 26px rgba(0,0,0,.05);
+}
+
+/* FORM */
+.profile-form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+}
+
+.form-group label{
+  font-size:12px;
+  color:#666;
+  margin-bottom:6px;
+}
+
+.form-group input{
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:14px;
+}
+
+.form-group input:disabled{
+  background:#f3f3f3;
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+/* BUTTONS */
+.edit-btn{
+  padding:8px 18px;
+  border-radius:20px;
+  border:1px solid #4b0007;
+  background:transparent;
+  cursor:pointer;
+  font-size:12px;
+  transition:.3s;
+}
+.edit-btn:hover{
+  background:#4b0007;
+  color:#fff;
+}
+
+.action-buttons{
+  margin-top:25px;
+  display:none;
+  gap:12px;
+}
+
+.btn{
+  padding:10px 22px;
+  border-radius:20px;
+  font-size:12px;
+  border:none;
+  cursor:pointer;
+}
+.btn-primary{
+  background:#4b0007;
+  color:#fff;
+}
+.btn-secondary{
+  background:#ddd;
+}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+  .profile-form{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<script src="auth.js"></script>
+<script src="designers.data.js"></script> <!-- 👈 MUST be before logic -->
+<script src="make-it-real.js"></script> 
+<script>
+
+  // 🔄 Navbar auth state
+  document.addEventListener("DOMContentLoaded", setupNavbarAuth);
+</script>
+
+
+<nav class="navbar">
+    <a href="home.html">
+  <div class="logo-group">
+    <img class="crown-img" src="crown.png" alt="Crown Logo">
+    <img class="label-img" src="label.png" alt="La Obsidiané">
+  </div>
+</a>
+  <ul class="menu">
+      <li><a href="#">AI INSIGHTS </a></li>
+      <li><a href="template.html">DESIGN</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="contact.html">CONTACT</a></li>
+      <li id="signupNav"><a href="signup.html">SIGN UP</a></li>
+
+<li class="user-dashboard" id="dashboardNav" style="display:none">
+  <a href="dashboard.html" aria-label="User Dashboard">
+    <svg class="user-icon" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+    </svg>
+  </a>
+</li>
+
+<li id="logoutNav" style="display:none">
+  <button class="logout-btn" id="logoutBtn">
+    <svg class="logout-icon" viewBox="0 0 24 24" fill="none">
+      <path d="M16 17l5-5-5-5"/>
+      <path d="M21 12H9"/>
+      <path d="M13 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8"/>
+    </svg>
+  </button>
+</li>
+
+
+    </ul>
+  </ul>
+</nav>
+
+<div class="frame-wrapper">
+  <div class="dashboard-frame">
+    <div class="dashboard">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <h3>My Account</h3>
+        <ul>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="main">
+
+        <div class="profile-header">
+          <h1>My Profile</h1>
+          <button class="edit-btn" id="editBtn">Edit Profile</button>
+        </div>
+
+        <div class="profile-card">
+          <form class="profile-form" id="profileForm">
+
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="firstName" disabled>
+            </div>
+
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="lastName" disabled>
+            </div>
+
+            <div class="form-group full">
+              <label>Email</label>
+              <input type="email" id="email" disabled>
+            </div>
+
+            <div class="form-group full" id="passwordGroup" style="display:none;">
+  <label>New Password</label>
+  <input type="password" id="password" 
+         placeholder="Leave blank to keep current password">
+</div>
+
+          </form>
+
+          <div class="action-buttons" id="actionButtons">
+            <button class="btn btn-primary" id="saveBtn">Save Changes</button>
+            <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const editBtn = document.getElementById("editBtn");
+const saveBtn = document.getElementById("saveBtn");
+const cancelBtn = document.getElementById("cancelBtn");
+const actionButtons = document.getElementById("actionButtons");
+const inputs = document.querySelectorAll("#profileForm input");
+
+const passwordGroup = document.getElementById("passwordGroup");
+
+function toggleEdit(enable){
+  inputs.forEach(input=>{
+    if(input.id !== "email"){
+      input.disabled = !enable;
+    }
+  });
+
+  // Show password only in edit mode
+  passwordGroup.style.display = enable ? "flex" : "none";
+
+  actionButtons.style.display = enable ? "flex" : "none";
+  editBtn.style.display = enable ? "none" : "inline-block";
+
+  if(!enable){
+    document.getElementById("password").value = ""; // clear password
+  }
+}
+editBtn.addEventListener("click", () => {
+  toggleEdit(true);
+});
+
+cancelBtn.addEventListener("click", () => {
+  toggleEdit(false);
+  loadProfile();
+});
+async function loadProfile(){
+  try{
+    const token = sessionStorage.getItem("token");
+    if(!token) return;
+
+    const res = await fetch("http://localhost:5000/api/dashboard/stats",{
+      headers:{Authorization:`Bearer ${token}`}
+    });
+
+    const data = await res.json();
+    const user = data.user;
+
+    document.getElementById("firstName").value = user.firstName;
+    document.getElementById("lastName").value = user.lastName;
+    document.getElementById("email").value = user.email;
+
+  }catch(err){
+    console.error("Profile load error:",err);
+  }
+}
+
+saveBtn.onclick = async ()=>{
+  try{
+    const token = sessionStorage.getItem("token");
+
+ const updatedData = {
+  firstName: document.getElementById("firstName").value,
+  lastName: document.getElementById("lastName").value
+};
+
+const newPassword = document.getElementById("password").value;
+if(newPassword.trim() !== ""){
+  updatedData.password = newPassword;
+}
+
+    const res = await fetch("http://localhost:5000/api/user/update",{
+      method:"PUT",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:`Bearer ${token}`
+      },
+      body:JSON.stringify(updatedData)
+    });
+
+    const data = await res.json();
+
+    if(!res.ok){
+      alert(data.message || "Update failed");
+      return;
+    }
+
+    alert("Profile updated successfully ✨");
+    toggleEdit(false);
+    loadProfile();
+
+  }catch(err){
+    console.error("Profile update error:",err);
+  }
+};
+
+document.addEventListener("DOMContentLoaded", loadProfile);
+</script>
+
+</body>
+</html>

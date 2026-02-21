@@ -257,7 +257,7 @@
 
       
   .navbar.scrolled .menu {
-    margin-left: 610px; 
+    margin-left: 760px; 
     transition: margin-left 0.3s ease;
   }
       .logo-group {
@@ -289,7 +289,7 @@
         list-style: none;
         display: flex;
         gap: 25px;
-        margin-left: 510px;
+        margin-left: 680px;
       }
 
       .menu a {
@@ -714,9 +714,7 @@
         <aside class="sidebar">
           <h3>My Account</h3>
           <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">My Designs</a></li>
-            <li><a href="#">Profile</a></li>
+            <li><a href="profile.html">Profile</a></li>
   <li>
     <a href="#" onclick="logout()">Logout</a>
   </li>
@@ -743,11 +741,6 @@
       <h4>Rooms Designed</h4>
       <p id="roomsCount">0</p>
     </div>
-
-    <div class="stat-box">
-      <h4>AI Credits Left</h4>
-      <p>12</p> <!-- static -->
-    </div>
   </div>
 
           <!-- DESIGNS -->
@@ -766,9 +759,12 @@
               <a href="template.html" class="action-btn">Create Design</a>
             </div>
             <div class="action-box">
-              <h4>Account</h4>
-              <p>User Name<br>user@email.com</p>
-            </div>
+  <h4>Account</h4>
+  <p>
+    <span id="userName">User Name</span><br>
+    <span id="userEmail">user@email.com</span>
+  </p>
+</div>
           </div>
 
         </main>
@@ -804,26 +800,27 @@
         </div>
 
         <!-- FEATURES -->
-        <div class="footer-col">
-          <h4>FEATURES</h4>
-          <ul>
-            <li><a href="#ai">AI Room Design</a></li>
-            <li><a href="#drag">Drag & Drop Furniture</a></li>
-            <li><a href="#recommend">Smart Recommendations</a></li>
-            <li><a href="#beforeafter">Before & After Views</a></li>
-          </ul>
-        </div>
+      <div class="footer-col footer-brand">
+        <h4>FEATURES</h4>
+        <ul>
+          <li>AI Room Design</li>
+          <li>Drag & Drop Furniture</li>
+          <li>Smart Recommendations</li>
+          <li>Before & After Views</li>
+        </ul>
+      </div>
 
-        <!-- NEWSLETTER -->
-        <div class="footer-col footer-newsletter">
-          <p class="newsletter-text">
-            RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
-          </p>
+      <!-- NEWSLETTER -->
+      <div class="footer-col footer-newsletter">
+        <p class="newsletter-text">
+          RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
+        </p>
 
-          <form class="newsletter-form">
-            <input type="email" placeholder="ENTER YOUR EMAIL*" required />
-            <button type="submit">SUBSCRIBE</button>
-          </form>
+        <form id="myForm"    class="newsletter-form">
+          <input id="myInput" type="email" placeholder="ENTER YOUR EMAIL*" required />
+          <button type="submit">SUBSCRIBE</button>
+        </form>
+
 
           <h5>FOLLOW US</h5>
           <div class="social-icons">
@@ -989,7 +986,7 @@
 
     sessionStorage.setItem("activeDesignId", designId);
 
-    window.location.href = "template.html";
+    window.location.href = "furniture.html";
   };
 
 
@@ -1112,6 +1109,48 @@
   }
 
   document.addEventListener("DOMContentLoaded", loadDashboardStats);
+
+  async function loadUserProfile() {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) return;
+
+    const res = await fetch("http://localhost:5000/api/dashboard/stats", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch user");
+
+    const data = await res.json();
+
+    const user = data.user;
+
+    document.getElementById("userName").innerText =
+      `${user.firstName} ${user.lastName}`;
+
+    document.getElementById("userEmail").innerText =
+      user.email;
+
+    document.getElementById("designsCount").innerText =
+      data.stats.designsCreated;
+
+    document.getElementById("roomsCount").innerText =
+      data.stats.roomsDesigned;
+
+  } catch (err) {
+    console.error("Error loading user profile:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadUserProfile);
+
+document.getElementById("myForm").addEventListener("submit", function(e) {
+    e.preventDefault(); // Prevent page reload
+    
+    // Your submit logic here
+    
+    document.getElementById("myInput").value = ""; // ✅ Clears input
+});
 
   </script>
 
