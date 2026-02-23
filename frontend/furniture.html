@@ -478,6 +478,11 @@ position:absolute;
 
   <!-- RIGHT: ACTIONS -->
   <div class="nav-right">
+    <span id="budgetDisplay" style="color:#d4af37; font-size:15px; font-family: poppins;"></span>
+
+<button class="nav-icon" onclick="changeBudget()" title="Change Budget">
+  <i class="fa-solid fa-indian-rupee-sign"></i>
+</button>
 <button class="render-nav-btn" onclick="goToPreview()" type="button">Preview</button>
 
 <button class="nav-icon" id="undoBtn" title="Undo" type="button">
@@ -507,11 +512,11 @@ position:absolute;
   <!-- SIDEBAR -->
   <div class="sidebar">
 
-       <button class="side-btn" data-tooltip="Furniture" onclick="openFurnitureCategories()">
+       <button class="side-btn" data-tooltip="Furniture" onclick="handleFurnitureClick()">
     <i class="fa-solid fa-couch"></i>
   </button>
 
-  <button class="side-btn" data-tooltip="Decor" onclick="openDecorCategories()" title="Decor">
+  <button class="side-btn" data-tooltip="Decor" onclick="handleDecorClick()" title="Decor">
     <i class="fa-solid fa-leaf"></i>
   </button>
 
@@ -547,6 +552,8 @@ let rugOffsetX = 0;
 let rugOffsetY = 0;
 let beforeRoomImage = null;
 let panelState = "root";
+let selectedBudgetTier = null;
+let budgetLocked = false;
 
 const roomcanvas = document.getElementById("roomContainer");
 const roomImg = document.getElementById("roomImage"); // ✅ declared here
@@ -575,16 +582,16 @@ window.onload = () => {
 //FURNITURE + DECOR + WALL LIBARIES
 const furnitureLibrary = {
   sofa:[
-    {id:"sofa1", name:"Obsidian Crest Sofa", src:"furniture/sofa1.png"},
-    {id:"sofa2", name:"Aurum Royale Sofa", src:"furniture/sofa2.png"},
-    {id:"sofa3", name:"Noir Empress Sofa", src:"furniture/sofa3.png"},
-    {id:"sofa6", name:"Velour Monarch Sofa", src:"furniture/sofa6.png"},
-    {id:"sofa5", name:"Imperial Curve Sofa", src:"furniture/sofa5.png"},
-    {id:"sofa4", name:"Ébène Luxe Sofa", src:"furniture/sofa4.png"},
-    {id:"sofa7", name:"Gilded Obsidian Sofa", src:"furniture/sofa7.png"},
-    {id:"sofa8", name:"Midnight Throne Sofa", src:"furniture/sofa8.png"},
-    {id:"sofa9", name:"Velvet Dominion Sofa", src:"furniture/sofa9.png"},
-    {id:"sofa10", name:"Crownstone Signature Sofa", src:"furniture/sofa10.png"}
+    {id:"sofa1", name:"Obsidian Crest Sofa",tier:"under5", src:"furniture/sofa1.png" },
+    {id:"sofa2", name:"Aurum Royale Sofa", tier:"under5",src:"furniture/sofa2.png"},
+    {id:"sofa3", name:"Noir Empress Sofa", tier:"under5",src:"furniture/sofa3.png"},
+    {id:"sofa6", name:"Velour Monarch Sofa", tier:"5to10",src:"furniture/sofa6.png"},
+    {id:"sofa5", name:"Imperial Curve Sofa",tier:"5to10", src:"furniture/sofa5.png"},
+    {id:"sofa4", name:"Ébène Luxe Sofa", tier:"10to20",src:"furniture/sofa4.png"},
+    {id:"sofa7", name:"Gilded Obsidian Sofa", tier:"10to20",src:"furniture/sofa7.png"},
+    {id:"sofa8", name:"Midnight Throne Sofa", tier:"luxury",src:"furniture/sofa8.png"},
+    {id:"sofa9", name:"Velvet Dominion Sofa", tier:"luxury",src:"furniture/sofa9.png"},
+    {id:"sofa10", name:"Crownstone Signature Sofa", tier:"luxury",src:"furniture/sofa10.png"}
   ],
 
 
@@ -760,7 +767,7 @@ img.dataset.id = itemId;
   imageBox.appendChild(overlay);
   wrapper.appendChild(imageBox);
   wrapper.appendChild(del);
-  canvas.appendChild(wrapper);
+document.getElementById("furniture-layer").appendChild(wrapper);
   selectItem(wrapper);
 
   /// ✅ SAVE ONLY ONCE
@@ -792,27 +799,30 @@ persistDesignState();
 
 //CREATE FURNITURE
 function createFurnitureFromState(item) {
+
   const wrapper = document.createElement("div");
-wrapper.className = "canvas-wrapper design-item";
-  wrapper.style.position = "absolute"; // 🔥 REQUIRED
+  wrapper.className = "canvas-wrapper design-item";
+  wrapper.style.position = "absolute";
   wrapper.style.left = item.left;
   wrapper.style.top = item.top;
 
   const img = document.createElement("img");
   img.src = item.src;
-  img.dataset.id = item.id;   // ✅ ADD HERE
+  img.dataset.id = item.id;
   img.className = "canvas-item";
   img.style.width = item.width;
-  img.style.transform = `rotate(${item.rotate}deg)`;
+  img.style.transform = `rotate(${item.rotate || 0}deg)`;
+  img.dataset.rotate = item.rotate || 0;
   img.style.cursor = "move";
 
   wrapper.appendChild(img);
   document.getElementById("furniture-layer").appendChild(wrapper);
 
-
+  // enable drag
   img.addEventListener("mousedown", e => {
     e.stopPropagation();
     selectItem(wrapper);
+
     const rect = canvas.getBoundingClientRect();
     offsetX = e.clientX - rect.left - wrapper.offsetLeft;
     offsetY = e.clientY - rect.top - wrapper.offsetTop;
@@ -821,7 +831,6 @@ wrapper.className = "canvas-wrapper design-item";
     document.addEventListener("mouseup", stopDrag);
   });
 }
-
 //DRAG ITEM
 function dragItem(e){
   if(!selectedWrapper) return;
@@ -1024,8 +1033,12 @@ function openDecorCategory(type){
   panelState = "decor-items";
   panelTitle.innerText = type.toUpperCase();
 
-  panelContent.innerHTML = decorLibrary[type]
-    .map(i => {
+panelContent.innerHTML = decorLibrary[type]
+  .filter(item => {
+    if(selectedBudgetTier === "luxury") return true;
+    return item.tier === selectedBudgetTier;
+  })
+  .map(i => {
       // 🧠 IF rug → addRug
       const action = type === "rugs"
   ? `addRug('${i.src}')`
@@ -1046,13 +1059,17 @@ function openFurnitureCategory(type){
 
   panelTitle.innerText = type.toUpperCase();
 
-  panelContent.innerHTML = furnitureLibrary[type]
-    .map(i => `
-      <div class="furniture-card" onclick="addFurniture('${i.src}')">
-        <img src="${i.src}">
-        <div class="furniture-name">${i.name}</div>
-      </div>
-    `).join("");
+panelContent.innerHTML = furnitureLibrary[type]
+  .filter(item => {
+    if(selectedBudgetTier === "luxury") return true;
+    return item.tier === selectedBudgetTier;
+  })
+  .map(i => `
+    <div class="furniture-card" onclick="addFurniture('${i.src}')">
+      <img src="${i.src}">
+      <div class="furniture-name">${i.name}</div>
+    </div>
+  `).join("");
 }
 
 function openDecorCategories(){
@@ -1073,7 +1090,12 @@ openPanelGrid();
 
 //PANEL BACK
 function panelBack(){
-
+if(panelState === "budget"){
+  panel.classList.remove("active");
+  closePanelGrid();
+  panelState = "root";
+  return;
+}
   // 🔙 SUB-LEVEL → MAIN LEVEL
   if(panelState === "furniture-items"){
     openFurnitureCategories();
@@ -1130,20 +1152,21 @@ function persistDesignState() {
   );
 }
 
-function updateFurnitureInState(el) {
-  const id = el.dataset.id;
+function updateFurnitureInState(wrapper) {
 
-  const item = designState.furniture.find(f => f.id === id);
+  const img = wrapper.querySelector("img");
+  const id = img.dataset.id;
+
+  const item = designState.furniture.find(f => f.id == id);
   if (!item) return;
 
-  item.left = el.style.left;
-  item.top = el.style.top;
-  item.transform = el.style.transform;
-  item.zIndex = el.style.zIndex;
+  item.left = wrapper.style.left;
+  item.top = wrapper.style.top;
+  item.width = img.style.width;
+  item.rotate = parseFloat(img.dataset.rotate) || 0;
 
   persistDesignState();
 }
-
 const app = document.querySelector(".app");
 
 //OPEN & CLOSE PANEL GRID
@@ -1348,12 +1371,111 @@ function deleteAllItems() {
   // 3️⃣ Keep room image untouched
   selectedWrapper = null;
   selectedItem = null;
-
+selectedBudgetTier = null;
+budgetLocked = false;
+sessionStorage.removeItem("selectedBudgetTier");
   // 4️⃣ Persist
   persistDesignState();
 }
 
+//budget
+function handleFurnitureClick(){
+  if(!budgetLocked){
+    showBudgetSelection("furniture");
+    return;
+  }
+  openFurnitureCategories();
+}
 
+function handleDecorClick(){
+  if(!budgetLocked){
+    showBudgetSelection("decor");
+    return;
+  }
+  openDecorCategories();
+}
+function showBudgetSelection(type){
+
+  panel.classList.add("active");
+  openPanelGrid();
+
+  panelState = "budget";
+  panelTitle.innerText = "Interior Budget";
+
+  panelContent.innerHTML = `
+    
+    <div style="font-weight:600; font-size:15px; ">
+      Select Your Budget
+    </div>
+
+    <div style="font-size:12px; color:#666; margin-bottom:14px;">
+      Choose the total investment range for your interior design.
+    </div>
+
+    <div class="category-item" onclick="setBudget('under5','${type}')">
+      Under ₹5 Lakhs
+    </div>
+
+    <div class="category-item" onclick="setBudget('5to10','${type}')">
+      ₹5 – 10 Lakhs
+    </div>
+
+    <div class="category-item" onclick="setBudget('10to20','${type}')">
+      ₹10 – 20 Lakhs
+    </div>
+
+    <div class="category-item" onclick="setBudget('luxury','${type}')">
+      Luxury / No Limit
+    </div>
+  `;
+}
+function setBudget(tier, type){
+
+  selectedBudgetTier = tier;
+  budgetLocked = true;
+
+  updateBudgetDisplay();
+
+  if(type === "furniture"){
+    openFurnitureCategories();
+  } else {
+    openDecorCategories();
+  }
+}
+function updateBudgetDisplay(){
+  const display = document.getElementById("budgetDisplay");
+
+  if(!selectedBudgetTier){
+    display.innerText = "";
+    return;
+  }
+
+  const map = {
+    under5: "Under ₹5L",
+    "5to10": "₹5–10L",
+    "10to20": "₹10–20L",
+    luxury: "Luxury"
+  };
+
+  display.innerText = map[selectedBudgetTier];
+}
+function changeBudget(){
+
+  if(designState.furniture.length > 0){
+    const confirmChange = confirm(
+      "Changing budget will clear current design. Continue?"
+    );
+
+    if(!confirmChange) return;
+
+    deleteAllItems();
+  }
+
+  selectedBudgetTier = null;
+  budgetLocked = false;
+
+  showBudgetSelection("furniture");
+}
 </script>
 
 </body>
