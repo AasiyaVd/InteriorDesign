@@ -794,6 +794,7 @@ document.getElementById("nextBtn").addEventListener("click", () => {
   }
 // 🔥 CLEAR OLD FURNITURE BEFORE SAVING TEMPLATE
 designState.furniture = [];
+  sessionStorage.setItem("editor_mode", "create");
   sessionStorage.setItem("design_draft", JSON.stringify(designState));
   alert("✅ Template saved! Redirecting...");
   window.location.href = "furniture.html";
