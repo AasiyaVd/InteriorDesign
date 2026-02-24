@@ -558,26 +558,46 @@ let budgetLocked = false;
 const roomcanvas = document.getElementById("roomContainer");
 const roomImg = document.getElementById("roomImage"); // ✅ declared here
 
-/* LOAD SAVED TEMPLATE */
+/* ========= GLOBAL STATE =========CHANGE1 */
+
 let designState = JSON.parse(sessionStorage.getItem("design_draft")) || {
   roomImage: null,
   title: "Untitled Design",
   furniture: []
 };
-// 🔥 STOP REPEATING FURNITURE
+
+const editorMode = sessionStorage.getItem("editor_mode") || "create";
+
+console.log("📦 Loaded state:", designState);
+console.log("🧠 Editor mode:", editorMode);
 
 console.log("LOADED DESIGN STATE =", designState);
 
+/* ========= WINDOW ONLOAD =========CHANGE2 */
 window.onload = () => {
-  const roomImg = document.getElementById("roomImage");
+  const saved = sessionStorage.getItem("design_draft");
 
-  if (designState.roomImage) {
-    roomImg.src = designState.roomImage;
-    console.log("✅ Room template loaded");
-  } else {
-    console.log("❌ No room image found");
+  if (saved) {
+    designState = JSON.parse(saved);
   }
+  if (designState.roomImage) {
+  roomReady = true;
+ }
+
+  if (editorMode === "create") {
+    // coming from template page
+    designState.furniture = designState.furniture || [];
+  }
+
+  if (editorMode === "edit") {
+    // coming from preview page
+    // 🔒 DO NOT TOUCH STATE
+    console.log("✏️ Edit mode: restoring exact layout");
+  }
+
+  renderCanvas(); // 🔥 SINGLE render entry point
 };
+
 
 //FURNITURE + DECOR + WALL LIBARIES
 const furnitureLibrary = {
@@ -714,13 +734,7 @@ const panel=document.getElementById("toolPanel");
 const panelTitle=document.getElementById("panelTitle");
 const panelContent=document.getElementById("panelContent");
 
-// LOAD SAVED DESIGN STATE
-const savedState = sessionStorage.getItem("design_draft");
-
-if (savedState) {
-  designState = JSON.parse(savedState);
-  renderCanvas(); // redraw everything correctly
-}
+// LOAD SAVED DESIGN STATE CHANGE4 DELETED HERE before this//
 
 function saveHistory() {
   sessionStorage.setItem("design_draft", JSON.stringify(designState));
@@ -1310,30 +1324,24 @@ async function goToPreview() {
   }, 2200);
 }
 
-//RENDER CANVAS
+//RENDER CANVAS CHANGE3//
 function renderCanvas() {
-  canvas.innerHTML = "";
+  const canvas = document.getElementById("canvas");
 
-  if (designState.roomImage) {
-    const room = document.createElement("img");
-    room.id = "room";
-    room.src = designState.roomImage;
-    canvas.appendChild(room);
+  canvas.innerHTML = `
+    <div id="floor-layer"></div>
+    <div id="furniture-layer"></div>
+  `;
 
-    roomReady = true;
+  if (!designState.roomImage) return;
 
-    // ✅ THIS IS CRITICAL
-    beforeRoomImage = designState.roomImage;
-  }
+  // 🏠 Room
+  const room = document.createElement("img");
+  room.id = "room";
+  room.src = designState.roomImage;
+  canvas.prepend(room);
 
-  const floor = document.createElement("div");
-  floor.id = "floor-layer";
-  canvas.appendChild(floor);
-
-  const furnitureLayer = document.createElement("div");
-  furnitureLayer.id = "furniture-layer";
-  canvas.appendChild(furnitureLayer);
-
+  // 🪑 Furniture (ONLY ONCE)
   designState.furniture.forEach(item => {
     createFurnitureFromState(item);
   });
