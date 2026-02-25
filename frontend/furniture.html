@@ -601,180 +601,178 @@ window.onload = () => {
 
 //FURNITURE + DECOR + WALL LIBARIES
 const furnitureLibrary = {
+
 sofa:[
-{id:"sofa1", name:"Onyx Sovereign Sofa", tier:"under5", src:"furniture/sofa/sofa11.png"},
-{id:"sofa2", name:"Velvet Mirage Sofa", tier:"under5", src:"furniture/sofa/sofa13.png"},
-{id:"sofa3", name:"Regal Arc Sofa", tier:"under5", src:"furniture/sofa/sofa16.png"},
-{id:"sofa4", name:"Midnight Crescent Sofa", tier:"under5", src:"furniture/sofa/sofa19.png"},
-{id:"sofa5", name:"Aurelian Grace Sofa", tier:"under5", src:"furniture/sofa/sofa21.png"},
+{id:"sofa1", name:"Onyx Sovereign Sofa", tier:"under5", price:65000, src:"furniture/sofa/sofa11.png"},
+{id:"sofa2", name:"Velvet Mirage Sofa", tier:"under5", price:72000, src:"furniture/sofa/sofa13.png"},
+{id:"sofa3", name:"Regal Arc Sofa", tier:"under5", price:78000, src:"furniture/sofa/sofa16.png"},
+{id:"sofa4", name:"Midnight Crescent Sofa", tier:"under5", price:85000, src:"furniture/sofa/sofa19.png"},
+{id:"sofa5", name:"Aurelian Grace Sofa", tier:"under5", price:92000, src:"furniture/sofa/sofa21.png"},
 
-{id:"sofa6", name:"Obsidian Halo Sofa", tier:"5to10", src:"furniture/sofa/sofa12.png"},
-{id:"sofa7", name:"Nocturne Imperial Sofa", tier:"5to10", src:"furniture/sofa/sofa15.png"},
-{id:"sofa8", name:"Élysian Curve Sofa", tier:"5to10", src:"furniture/sofa/sofa17.png"},
-{id:"sofa9", name:"Celestial Obsidian Sofa", tier:"5to10", src:"furniture/sofa/sofa18.png"},
-{id:"sofa10", name:"Dynasty Noir Grand Sofa", tier:"5to10", src:"furniture/sofa/sofa20.png"},
+{id:"sofa6", name:"Obsidian Halo Sofa", tier:"5to10", price:140000, src:"furniture/sofa/sofa12.png"},
+{id:"sofa7", name:"Nocturne Imperial Sofa", tier:"5to10", price:160000, src:"furniture/sofa/sofa15.png"},
+{id:"sofa8", name:"Élysian Curve Sofa", tier:"5to10", price:175000, src:"furniture/sofa/sofa17.png"},
+{id:"sofa9", name:"Celestial Obsidian Sofa", tier:"5to10", price:195000, src:"furniture/sofa/sofa18.png"},
+{id:"sofa10", name:"Dynasty Noir Grand Sofa", tier:"5to10", price:215000, src:"furniture/sofa/sofa20.png"},
 
-{id:"sofa11", name:"Obsidian Crest Sofa", tier:"10to20", src:"furniture/sofa/sofa3.png"},
-{id:"sofa12", name:"Aurum Royale Sofa", tier:"10to20", src:"furniture/sofa/sofa5.png"},
-{id:"sofa13", name:"Noir Empress Sofa", tier:"10to20", src:"furniture/sofa/sofa6.png"},
-{id:"sofa14", name:"Ébène Luxe Sofa", tier:"10to20", src:"furniture/sofa/sofa7.png"},
-{id:"sofa15", name:"Imperial Curve Sofa", tier:"10to20", src:"furniture/sofa/sofa10.png"},
+{id:"sofa11", name:"Obsidian Crest Sofa", tier:"10to20", price:260000, src:"furniture/sofa/sofa3.png"},
+{id:"sofa12", name:"Aurum Royale Sofa", tier:"10to20", price:290000, src:"furniture/sofa/sofa5.png"},
+{id:"sofa13", name:"Noir Empress Sofa", tier:"10to20", price:320000, src:"furniture/sofa/sofa6.png"},
+{id:"sofa14", name:"Ébène Luxe Sofa", tier:"10to20", price:360000, src:"furniture/sofa/sofa7.png"},
+{id:"sofa15", name:"Imperial Curve Sofa", tier:"10to20", price:420000, src:"furniture/sofa/sofa10.png"},
 
-{id:"sofa16", name:"Velour Monarch Sofa", tier:"luxury", src:"furniture/sofa/sofa1.png"},
-{id:"sofa17", name:"Gilded Obsidian Sofa", tier:"luxury", src:"furniture/sofa/sofa2.png"},
-{id:"sofa18", name:"Midnight Throne Sofa", tier:"luxury", src:"furniture/sofa/sofa4.png"},
-{id:"sofa19", name:"Velvet Dominion Sofa", tier:"luxury", src:"furniture/sofa/sofa8.png"},
-{id:"sofa20", name:"Crownstone Signature Sofa", tier:"luxury", src:"furniture/sofa/sofa9.png"},
-{id:"sofa20", name:"Crownstone Signature Sofa", tier:"luxury", src:"furniture/sofa/sofa14.png"},
-
-
+{id:"sofa16", name:"Velour Monarch Sofa", tier:"luxury", price:650000, src:"furniture/sofa/sofa1.png"},
+{id:"sofa17", name:"Gilded Obsidian Sofa", tier:"luxury", price:780000, src:"furniture/sofa/sofa2.png"},
+{id:"sofa18", name:"Midnight Throne Sofa", tier:"luxury", price:920000, src:"furniture/sofa/sofa4.png"},
+{id:"sofa19", name:"Velvet Dominion Sofa", tier:"luxury", price:1050000, src:"furniture/sofa/sofa8.png"},
+{id:"sofa20", name:"Crownstone Signature Sofa", tier:"luxury", price:1150000, src:"furniture/sofa/sofa9.png"},
+{id:"sofa21", name:"Imperial Curve Sofa", tier:"luxury", price:1200000, src:"furniture/sofa/sofa14.png"},
 ],
 
+armchair:[
+{id:"chair1", name:"Obsidian Throne Chair", tier:"under5", price:28000, src:"furniture/Arm Chair/chair19.png"},
+{id:"chair2", name:"Aurum Accent Chair", tier:"under5", price:32000, src:"furniture/Arm Chair/chair22.png"},
+{id:"chair3", name:"Velour Empress Chair", tier:"under5", price:35000, src:"furniture/Arm Chair/chair9.png"},
+{id:"chair4", name:"Noir Sculpt Chair", tier:"under5", price:38000, src:"furniture/Arm Chair/chair15.png"},
+{id:"chair5", name:"Gilded Halo Armchair", tier:"under5", price:42000, src:"furniture/Arm Chair/chair14.png"},
 
+{id:"chair6", name:"Midnight Crown Chair", tier:"5to10", price:90000, src:"furniture/Arm Chair/chair11.png"},
+{id:"chair7", name:"Ébène Royale Chair", tier:"5to10", price:105000, src:"furniture/Arm Chair/chair.png"},
+{id:"chair8", name:"Imperial Curve Armchair", tier:"5to10", price:115000, src:"furniture/Arm Chair/chair22.png"},
+{id:"chair9", name:"Aurelian Crest Lounge Chair", tier:"5to10", price:130000, src:"furniture/Arm Chair/chair21.png"},
+{id:"chair10", name:"Velvet Dominion Accent Chair", tier:"5to10", price:150000, src:"furniture/Arm Chair/chair20.png"},
 
-armchair: [
+{id:"chair11", name:"Nocturne Luxe Wing Chair", tier:"10to20", price:210000, src:"furniture/Arm Chair/chair3.png"},
+{id:"chair12", name:"Celestial Arc Armchair", tier:"10to20", price:240000, src:"furniture/Arm Chair/chair12.png"},
+{id:"chair13", name:"Gilded Monarch Statement Chair", tier:"10to20", price:280000, src:"furniture/Arm Chair/chair13.png"},
+{id:"chair14", name:"Obsidian Eclipse Lounge Chair", tier:"10to20", price:320000, src:"furniture/Arm Chair/chair14.png"},
+{id:"chair15", name:"Dynasty Noir Grand Armchair", tier:"10to20", price:360000, src:"furniture/Arm Chair/chair15.png"},
 
-/* ================= UNDER ₹5L ================= */
-
-{id:"chair1",  name:"Obsidian Throne Chair", tier:"under5", src:"furniture/Arm Chair/chair19.png"},
-{id:"chair2",  name:"Aurum Accent Chair", tier:"under5", src:"furniture/Arm Chair/chair22.png"},
-{id:"chair3",  name:"Velour Empress Chair", tier:"under5", src:"furniture/Arm Chair/chair9.png"},
-{id:"chair4",  name:"Noir Sculpt Chair", tier:"under5", src:"furniture/Arm Chair/chair15.png"},
-{id:"chair5",  name:"Gilded Halo Armchair", tier:"under5", src:"furniture/Arm Chair/chair14.png"},
-
-
-/* ================= ₹5–10L ================= */
-
-{id:"chair6",  name:"Midnight Crown Chair", tier:"5to10", src:"furniture/Arm Chair/chair11.png"},
-{id:"chair7",  name:"Ébène Royale Chair", tier:"5to10", src:"furniture/Arm Chair/chair.png"},
-{id:"chair8",  name:"Imperial Curve Armchair", tier:"5to10", src:"furniture/Arm Chair/chair22.png"},
-{id:"chair9",  name:"Aurelian Crest Lounge Chair", tier:"5to10", src:"furniture/Arm Chair/chair21.png"},
-{id:"chair10", name:"Velvet Dominion Accent Chair", tier:"5to10", src:"furniture/Arm Chair/chair20.png"},
-
-
-/* ================= ₹10–20L ================= */
-
-{id:"chair11", name:"Nocturne Luxe Wing Chair", tier:"10to20", src:"furniture/Arm Chair/chair3.png"},
-{id:"chair12", name:"Celestial Arc Armchair", tier:"10to20", src:"furniture/Arm Chair/chair12.png"},
-{id:"chair13", name:"Gilded Monarch Statement Chair", tier:"10to20", src:"furniture/Arm Chair/chair13.png"},
-{id:"chair14", name:"Obsidian Eclipse Lounge Chair", tier:"10to20", src:"furniture/Arm Chair/chair14.png"},
-{id:"chair15", name:"Dynasty Noir Grand Armchair", tier:"10to20", src:"furniture/Arm Chair/chair15.png"},
-
-
-/* ================= LUXURY ================= */
-
-{id:"chair16", name:"Aurum Regal Curve Chair", tier:"luxury", src:"furniture/Arm Chair/chair1.png"},
-{id:"chair17", name:"Élysian Velvet Frame Chair", tier:"luxury", src:"furniture/Arm Chair/chair2.png"},
-{id:"chair18", name:"Imperial Sovereign Throne Chair", tier:"luxury", src:"furniture/Arm Chair/chair4.png"},
-{id:"chair19", name:"Velour Majesty Signature Armchair", tier:"luxury", src:"furniture/Arm Chair/chair5.png"},
-{id:"chair20", name:"Obsidian Dynasty Prestige Chair", tier:"luxury", src:"furniture/Arm Chair/chair6.png"},
-{id:"chair21", name:"Aurum Crownstone Grand Chair", tier:"luxury", src:"furniture/Arm Chair/chair7.png"},
-{id:"chair22", name:"Noir Empress Royal Wing Chair", tier:"luxury", src:"furniture/Arm Chair/chair8.png"}
-
+{id:"chair16", name:"Aurum Regal Curve Chair", tier:"luxury", price:520000, src:"furniture/Arm Chair/chair1.png"},
+{id:"chair17", name:"Élysian Velvet Frame Chair", tier:"luxury", price:620000, src:"furniture/Arm Chair/chair2.png"},
+{id:"chair18", name:"Imperial Sovereign Throne Chair", tier:"luxury", price:750000, src:"furniture/Arm Chair/chair4.png"},
+{id:"chair19", name:"Velour Majesty Signature Armchair", tier:"luxury", price:880000, src:"furniture/Arm Chair/chair5.png"},
+{id:"chair20", name:"Obsidian Dynasty Prestige Chair", tier:"luxury", price:980000, src:"furniture/Arm Chair/chair6.png"},
+{id:"chair21", name:"Aurum Crownstone Grand Chair", tier:"luxury", price:1100000, src:"furniture/Arm Chair/chair7.png"},
+{id:"chair22", name:"Noir Empress Royal Wing Chair", tier:"luxury", price:1200000, src:"furniture/Arm Chair/chair8.png"}
 ],
+
 
 table1: [
 
 /* ================= UNDER ₹5L ================= */
 
-{id:"console1",  name:"Aurum Obsidian Console", tier:"under5", src:"furniture/Console Table/contb2.png"},
-{id:"console2",  name:"Noir Royale Console", tier:"under5", src:"furniture/Console Table/contb3.png"},
-{id:"console3",  name:"Gilded Crest Console", tier:"under5", src:"furniture/Console Table/contb11.png"},
-{id:"console4",  name:"Ébène Sculpt Console", tier:"under5", src:"furniture/Console Table/contb12.png"},
-{id:"console5",  name:"Imperial Vein Console", tier:"under5", src:"furniture/Console Table/contb14.png"},
+{id:"console1",  name:"Aurum Obsidian Console", tier:"under5", price:38000, src:"furniture/Console Table/contb2.png"},
+{id:"console2",  name:"Noir Royale Console", tier:"under5", price:42000, src:"furniture/Console Table/contb3.png"},
+{id:"console3",  name:"Gilded Crest Console", tier:"under5", price:46000, src:"furniture/Console Table/contb11.png"},
+{id:"console4",  name:"Ébène Sculpt Console", tier:"under5", price:52000, src:"furniture/Console Table/contb12.png"},
+{id:"console5",  name:"Imperial Vein Console", tier:"under5", price:60000, src:"furniture/Console Table/contb14.png"},
 
 
 /* ================= ₹5–10L ================= */
 
-{id:"console6",  name:"Velour Monarch Console", tier:"5to10", src:"furniture/Console Table/contb1.png"},
-{id:"console7",  name:"Celestial Arc Console", tier:"5to10", src:"furniture/Console Table/contb4.png"},
-{id:"console8",  name:"Nocturne Luxe Console", tier:"5to10", src:"furniture/Console Table/contb5.png"},
-{id:"console9",  name:"Aurelian Crest Console", tier:"5to10", src:"furniture/Console Table/contb6.png"},
-{id:"console10", name:"Midnight Crown Console", tier:"5to10", src:"furniture/Console Table/contb8.png"},
+{id:"console6",  name:"Velour Monarch Console", tier:"5to10", price:95000, src:"furniture/Console Table/contb1.png"},
+{id:"console7",  name:"Celestial Arc Console", tier:"5to10", price:110000, src:"furniture/Console Table/contb4.png"},
+{id:"console8",  name:"Nocturne Luxe Console", tier:"5to10", price:125000, src:"furniture/Console Table/contb5.png"},
+{id:"console9",  name:"Aurelian Crest Console", tier:"5to10", price:140000, src:"furniture/Console Table/contb6.png"},
+{id:"console10", name:"Midnight Crown Console", tier:"5to10", price:160000, src:"furniture/Console Table/contb8.png"},
 
 
 /* ================= ₹10–20L ================= */
 
-{id:"console11", name:"Gilded Monarch Statement Console", tier:"10to20", src:"furniture/Console Table/contb16.png"},
-{id:"console12", name:"Obsidian Eclipse Console", tier:"10to20", src:"furniture/Console Table/contb17.png"},
-{id:"console13", name:"Dynasty Noir Grand Console", tier:"10to20", src:"furniture/Console Table/contb19.png"},
-{id:"console14", name:"Aurum Regal Curve Console", tier:"10to20", src:"furniture/Console Table/contb20.png"},
-{id:"console15", name:"Élysian Velvet Frame Console", tier:"10to20", src:"furniture/Console Table/contb15.png"},
+{id:"console11", name:"Gilded Monarch Statement Console", tier:"10to20", price:210000, src:"furniture/Console Table/contb16.png"},
+{id:"console12", name:"Obsidian Eclipse Console", tier:"10to20", price:240000, src:"furniture/Console Table/contb17.png"},
+{id:"console13", name:"Dynasty Noir Grand Console", tier:"10to20", price:280000, src:"furniture/Console Table/contb19.png"},
+{id:"console14", name:"Aurum Regal Curve Console", tier:"10to20", price:320000, src:"furniture/Console Table/contb20.png"},
+{id:"console15", name:"Élysian Velvet Frame Console", tier:"10to20", price:360000, src:"furniture/Console Table/contb15.png"},
 
 
 /* ================= LUXURY ================= */
 
-{id:"console16", name:"Imperial Sovereign Grand Console", tier:"luxury", src:"furniture/Console Table/contb9.png"},
-{id:"console17", name:"Velour Majesty Signature Console", tier:"luxury", src:"furniture/Console Table/contb10.png"},
-{id:"console18", name:"Obsidian Dynasty Prestige Console", tier:"luxury", src:"furniture/Console Table/contb13.png"},
-{id:"console19", name:"Aurum Crownstone Palace Console", tier:"luxury", src:"furniture/Console Table/contb7.png"},
-{id:"console20", name:"Noir Empress Royal Console", tier:"luxury", src:"furniture/Console Table/contb18.png"}
+{id:"console16", name:"Imperial Sovereign Grand Console", tier:"luxury", price:520000, src:"furniture/Console Table/contb9.png"},
+{id:"console17", name:"Velour Majesty Signature Console", tier:"luxury", price:650000, src:"furniture/Console Table/contb10.png"},
+{id:"console18", name:"Obsidian Dynasty Prestige Console", tier:"luxury", price:780000, src:"furniture/Console Table/contb13.png"},
+{id:"console19", name:"Aurum Crownstone Palace Console", tier:"luxury", price:920000, src:"furniture/Console Table/contb7.png"},
+{id:"console20", name:"Noir Empress Royal Console", tier:"luxury", price:1050000, src:"furniture/Console Table/contb18.png"}
 
 ],
 
 table2: [
 
-{id:"dining1",  name:"Aurum Monarch Dining Table", tier:"under5",  src:"furniture/Dinning Table/d1.png"},
-{id:"dining2",  name:"Noir Empress Dining Table", tier:"under5",  src:"furniture/Dinning Table/d12.png"},
-{id:"dining3",  name:"Ébène Royale Dining Table", tier:"under5",  src:"furniture/Dinning Table/d3.png"},
-{id:"dining4",  name:"Gilded Vein Dining Table", tier:"under5",  src:"furniture/Dinning Table/d4.png"},
-{id:"dining5",  name:"Imperial Obsidian Dining Table", tier:"under5",  src:"furniture/Dinning Table/d18.png"},
-
-{id:"dining6",  name:"Velour Crest Dining Table", tier:"5to10",  src:"furniture/Dinning Table/d6.png"},
-{id:"dining7",  name:"Celestial Arc Dining Table", tier:"5to10",  src:"furniture/Dinning Table/d11.png"},
-{id:"dining8",  name:"Nocturne Luxe Dining Table", tier:"5to10",  src:"furniture/Dinning Table/d8.png"},
-{id:"dining9",  name:"Aurelian Curve Dining Table", tier:"5to10",  src:"furniture/Dinning Table/d13.png"},
-{id:"dining10", name:"Midnight Crown Dining Table", tier:"5to10",  src:"furniture/Dinning Table/d14.png"},
-
-{id:"dining11", name:"Gilded Dynasty Grand Dining Table", tier:"10to20", src:"furniture/Dinning Table/d5.png"},
-{id:"dining12", name:"Obsidian Eclipse Dining Table", tier:"10to20", src:"furniture/Dinning Table/d2.png"},
-{id:"dining13", name:"Aurum Regal Frame Dining Table", tier:"10to20", src:"furniture/Dinning Table/d10.png"},
-{id:"dining14", name:"Élysian Velvet Panel Dining Table", tier:"10to20", src:"furniture/Dinning Table/d19.png"},
-{id:"dining15", name:"Noir Sovereign Grand Dining Table", tier:"10to20", src:"furniture/Dinning Table/d16.png"},
-
-{id:"dining16", name:"Imperial Crownstone Palace Dining Table", tier:"luxury", src:"furniture/Dinning Table/d7.png"},
-{id:"dining17", name:"Velour Majesty Signature Dining Table", tier:"luxury", src:"furniture/Dinning Table/d17.png"},
-{id:"dining18", name:"Obsidian Dynasty Prestige Dining Table", tier:"luxury", src:"furniture/Dinning Table/d9.png"},
-{id:"dining19", name:"Aurum Empress Grand Dining Table", tier:"luxury", src:"furniture/Dinning Table/d20.png"},
-{id:"dining20", name:"Nocturne Royal Heritage Dining Table", tier:"luxury", src:"furniture/Dinning Table/d15.png"}
-
-],
-bed: [
-
 /* ================= UNDER ₹5L ================= */
 
-{id:"bed1",  name:"Obsidian Crown Bed", tier:"under5", src:"furniture/Beds/Bed1.png"},
-{id:"bed2",  name:"Aurum Royale Bed", tier:"under5", src:"furniture/Beds/Bd15.png"},
-{id:"bed3",  name:"Velour Empress Bed", tier:"under5", src:"furniture/Beds/Bed3.png"},
-{id:"bed4",  name:"Noir Canopy Bed", tier:"under5", src:"furniture/Beds/Bed4.png"},
-{id:"bed5",  name:"Ébène Sovereign Bed", tier:"under5", src:"furniture/Beds/Bed5.png"},
+{id:"dining1",  name:"Aurum Monarch Dining Table", tier:"under5",  price:65000, src:"furniture/Dinning Table/d1.png"},
+{id:"dining2",  name:"Noir Empress Dining Table", tier:"under5",  price:72000, src:"furniture/Dinning Table/d12.png"},
+{id:"dining3",  name:"Ébène Royale Dining Table", tier:"under5",  price:78000, src:"furniture/Dinning Table/d3.png"},
+{id:"dining4",  name:"Gilded Vein Dining Table", tier:"under5",  price:85000, src:"furniture/Dinning Table/d4.png"},
+{id:"dining5",  name:"Imperial Obsidian Dining Table", tier:"under5",  price:95000, src:"furniture/Dinning Table/d18.png"},
 
 
 /* ================= ₹5–10L ================= */
 
-{id:"bed6",  name:"Imperial Obsidian Haven Bed", tier:"5to10", src:"furniture/Beds/Bd1.png"},
-{id:"bed7",  name:"Celestial Noir Grand Bed", tier:"5to10", src:"furniture/Beds/Bd6.png"},
-{id:"bed8",  name:"Aurelian Dynasty Bed", tier:"5to10", src:"furniture/Beds/Bd5.png"},
-{id:"bed9",  name:"Velvet Dominion Bed", tier:"5to10", src:"furniture/Beds/Bd10.png"},
-{id:"bed10", name:"Midnight Sovereign Bed", tier:"5to10", src:"furniture/Beds/Bed3.png"},
+{id:"dining6",  name:"Velour Crest Dining Table", tier:"5to10",  price:140000, src:"furniture/Dinning Table/d6.png"},
+{id:"dining7",  name:"Celestial Arc Dining Table", tier:"5to10",  price:165000, src:"furniture/Dinning Table/d11.png"},
+{id:"dining8",  name:"Nocturne Luxe Dining Table", tier:"5to10",  price:185000, src:"furniture/Dinning Table/d8.png"},
+{id:"dining9",  name:"Aurelian Curve Dining Table", tier:"5to10",  price:210000, src:"furniture/Dinning Table/d13.png"},
+{id:"dining10", name:"Midnight Crown Dining Table", tier:"5to10",  price:240000, src:"furniture/Dinning Table/d14.png"},
 
 
 /* ================= ₹10–20L ================= */
 
-{id:"bed11", name:"Gilded Monarch Bed", tier:"10to20", src:"furniture/Beds/Bd2.png"},
-{id:"bed12", name:"Elysian Obsidian Frame Bed", tier:"10to20", src:"furniture/Beds/Bd4.png"},
-{id:"bed13", name:"Royal Crescent Luxe Bed", tier:"10to20", src:"furniture/Beds/Bd8.png"},
-{id:"bed14", name:"Nocturne Imperial Canopy Bed", tier:"10to20", src:"furniture/Beds/Bd13.png"},
-{id:"bed15", name:"Crownstone Velvet Bed", tier:"10to20", src:"furniture/Beds/Bd11.png"},
+{id:"dining11", name:"Gilded Dynasty Grand Dining Table", tier:"10to20", price:280000, src:"furniture/Dinning Table/d5.png"},
+{id:"dining12", name:"Obsidian Eclipse Dining Table", tier:"10to20", price:320000, src:"furniture/Dinning Table/d2.png"},
+{id:"dining13", name:"Aurum Regal Frame Dining Table", tier:"10to20", price:360000, src:"furniture/Dinning Table/d10.png"},
+{id:"dining14", name:"Élysian Velvet Panel Dining Table", tier:"10to20", price:420000, src:"furniture/Dinning Table/d19.png"},
+{id:"dining15", name:"Noir Sovereign Grand Dining Table", tier:"10to20", price:480000, src:"furniture/Dinning Table/d16.png"},
 
 
 /* ================= LUXURY ================= */
 
-{id:"bed16", name:"Aurum Eclipse Signature Bed", tier:"luxury", src:"furniture/Beds/Bd3.png"},
-{id:"bed17", name:"Obsidian Empress Platform Bed", tier:"luxury", src:"furniture/Beds/Bd7.png"},
-{id:"bed18", name:"Velour Regal Arc Bed", tier:"luxury", src:"furniture/Beds/Bd9.png"},
-{id:"bed19", name:"Dynasty Noir Statement Bed", tier:"luxury", src:"furniture/Beds/Bd14.png"},
-{id:"bed20", name:"Ébène Majesty Grand Bed", tier:"luxury", src:"furniture/Beds/bed2.png"}
+{id:"dining16", name:"Imperial Crownstone Palace Dining Table", tier:"luxury", price:650000, src:"furniture/Dinning Table/d7.png"},
+{id:"dining17", name:"Velour Majesty Signature Dining Table", tier:"luxury", price:780000, src:"furniture/Dinning Table/d17.png"},
+{id:"dining18", name:"Obsidian Dynasty Prestige Dining Table", tier:"luxury", price:920000, src:"furniture/Dinning Table/d9.png"},
+{id:"dining19", name:"Aurum Empress Grand Dining Table", tier:"luxury", price:1050000, src:"furniture/Dinning Table/d20.png"},
+{id:"dining20", name:"Nocturne Royal Heritage Dining Table", tier:"luxury", price:1200000, src:"furniture/Dinning Table/d15.png"}
+
+],
+
+
+bed: [
+
+/* ================= UNDER ₹5L ================= */
+
+{id:"bed1",  name:"Obsidian Crown Bed", tier:"under5", price:75000, src:"furniture/Beds/Bed1.png"},
+{id:"bed2",  name:"Aurum Royale Bed", tier:"under5", price:82000, src:"furniture/Beds/Bd15.png"},
+{id:"bed3",  name:"Velour Empress Bed", tier:"under5", price:88000, src:"furniture/Beds/Bed3.png"},
+{id:"bed4",  name:"Noir Canopy Bed", tier:"under5", price:95000, src:"furniture/Beds/Bed4.png"},
+{id:"bed5",  name:"Ébène Sovereign Bed", tier:"under5", price:105000, src:"furniture/Beds/Bed5.png"},
+
+
+/* ================= ₹5–10L ================= */
+
+{id:"bed6",  name:"Imperial Obsidian Haven Bed", tier:"5to10", price:165000, src:"furniture/Beds/Bd1.png"},
+{id:"bed7",  name:"Celestial Noir Grand Bed", tier:"5to10", price:185000, src:"furniture/Beds/Bd6.png"},
+{id:"bed8",  name:"Aurelian Dynasty Bed", tier:"5to10", price:210000, src:"furniture/Beds/Bd5.png"},
+{id:"bed9",  name:"Velvet Dominion Bed", tier:"5to10", price:230000, src:"furniture/Beds/Bd10.png"},
+{id:"bed10", name:"Midnight Sovereign Bed", tier:"5to10", price:250000, src:"furniture/Beds/Bed3.png"},
+
+
+/* ================= ₹10–20L ================= */
+
+{id:"bed11", name:"Gilded Monarch Bed", tier:"10to20", price:320000, src:"furniture/Beds/Bd2.png"},
+{id:"bed12", name:"Elysian Obsidian Frame Bed", tier:"10to20", price:360000, src:"furniture/Beds/Bd4.png"},
+{id:"bed13", name:"Royal Crescent Luxe Bed", tier:"10to20", price:400000, src:"furniture/Beds/Bd8.png"},
+{id:"bed14", name:"Nocturne Imperial Canopy Bed", tier:"10to20", price:450000, src:"furniture/Beds/Bd13.png"},
+{id:"bed15", name:"Crownstone Velvet Bed", tier:"10to20", price:500000, src:"furniture/Beds/Bd11.png"},
+
+
+/* ================= LUXURY ================= */
+
+{id:"bed16", name:"Aurum Eclipse Signature Bed", tier:"luxury", price:700000, src:"furniture/Beds/Bd3.png"},
+{id:"bed17", name:"Obsidian Empress Platform Bed", tier:"luxury", price:820000, src:"furniture/Beds/Bd7.png"},
+{id:"bed18", name:"Velour Regal Arc Bed", tier:"luxury", price:950000, src:"furniture/Beds/Bd9.png"},
+{id:"bed19", name:"Dynasty Noir Statement Bed", tier:"luxury", price:1100000, src:"furniture/Beds/Bd14.png"},
+{id:"bed20", name:"Ébène Majesty Grand Bed", tier:"luxury", price:1250000, src:"furniture/Beds/bed2.png"}
 
 ],
 
@@ -782,38 +780,38 @@ sideboard: [
 
 /* ================= UNDER ₹5L ================= */
 
-{id:"sideboard1",  name:"Aurum Crest Sideboard", tier:"under5", src:"furniture/Sideboard/sd2.png"},
-{id:"sideboard2",  name:"Noir Obsidian Sideboard", tier:"under5", src:"furniture/Sideboard/sd9.png"},
-{id:"sideboard3",  name:"Ébène Royale Sideboard", tier:"under5", src:"furniture/Sideboard/sd7.png"},
-{id:"sideboard4",  name:"Gilded Monarch Sideboard", tier:"under5", src:"furniture/Sideboard/sd6.png"},
-{id:"sideboard5",  name:"Imperial Vein Sideboard", tier:"under5", src:"furniture/Sideboard/sd5.png"},
+{id:"sideboard1",  name:"Aurum Crest Sideboard", tier:"under5", price:42000, src:"furniture/Sideboard/sd2.png"},
+{id:"sideboard2",  name:"Noir Obsidian Sideboard", tier:"under5", price:48000, src:"furniture/Sideboard/sd9.png"},
+{id:"sideboard3",  name:"Ébène Royale Sideboard", tier:"under5", price:55000, src:"furniture/Sideboard/sd7.png"},
+{id:"sideboard4",  name:"Gilded Monarch Sideboard", tier:"under5", price:62000, src:"furniture/Sideboard/sd6.png"},
+{id:"sideboard5",  name:"Imperial Vein Sideboard", tier:"under5", price:70000, src:"furniture/Sideboard/sd5.png"},
 
 
 /* ================= ₹5–10L ================= */
 
-{id:"sideboard6",  name:"Velour Arc Sideboard", tier:"5to10", src:"furniture/Sideboard/sd15.png"},
-{id:"sideboard7",  name:"Celestial Frame Sideboard", tier:"5to10", src:"furniture/Sideboard/sd17.png"},
-{id:"sideboard8",  name:"Nocturne Luxe Sideboard", tier:"5to10", src:"furniture/Sideboard/sd11.png"},
-{id:"sideboard9",  name:"Aurelian Curve Sideboard", tier:"5to10", src:"furniture/Sideboard/sd10.png"},
-{id:"sideboard10", name:"Midnight Crest Sideboard", tier:"5to10", src:"furniture/Sideboard/sd20.png"},
+{id:"sideboard6",  name:"Velour Arc Sideboard", tier:"5to10", price:110000, src:"furniture/Sideboard/sd15.png"},
+{id:"sideboard7",  name:"Celestial Frame Sideboard", tier:"5to10", price:125000, src:"furniture/Sideboard/sd17.png"},
+{id:"sideboard8",  name:"Nocturne Luxe Sideboard", tier:"5to10", price:140000, src:"furniture/Sideboard/sd11.png"},
+{id:"sideboard9",  name:"Aurelian Curve Sideboard", tier:"5to10", price:160000, src:"furniture/Sideboard/sd10.png"},
+{id:"sideboard10", name:"Midnight Crest Sideboard", tier:"5to10", price:180000, src:"furniture/Sideboard/sd20.png"},
 
 
 /* ================= ₹10–20L ================= */
 
-{id:"sideboard11", name:"Gilded Dynasty Statement Sideboard", tier:"10to20", src:"furniture/Sideboard/sd1.png"},
-{id:"sideboard12", name:"Obsidian Eclipse Sideboard", tier:"10to20", src:"furniture/Sideboard/sd14.png"},
-{id:"sideboard13", name:"Aurum Regal Frame Sideboard", tier:"10to20", src:"furniture/Sideboard/sd3.png"},
-{id:"sideboard14", name:"Élysian Velvet Panel Sideboard", tier:"10to20", src:"furniture/Sideboard/sd16.png"},
-{id:"sideboard15", name:"Noir Sovereign Grand Sideboard", tier:"10to20", src:"furniture/Sideboard/sd8.png"},
+{id:"sideboard11", name:"Gilded Dynasty Statement Sideboard", tier:"10to20", price:220000, src:"furniture/Sideboard/sd1.png"},
+{id:"sideboard12", name:"Obsidian Eclipse Sideboard", tier:"10to20", price:260000, src:"furniture/Sideboard/sd14.png"},
+{id:"sideboard13", name:"Aurum Regal Frame Sideboard", tier:"10to20", price:300000, src:"furniture/Sideboard/sd3.png"},
+{id:"sideboard14", name:"Élysian Velvet Panel Sideboard", tier:"10to20", price:340000, src:"furniture/Sideboard/sd16.png"},
+{id:"sideboard15", name:"Noir Sovereign Grand Sideboard", tier:"10to20", price:380000, src:"furniture/Sideboard/sd8.png"},
 
 
 /* ================= LUXURY ================= */
 
-{id:"sideboard16", name:"Imperial Crownstone Palace Sideboard", tier:"luxury", src:"furniture/Sideboard/sd13.png"},
-{id:"sideboard17", name:"Velour Majesty Signature Sideboard", tier:"luxury", src:"furniture/Sideboard/sd12.png"},
-{id:"sideboard18", name:"Obsidian Dynasty Prestige Sideboard", tier:"luxury", src:"furniture/Sideboard/sd18.png"},
-{id:"sideboard19", name:"Aurum Empress Grand Sideboard", tier:"luxury", src:"furniture/Sideboard/sd19.png"},
-{id:"sideboard20", name:"Nocturne Royal Heritage Sideboard", tier:"luxury", src:"furniture/Sideboard/sd4.png"}
+{id:"sideboard16", name:"Imperial Crownstone Palace Sideboard", tier:"luxury", price:520000, src:"furniture/Sideboard/sd13.png"},
+{id:"sideboard17", name:"Velour Majesty Signature Sideboard", tier:"luxury", price:650000, src:"furniture/Sideboard/sd12.png"},
+{id:"sideboard18", name:"Obsidian Dynasty Prestige Sideboard", tier:"luxury", price:780000, src:"furniture/Sideboard/sd18.png"},
+{id:"sideboard19", name:"Aurum Empress Grand Sideboard", tier:"luxury", price:920000, src:"furniture/Sideboard/sd19.png"},
+{id:"sideboard20", name:"Nocturne Royal Heritage Sideboard", tier:"luxury", price:1100000, src:"furniture/Sideboard/sd4.png"}
 
 ],
 };
@@ -887,7 +885,7 @@ function saveHistory() {
 }
 
 //ADD FURNITURE
-function addFurniture(src){
+function addFurniture(src, price, name){
 if(!roomReady){
     showCanvasError("Please upload or select a room image first");
     return;
@@ -948,11 +946,13 @@ document.getElementById("furniture-layer").appendChild(wrapper);
 const item = {
   id: itemId,
   src,
+  name,
+  price,
   left: wrapper.style.left,
   top: wrapper.style.top,
   width: img.style.width,
   rotate: 0
-}; 
+};
 
 designState.furniture.push(item); // only this
 persistDesignState();
@@ -979,6 +979,8 @@ function createFurnitureFromState(item) {
   wrapper.style.position = "absolute";
   wrapper.style.left = item.left;
   wrapper.style.top = item.top;
+wrapper.dataset.price = item.price;
+wrapper.dataset.name = item.name;
 
   const img = document.createElement("img");
   img.src = item.src;
@@ -1207,37 +1209,40 @@ function openDecorCategory(type){
   panelState = "decor-items";
   panelTitle.innerText = type.toUpperCase();
 
-panelContent.innerHTML = decorLibrary[type]
-.filter(item => item.tier === selectedBudgetTier)
-  .map(i => {
-      // 🧠 IF rug → addRug
-      const action = type === "rugs"
-  ? `addRug('${i.src}')`
-  : `addFurniture('${i.src}')`;
-
-      return `
-        <div class="furniture-card" onclick="${action}">
-          <img src="${i.src}">
-          <div class="furniture-name">${type}</div>
-        </div>
-      `;
-    })
-    .join("");
+panelContent.innerHTML = furnitureLibrary[type]
+  .filter(item => item.tier === selectedBudgetTier)
+  .map(i => `
+    <div class="furniture-card" 
+         onclick="addFurniture('${i.src}', ${i.price}, '${i.name}')">
+      <img src="${i.src}">
+      <div class="furniture-name">${i.name}</div>
+      <div style="
+        font-size:12px;
+        color:#8a6b2d;
+        font-weight:500;
+      ">
+        ₹ ${i.price.toLocaleString()}
+      </div>
+    </div>
+  `).join("");
 }
 
 function openFurnitureCategory(type){
   panelState = "furniture-items";
-
   panelTitle.innerText = type.toUpperCase();
 
-panelContent.innerHTML = furnitureLibrary[type]
-  .filter(item => item.tier === selectedBudgetTier)
-  .map(i => `
-    <div class="furniture-card" onclick="addFurniture('${i.src}')">
-      <img src="${i.src}">
-      <div class="furniture-name">${i.name}</div>
-    </div>
-  `).join("");
+  panelContent.innerHTML = furnitureLibrary[type]
+    .filter(item => item.tier === selectedBudgetTier)
+    .map(i => `
+      <div class="furniture-card" 
+           onclick="addFurniture('${i.src}', ${i.price}, '${i.name.replace(/'/g,"\\'")}')">
+        <img src="${i.src}">
+        <div class="furniture-name">${i.name}</div>
+        <div style="font-size:12px;color:#8a6b2d;font-weight:500;">
+          ₹ ${i.price.toLocaleString()}
+        </div>
+      </div>
+    `).join("");
 }
 
 function openDecorCategories(){
