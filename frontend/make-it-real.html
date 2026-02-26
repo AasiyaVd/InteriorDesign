@@ -301,13 +301,48 @@ body{
   color:#4b0007;
   display:none;
 }
+
+/* ===== BILLING BOX ===== */
+.billing-box{
+  margin-top:18px;
+  padding:16px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(10px);
+  box-shadow:0 15px 35px rgba(0,0,0,0.12);
+}
+
+.billing-title{
+  font-size:11px;
+  letter-spacing:1.2px;
+  color:#888;
+  margin-bottom:10px;
+}
+
+.bill-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  margin-bottom:6px;
+}
+
+.bill-divider{
+  height:1px;
+  background:rgba(0,0,0,0.1);
+  margin:8px 0;
+}
+
+.bill-row.total{
+  font-weight:600;
+  color:rgba(75,0,7);
+  font-size:15px;
+}
 </style>
 </head>
 
 <body>
 <script src="auth.js"></script>
 <script src="designers.data.js"></script> <!-- 👈 MUST be before logic -->
-<script src="make-it-real.js"></script> 
 <script>
 
   // 🔄 Navbar auth state
@@ -365,9 +400,35 @@ body{
     <!-- DESIGN -->
     <div class="design-preview">
 <img id="finalDesign" alt="Final Design Preview">
-      <div class="design-meta">
-        <h4>Your Approved Design</h4>
-      </div>
+<div class="design-meta">
+  <h4>Your Approved Design</h4>
+
+  <div class="billing-box">
+    <div class="billing-title">PROJECT BILLING</div>
+
+    <div class="bill-row">
+      <span>Furniture</span>
+      <span id="billFurniture"></span>
+    </div>
+
+    <div class="bill-row">
+      <span>Decor</span>
+      <span id="billDecor"></span>
+    </div>
+
+    <div class="bill-row">
+      <span>GST (18%)</span>
+      <span id="billGST"></span>
+    </div>
+
+    <div class="bill-divider"></div>
+
+    <div class="bill-row total">
+      <span>Total</span>
+      <span id="billTotal"></span>
+    </div>
+  </div>
+</div>
     </div>
 
     <!-- FORM -->
@@ -377,34 +438,57 @@ body{
         <input type="text"  id="cityInput">
       </div>
 
-      <div class="form-group">
-        <label>Budget Range</label>
-        <select id="budgetInput">
-    <option value="under5">Under ₹5 Lakhs</option>
-    <option value="5to10">₹5 – 10 Lakhs</option>
-    <option value="10to20">₹10 – 20 Lakhs</option>
-    <option value="luxury">Luxury / No Limit</option>
+<div class="form-group">
+  <label>Preferred Design Style</label>
+  <select id="styleInput">
+    <option value="modern">Modern</option>
+    <option value="minimal">Minimal</option>
+    <option value="luxury">Luxury</option>
+    <option value="classic">Classic</option>
+    <option value="industrial">Industrial</option>
+    <option value="bohemian">Bohemian</option>
   </select>
-      </div>
+</div>
 
-      <div class="form-group">
-        <label>Space Type</label>
-        <select id="spaceInput">
-    <option value="1bhk">1 BHK</option>
-    <option value="2bhk">2 BHK</option>
-    <option value="villa">Villa</option>
-    <option value="studio">Studio</option>
-  </select>
-      </div>
+<div class="form-group">
+    <label>Property Type</label>
+    <select id="propertyInput">
+      <option value="apartment">Apartment</option>
+      <option value="villa">Villa</option>
+      <option value="studio">Studio</option>
+      <option value="commercial">Commercial</option>
+    </select>
+  </div>
 
-      <div class="form-group">
-        <label>Timeline</label>
-        <select id="timelineInput">
-    <option value="flexible">Flexible</option>
-    <option value="1-2">1–2 Months</option>
-    <option value="3-6">3–6 Months</option>
-  </select>
-      </div>
+  <div class="form-group">
+    <label>Room Type</label>
+    <select id="roomInput">
+      <option value="living">Living Room</option>
+      <option value="bedroom">Bedroom</option>
+      <option value="kitchen">Kitchen</option>
+      <option value="office">Office</option>
+      <option value="dining">Dining Room</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Project Timeline</label>
+    <select id="timelineInput">
+      <option value="immediate">Immediate (Within 1 Month)</option>
+      <option value="1-3">1–3 Months</option>
+      <option value="3-6">3–6 Months</option>
+      <option value="flexible">Flexible</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Preferred Contact Method</label>
+    <select id="contactInput">
+      <option value="call">Call</option>
+      <option value="whatsapp">WhatsApp</option>
+      <option value="email">Email</option>
+    </select>
+  </div>
 
       <button class="find-btn" onclick="showDesigners()">Find Designers</button>
     </div>
@@ -457,30 +541,25 @@ body{
 
 <script>
 const params = new URLSearchParams(window.location.search);
+function getBudgetTier(total){
+  if(total < 500000) return "under5";
+  if(total < 1000000) return "5to10";
+  if(total < 2000000) return "10to20";
+  return "luxury";
+}
 async function showDesigners() {
   const city = document.getElementById("cityInput").value;
-  const budgetRange = document.getElementById("budgetInput").value;
-  const spaceType = document.getElementById("spaceInput").value;
-  const timeline = document.getElementById("timelineInput").value;
-const budgetMap = {
-  under5: "UNDER_5",
-  "5to10": "FIVE_TO_TEN",
-  "10to20": "TEN_TO_TWENTY",
-  luxury: "LUXURY"
-};
+const style = document.getElementById("styleInput").value;
+const property = document.getElementById("propertyInput").value;
+const room = document.getElementById("roomInput").value;
+const timeline = document.getElementById("timelineInput").value;
+const contact = document.getElementById("contactInput").value;
 
-const spaceMap = {
-  "1bhk": "ONE_BHK",
-  "2bhk": "TWO_BHK",
-  studio: "STUDIO",
-  villa: "VILLA"
-};
+const totalCost = parseInt(sessionStorage.getItem("preview_total_cost")) || 0;
+const budgetRange = getBudgetTier(totalCost);
 
-const timelineMap = {
-  flexible: "FLEXIBLE",
-  "1-2": "ONE_TO_TWO",
-  "3-6": "THREE_TO_SIX"
-};
+
+
 
 const token = sessionStorage.getItem("token");
 
@@ -499,9 +578,12 @@ const token = sessionStorage.getItem("token");
       },
 body: JSON.stringify({
   city,
-  budgetRange: budgetMap[budgetRange],
-  spaceType: spaceMap[spaceType],
-  timeline: timelineMap[timeline]
+  budgetRange,
+  style,
+  property,
+  room,
+  timeline,
+  contact
 })
 
     });
@@ -511,51 +593,38 @@ body: JSON.stringify({
     }
 
     // AFTER saving → show designers
-    renderDesigners(budgetRange, spaceType, timeline);
-
+renderDesigners(budgetRange, timeline);
   } catch (err) {
     console.error(err);
     alert("Something went wrong");
   }
 }
 
-function renderDesigners(budget, space, timeline) {
+function renderDesigners(budget, timeline) {
   const grid = document.querySelector(".designer-grid");
   grid.innerHTML = "";
 
-  // STRICT: budget must match
- let strictMatches = designers.filter(d =>
-  d.budget === budget &&
-  (timeline === "flexible" || d.timeline === timeline)
-);
-
-  // Prefer space match
-  let preferred = strictMatches.filter(d =>
-    d.spaces.includes(space)
+  // Step 1: strict budget + timeline
+  let matches = designers.filter(d =>
+    d.budget === budget &&
+    (timeline === "flexible" || d.timeline === timeline)
   );
 
-  let finalResults = [...preferred];
-
-  // Fill remaining from same budget + timeline
-  if (finalResults.length < 3) {
-    const fillers = strictMatches.filter(d =>
-      !finalResults.includes(d)
-    );
-    finalResults.push(...fillers);
+  // If not enough → fallback budget only
+  if(matches.length < 3){
+    matches = designers.filter(d => d.budget === budget);
   }
 
-  // GUARANTEE 3
-  finalResults = finalResults.slice(0, 3);
+  // Guarantee max 3
+  matches = matches.slice(0,3);
 
-  // Render
-  finalResults.forEach(d => {
+  matches.forEach(d => {
     grid.innerHTML += `
       <div class="designer-card">
-        <h4>${d.name}</h4>
-        <div class="tags">${d.style}</div>
+        <h4>${d.name} — ${d.variant}</h4>
+        <div class="tags">${d.budget.toUpperCase()} • ${d.timeline}</div>
         <div class="cost">Estimated Cost: <strong>${d.cost}</strong></div>
         <div class="meta">
-          Timeline: ${d.timeline}<br>
           Experience: ${d.experience}
         </div>
         <button onclick="confirmShare()">Share My Design</button>
@@ -595,6 +664,46 @@ document.addEventListener("DOMContentLoaded", () => {
     // fallback (optional)
     document.getElementById("finalDesign").src = "grid5.jpg";
   }
+});
+
+// ===== BILLING CALCULATION =====
+document.addEventListener("DOMContentLoaded", () => {
+
+  const draft = JSON.parse(sessionStorage.getItem("design_draft")) || {};
+
+  let furnitureTotal = 0;
+  let decorTotal = 0;
+
+  if(draft.furniture){
+    draft.furniture.forEach(item=>{
+      if(item.name && (
+         item.name.toLowerCase().includes("sofa") ||
+         item.name.toLowerCase().includes("bed") ||
+         item.name.toLowerCase().includes("table") ||
+         item.name.toLowerCase().includes("chair") ||
+         item.name.toLowerCase().includes("sideboard")
+      )){
+        furnitureTotal += item.price || 0;
+      } else {
+        decorTotal += item.price || 0;
+      }
+    });
+  }
+
+  const gst = Math.round((furnitureTotal + decorTotal) * 0.18);
+  const final = furnitureTotal + decorTotal + gst;
+
+  document.getElementById("billFurniture").innerText =
+    "₹ " + furnitureTotal.toLocaleString();
+
+  document.getElementById("billDecor").innerText =
+    "₹ " + decorTotal.toLocaleString();
+
+  document.getElementById("billGST").innerText =
+    "₹ " + gst.toLocaleString();
+
+  document.getElementById("billTotal").innerText =
+    "₹ " + final.toLocaleString();
 });
 </script>
 
