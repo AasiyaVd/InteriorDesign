@@ -435,23 +435,16 @@ img {
   z-index:5;
 }
 
-.rug-item{
-position:absolute;
-  cursor:grab;
-  pointer-events:auto;
-  touch-action:none;      /* 🔑 REQUIRED */
-  user-select:none;
-
-  /* 🔑 FLOOR ILLUSION */
-  transform-origin:center center;
-
-  /* 🔑 SHADOW = CONTACT WITH FLOOR */
-  filter: drop-shadow(0 18px 22px rgba(0,0,0,0.18));
+.panel-budget-footer{
+  margin-top:auto;
+  padding:14px 16px;
+  border-top:1px solid rgba(0,0,0,.08);
+  font-size:13px;
+  font-weight:500;
+  color:#4b0007;
+  background:#f5f4f2;
+  letter-spacing:.5px;
 }
-.rug-item:active{
-  cursor:grabbing;
-}
-
 </style>
 </head>
 
@@ -478,11 +471,11 @@ position:absolute;
 
   <!-- RIGHT: ACTIONS -->
   <div class="nav-right">
-    <span id="budgetDisplay" style="color:#d4af37; font-size:15px; font-family: poppins;"></span>
-
-<button class="nav-icon" onclick="changeBudget()" title="Change Budget">
-  <i class="fa-solid fa-indian-rupee-sign"></i>
-</button>
+<div class="nav-budget-wrapper">
+  <div class="nav-budget-bar">
+    <div id="budgetFill"></div>
+  </div>
+</div>
 <button class="render-nav-btn" onclick="goToPreview()" type="button">Preview</button>
 
 <button class="nav-icon" id="undoBtn" title="Undo" type="button">
@@ -521,6 +514,9 @@ position:absolute;
   </button>
 
 
+<button class="side-btn" onclick="changeBudget()" title="Change Budget">
+  <i class="fa-solid fa-indian-rupee-sign"></i>
+</button>
 </div>
 
 <div class="tool-panel" id="toolPanel">
@@ -530,7 +526,13 @@ position:absolute;
     </button>
     <span id="panelTitle"></span>
   </div>
+
   <div class="tool-panel-content" id="panelContent"></div>
+
+  <!-- ✅ OUTSIDE panelContent -->
+  <div class="panel-budget-footer">
+    <span id="budgetDisplay"></span>
+  </div>
 </div>
 
 <div class="canvas-area">
@@ -557,7 +559,15 @@ let budgetLocked = false;
 
 const roomcanvas = document.getElementById("roomContainer");
 const roomImg = document.getElementById("roomImage"); // ✅ declared here
+const budgetLimits = {
+  under5: 500000,
+  "5to10": 1000000,
+  "10to20": 2000000,
+  luxury: Infinity
+};
 
+let currentBudgetLimit = 0;
+let totalUsedBudget = 0;
 /* ========= GLOBAL STATE =========CHANGE1 */
 
 let designState = JSON.parse(sessionStorage.getItem("design_draft")) || {
@@ -817,59 +827,182 @@ sideboard: [
 };
 
 const decorLibrary = {
-  plants: [
-    { id: "plant1", src: "furniture/p1.png" },
-    { id: "plant2", src: "furniture/p2.png" },
-    { id: "plant3", src: "furniture/p3.png" },
-    { id: "plant4", src: "furniture/p4.png" },
-    { id: "plant5", src: "furniture/p5.png" },
-    { id: "plant6", src: "furniture/p6.png" },
-    { id: "plant7", src: "furniture/p7.png" },
-    { id: "plant8", src: "furniture/p8.png" }
-  ],
+ plants: [
+
+/* ===== UNDER ₹5L ===== */
+
+{ id:"plant1",  tier:"under5",  price:4000,  src:"furniture/Plants/p1.png" },
+{ id:"plant2",  tier:"under5",  price:5500,  src:"furniture/Plants/p2.png" },
+{ id:"plant3",  tier:"under5",  price:7000,  src:"furniture/Plants/p3.png" },
+{ id:"plant4",  tier:"under5",  price:8500,  src:"furniture/Plants/p4.png" },
+{ id:"plant5",  tier:"under5",  price:10000, src:"furniture/Plants/p5.png" },
+
+/* ===== ₹5–10L ===== */
+
+{ id:"plant6",  tier:"5to10",  price:15000, src:"furniture/Plants/p6.png" },
+{ id:"plant7",  tier:"5to10",  price:18000, src:"furniture/Plants/p7.png" },
+{ id:"plant8",  tier:"5to10",  price:22000, src:"furniture/Plants/p8.png" },
+{ id:"plant9",  tier:"5to10",  price:26000, src:"furniture/Plants/p9.png" },
+{ id:"plant10", tier:"5to10",  price:30000, src:"furniture/Plants/p10.png" },
+
+/* ===== ₹10–20L ===== */
+
+{ id:"plant11", tier:"10to20", price:42000, src:"furniture/Plants/p11.png" },
+{ id:"plant12", tier:"10to20", price:48000, src:"furniture/Plants/p12.png" },
+{ id:"plant13", tier:"10to20", price:55000, src:"furniture/Plants/p13.png" },
+{ id:"plant14", tier:"10to20", price:62000, src:"furniture/Plants/p14.png" },
+{ id:"plant15", tier:"10to20", price:70000, src:"furniture/Plants/p15.png" },
+
+/* ===== LUXURY ===== */
+
+{ id:"plant16", tier:"luxury", price:120000, src:"furniture/Plants/p16.png" },
+{ id:"plant17", tier:"luxury", price:150000, src:"furniture/Plants/p17.png" },
+{ id:"plant18", tier:"luxury", price:180000, src:"furniture/Plants/p18.png" },
+{ id:"plant19", tier:"luxury", price:220000, src:"furniture/Plants/p19.png" },
+{ id:"plant20", tier:"luxury", price:260000, src:"furniture/Plants/p20.png" }
+
+],
   lamps: [
-    { id: "lamp1", src: "furniture/lamp1.png" },
-    { id: "lamp2", src: "furniture/lamp2.png" },
-    { id: "lamp3", src: "furniture/lamp3.png" },
-    { id: "lamp4", src: "furniture/lamp4.png" },
-    { id: "lamp5", src: "furniture/lamp5.png" },
-    { id: "lamp6", src: "furniture/lamp6.png" }
-  ],
+
+/* ===== UNDER ₹5L ===== */
+
+{ id:"lamp1",  tier:"under5",  price:7000,  src:"furniture/Lamps/l1.png" },
+{ id:"lamp2",  tier:"under5",  price:8500,  src:"furniture/Lamps/l2.png" },
+{ id:"lamp3",  tier:"under5",  price:9500,  src:"furniture/Lamps/l3.png" },
+{ id:"lamp4",  tier:"under5",  price:11000, src:"furniture/Lamps/l4.png" },
+{ id:"lamp5",  tier:"under5",  price:12500, src:"furniture/Lamps/l5.png" },
+
+/* ===== ₹5–10L ===== */
+
+{ id:"lamp6",  tier:"5to10",  price:18000, src:"furniture/Lamps/l6.png" },
+{ id:"lamp7",  tier:"5to10",  price:22000, src:"furniture/Lamps/l7.png" },
+{ id:"lamp8",  tier:"5to10",  price:26000, src:"furniture/Lamps/l8.png" },
+{ id:"lamp9",  tier:"5to10",  price:30000, src:"furniture/Lamps/l9.png" },
+{ id:"lamp10", tier:"5to10",  price:35000, src:"furniture/Lamps/l10.png" },
+
+/* ===== ₹10–20L ===== */
+
+{ id:"lamp11", tier:"10to20", price:48000, src:"furniture/Lamps/l11.png" },
+{ id:"lamp12", tier:"10to20", price:55000, src:"furniture/Lamps/l12.png" },
+{ id:"lamp13", tier:"10to20", price:62000, src:"furniture/Lamps/l13.png" },
+{ id:"lamp14", tier:"10to20", price:70000, src:"furniture/Lamps/l14.png" },
+{ id:"lamp15", tier:"10to20", price:85000, src:"furniture/Lamps/l15.png" },
+
+/* ===== LUXURY ===== */
+
+{ id:"lamp16", tier:"luxury", price:140000, src:"furniture/Lamps/l16.png" },
+{ id:"lamp17", tier:"luxury", price:180000, src:"furniture/Lamps/l17.png" },
+{ id:"lamp18", tier:"luxury", price:220000, src:"furniture/Lamps/l18.png" },
+{ id:"lamp19", tier:"luxury", price:260000, src:"furniture/Lamps/l19.png" },
+{ id:"lamp20", tier:"luxury", price:320000, src:"furniture/Lamps/l20.png" }
+
+],
   tablelamps: [
-    { id: "tablelamp1", src: "furniture/tblam1.png" },
-    { id: "tablelamp2", src: "furniture/tblam2.png" },
-    { id: "tablelamp3", src: "furniture/tblam3.png" },
-    { id: "tablelamp4", src: "furniture/tblam4.png" },
-    { id: "tablelamp5", src: "furniture/tblam5.png" },
-    { id: "tablelamp6", src: "furniture/tblam6.png" },
-    { id: "tablelamp7", src: "furniture/tblam7.png" },
-  ],
+
+/* ===== UNDER ₹5L ===== */
+
+{ id:"tablelamp1",  tier:"under5",  price:5000,  src:"furniture/Table Lamps/t1.png" },
+{ id:"tablelamp2",  tier:"under5",  price:6500,  src:"furniture/Table Lamps/t2.png" },
+{ id:"tablelamp3",  tier:"under5",  price:8000,  src:"furniture/Table Lamps/t3.png" },
+{ id:"tablelamp4",  tier:"under5",  price:9500,  src:"furniture/Table Lamps/t4.png" },
+{ id:"tablelamp5",  tier:"under5",  price:11000, src:"furniture/Table Lamps/t5.png" },
+
+/* ===== ₹5–10L ===== */
+
+{ id:"tablelamp6",  tier:"5to10",  price:16000, src:"furniture/Table Lamps/t6.png" },
+{ id:"tablelamp7",  tier:"5to10",  price:19000, src:"furniture/Table Lamps/t7.png" },
+{ id:"tablelamp8",  tier:"5to10",  price:22000, src:"furniture/Table Lamps/t8.png" },
+{ id:"tablelamp9",  tier:"5to10",  price:26000, src:"furniture/Table Lamps/t9.png" },
+{ id:"tablelamp10", tier:"5to10",  price:30000, src:"furniture/Table Lamps/t10.png" },
+
+/* ===== ₹10–20L ===== */
+
+{ id:"tablelamp11", tier:"10to20", price:45000, src:"furniture/Table Lamps/t11.png" },
+{ id:"tablelamp12", tier:"10to20", price:52000, src:"furniture/Table Lamps/t12.png" },
+{ id:"tablelamp13", tier:"10to20", price:60000, src:"furniture/Table Lamps/t13.png" },
+{ id:"tablelamp14", tier:"10to20", price:72000, src:"furniture/Table Lamps/t14.png" },
+{ id:"tablelamp15", tier:"10to20", price:85000, src:"furniture/Table Lamps/t15.png" },
+
+/* ===== LUXURY ===== */
+
+{ id:"tablelamp16", tier:"luxury", price:120000, src:"furniture/Table Lamps/t16.png" },
+{ id:"tablelamp17", tier:"luxury", price:160000, src:"furniture/Table Lamps/t17.png" },
+{ id:"tablelamp18", tier:"luxury", price:200000, src:"furniture/Table Lamps/t18.png" },
+{ id:"tablelamp19", tier:"luxury", price:250000, src:"furniture/Table Lamps/t19.png" },
+{ id:"tablelamp20", tier:"luxury", price:300000, src:"furniture/Table Lamps/t20.png" }
+
+],
   chandeliers: [
-    { id: "chandelier1", src: "furniture/chan1.png" },
-    { id: "chandelier2", src: "furniture/chan2.png" },
-    { id: "chandelier3", src: "furniture/chan3.png" },
-    { id: "chandelier4", src: "furniture/chan4.png" },
-    { id: "chandelier5", src: "furniture/chan5.png" },
-    { id: "chandelier6", src: "furniture/chan6.png" },
-    { id: "chandelier7", src: "furniture/chan7.png" }
-  ],
-  wallart: [
-    { id: "art1", src: "furniture/w1.png" },
-    { id: "art2", src: "furniture/w2.png" },
-    { id: "art3", src: "furniture/w3.png" },
-    { id: "art4", src: "furniture/w4.png" },
-    { id: "art5", src: "furniture/w5.png" },
-    { id: "art6", src: "furniture/w6.png" },
-    { id: "art7", src: "furniture/w7.png" }
-  ],
-  rugs: [
-    { id: "rug1", src: "furniture/r1.png" },
-    { id: "rug2", src: "furniture/r2.png" },
-    { id: "rug3", src: "furniture/r3.png" },
-    { id: "rug4", src: "furniture/r4.png" },
-    { id: "rug6", src: "furniture/r6.png" },
-    { id: "rug8", src: "furniture/r8.png" }
-  ]
+
+/* ===== UNDER ₹5L ===== */
+/* (Only 2 here — realistic: chandeliers are rarely ultra-cheap) */
+
+{ id:"chandelier1",  tier:"under5",  price:35000,  src:"furniture/Chandeliers/c1.png" },
+{ id:"chandelier2",  tier:"under5",  price:45000,  src:"furniture/Chandeliers/c2.png" },
+
+/* ===== ₹5–10L ===== */
+
+{ id:"chandelier3",  tier:"5to10",  price:75000,  src:"furniture/Chandeliers/c3.png" },
+{ id:"chandelier4",  tier:"5to10",  price:95000,  src:"furniture/Chandeliers/c4.png" },
+{ id:"chandelier5",  tier:"5to10",  price:120000, src:"furniture/Chandeliers/c5.png" },
+{ id:"chandelier6",  tier:"5to10",  price:150000, src:"furniture/Chandeliers/c6.png" },
+
+/* ===== ₹10–20L ===== */
+
+{ id:"chandelier7",  tier:"10to20", price:220000, src:"furniture/Chandeliers/c7.png" },
+{ id:"chandelier8",  tier:"10to20", price:280000, src:"furniture/Chandeliers/c8.png" },
+{ id:"chandelier9",  tier:"10to20", price:350000, src:"furniture/Chandeliers/c9.png" },
+{ id:"chandelier10", tier:"10to20", price:420000, src:"furniture/Chandeliers/c10.png" },
+{ id:"chandelier11", tier:"10to20", price:480000, src:"furniture/Chandeliers/c11.png" },
+
+/* ===== LUXURY ===== */
+
+{ id:"chandelier12", tier:"luxury", price:650000, src:"furniture/Chandeliers/c12.png" },
+{ id:"chandelier13", tier:"luxury", price:780000, src:"furniture/Chandeliers/c13.png" },
+{ id:"chandelier14", tier:"luxury", price:920000, src:"furniture/Chandeliers/c14.png" },
+{ id:"chandelier15", tier:"luxury", price:1100000, src:"furniture/Chandeliers/c15.png" },
+{ id:"chandelier16", tier:"luxury", price:1350000, src:"furniture/Chandeliers/c16.png" },
+{ id:"chandelier17", tier:"luxury", price:1600000, src:"furniture/Chandeliers/c17.png" },
+{ id:"chandelier18", tier:"luxury", price:1850000, src:"furniture/Chandeliers/c18.png" },
+{ id:"chandelier19", tier:"luxury", price:2100000, src:"furniture/Chandeliers/c19.png" },
+{ id:"chandelier20", tier:"luxury", price:2500000, src:"furniture/Chandeliers/c20.png" }
+
+],
+ wallart: [
+
+/* ===== UNDER ₹5L ===== */
+
+{ id:"art1",  tier:"under5",  price:8000,  src:"furniture/Wall Art/w1.png" },
+{ id:"art2",  tier:"under5",  price:10000, src:"furniture/Wall Art/a2.png" },
+{ id:"art3",  tier:"under5",  price:12000, src:"furniture/Wall Art/a3.png" },
+{ id:"art4",  tier:"under5",  price:15000, src:"furniture/Wall Art/a4.png" },
+{ id:"art5",  tier:"under5",  price:18000, src:"furniture/Wall Art/a5.png" },
+
+/* ===== ₹5–10L ===== */
+
+{ id:"art6",  tier:"5to10",  price:28000, src:"furniture/Wall Art/a6.png" },
+{ id:"art7",  tier:"5to10",  price:32000, src:"furniture/Wall Art/a7.png" },
+{ id:"art8",  tier:"5to10",  price:38000, src:"furniture/Wall Art/a8.png" },
+{ id:"art9",  tier:"5to10",  price:45000, src:"furniture/Wall Art/a9.png" },
+{ id:"art10", tier:"5to10",  price:52000, src:"furniture/Wall Art/a10.png" },
+
+/* ===== ₹10–20L ===== */
+
+{ id:"art11", tier:"10to20", price:75000, src:"furniture/Wall Art/a11.png" },
+{ id:"art12", tier:"10to20", price:90000, src:"furniture/Wall Art/a12.png" },
+{ id:"art13", tier:"10to20", price:110000, src:"furniture/Wall Art/a13.png" },
+{ id:"art14", tier:"10to20", price:140000, src:"furniture/Wall Art/a14.png" },
+{ id:"art15", tier:"10to20", price:170000, src:"furniture/Wall Art/a15.png" },
+
+/* ===== LUXURY ===== */
+
+{ id:"art16", tier:"luxury", price:250000, src:"furniture/Wall Art/a16.png" },
+{ id:"art17", tier:"luxury", price:320000, src:"furniture/Wall Art/a17.png" },
+{ id:"art18", tier:"luxury", price:400000, src:"furniture/Wall Art/a18.png" },
+{ id:"art19", tier:"luxury", price:520000, src:"furniture/Wall Art/a19.png" },
+{ id:"art20", tier:"luxury", price:650000, src:"furniture/Wall Art/a20.png" }
+
+]
 };
 
 const canvas=document.getElementById("canvas");
@@ -1209,23 +1342,19 @@ function openDecorCategory(type){
   panelState = "decor-items";
   panelTitle.innerText = type.toUpperCase();
 
-panelContent.innerHTML = furnitureLibrary[type]
-  .filter(item => item.tier === selectedBudgetTier)
-  .map(i => `
-    <div class="furniture-card" 
-         onclick="addFurniture('${i.src}', ${i.price}, '${i.name}')">
-      <img src="${i.src}">
-      <div class="furniture-name">${i.name}</div>
-      <div style="
-        font-size:12px;
-        color:#8a6b2d;
-        font-weight:500;
-      ">
-        ₹ ${i.price.toLocaleString()}
+  panelContent.innerHTML = decorLibrary[type]
+    .filter(item => item.tier === selectedBudgetTier)
+    .map(i => `
+      <div class="furniture-card" 
+           onclick="addFurniture('${i.src}', ${i.price}, 'Decor Item')">
+        <img src="${i.src}">
+        <div class="furniture-name">
+          ₹ ${i.price.toLocaleString()}
+        </div>
       </div>
-    </div>
-  `).join("");
+    `).join("");
 }
+
 
 function openFurnitureCategory(type){
   panelState = "furniture-items";
@@ -1618,14 +1747,15 @@ function updateBudgetDisplay(){
   }
 
   const map = {
-    under5: "Under ₹5L",
-    "5to10": "₹5–10L",
-    "10to20": "₹10–20L",
-    luxury: "Luxury"
+    under5: "Budget: Under ₹5 Lakhs",
+    "5to10": "Budget: ₹5 – 10 Lakhs",
+    "10to20": "Budget: ₹10 – 20 Lakhs",
+    luxury: "Budget: Luxury"
   };
 
   display.innerText = map[selectedBudgetTier];
 }
+
 function changeBudget(){
 
   if(designState.furniture.length > 0){
