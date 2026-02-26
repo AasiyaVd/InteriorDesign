@@ -445,6 +445,59 @@ img {
   background:#f5f4f2;
   letter-spacing:.5px;
 }
+
+/* ===== NAV LUXURY PROGRESS BAR ===== */
+
+.nav-budget-wrapper{
+  width:160px;
+}
+
+.nav-budget-bar{
+  width:100%;
+  height:14px;
+  background:rgba(255,255,255,0.15);
+  border-radius:20px;
+  overflow:hidden;
+  position:relative;
+}
+
+#budgetFill{
+  height:100%;
+  width:0%;
+  border-radius:20px;
+  position:relative;
+
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.2) 0px,
+      rgba(255,255,255,0.2) 8px,
+      rgba(255,255,255,0.08) 8px,
+      rgba(255,255,255,0.08) 16px
+    ),
+    linear-gradient(45deg,#4b0007,#a67c2d);
+
+  background-size:40px 40px, 100% 100%;
+  animation: moveStripes 2s linear infinite;
+  transition: width .4s ease;
+}
+
+#budgetPercent{
+  position:absolute;
+  right:6px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:15px;
+  color:#fff;
+  font-weight:500;
+}
+
+@keyframes moveStripes{
+  from { background-position: 0 0; }
+  to   { background-position: 40px 0; }
+}
+
+
 </style>
 </head>
 
@@ -473,8 +526,11 @@ img {
   <div class="nav-right">
 <div class="nav-budget-wrapper">
   <div class="nav-budget-bar">
-    <div id="budgetFill"></div>
+    <div id="budgetFill">
+      <span id="budgetPercent"></span>
+    </div>
   </div>
+
 </div>
 <button class="render-nav-btn" onclick="goToPreview()" type="button">Preview</button>
 
@@ -1023,7 +1079,13 @@ if(!roomReady){
     showCanvasError("Please upload or select a room image first");
     return;
   }
-
+  // 🚫 Budget Check
+  if(currentBudgetLimit !== Infinity){
+    if(totalUsedBudget + price > currentBudgetLimit){
+      showCanvasError("Budget exceeded!");
+      return;
+    }
+  }
   const empty = canvas.querySelector(".empty-state");
   if (empty) empty.remove();
   saveHistory();
@@ -1034,6 +1096,7 @@ if(!roomReady){
 wrapper.className = "canvas-wrapper design-item";
   wrapper.style.left = "440px";
   wrapper.style.top = "220px";
+  wrapper.dataset.price = price;
 
   
   // IMAGE BOX (THIS CLIPS THE COLOR)
@@ -1059,8 +1122,9 @@ img.dataset.id = itemId;
   del.innerHTML = "&times;";
   del.onclick = (e)=>{
     e.stopPropagation();
-    wrapper.remove();
-    selectedWrapper = null;
+totalUsedBudget -= price;
+updateBudgetBar();
+wrapper.remove();
     selectedItem = null;
     hideColorPalette();
     saveHistory();
@@ -1089,6 +1153,9 @@ const item = {
 
 designState.furniture.push(item); // only this
 persistDesignState();
+
+  totalUsedBudget += price;
+  updateBudgetBar();
 
   // DRAG
   img.addEventListener("mousedown", e=>{
@@ -1191,10 +1258,21 @@ function selectItem(wrapper){
   delBtn.className = "delete-btn";
   delBtn.innerHTML = "✕";
 
-  delBtn.onclick = (e) => {
-    e.stopPropagation();
-    wrapper.remove();
-  };
+delBtn.onclick = (e) => {
+  e.stopPropagation();
+
+  const price = parseInt(wrapper.dataset.price) || 0;
+
+  totalUsedBudget -= price;
+  updateBudgetBar();
+
+  designState.furniture =
+    designState.furniture.filter(f => f.id != wrapper.querySelector("img").dataset.id);
+
+  persistDesignState();
+
+  wrapper.remove();
+};
   wrapper.appendChild(delBtn);
 }
 
@@ -1580,7 +1658,10 @@ async function goToPreview() {
   /* ================= SAVE ================= */
   sessionStorage.setItem("preview_before", beforeImage);
   sessionStorage.setItem("preview_after", afterImage);
-
+// 🔥 Save total cost
+sessionStorage.setItem("preview_total_cost", totalUsedBudget);
+sessionStorage.setItem("preview_budget_limit", currentBudgetLimit);
+sessionStorage.setItem("preview_budget_tier", selectedBudgetTier);
   window.location.href = "preview.html";
 }
 
@@ -1618,6 +1699,14 @@ function renderCanvas() {
   designState.furniture.forEach(item => {
     createFurnitureFromState(item);
   });
+  // 🔥 Recalculate total budget from state
+totalUsedBudget = 0;
+
+designState.furniture.forEach(item => {
+  totalUsedBudget += item.price || 0;
+});
+
+updateBudgetBar();
 }
 
 
@@ -1729,7 +1818,9 @@ function setBudget(tier, type){
 
   selectedBudgetTier = tier;
   budgetLocked = true;
-
+currentBudgetLimit = budgetLimits[tier];
+totalUsedBudget = 0;
+updateBudgetBar();
   updateBudgetDisplay();
 
   if(type === "furniture"){
@@ -1772,6 +1863,39 @@ function changeBudget(){
   budgetLocked = false;
 
   showBudgetSelection("furniture");
+}
+
+function updateBudgetBar(){
+
+  const fill = document.getElementById("budgetFill");
+  const percentText = document.getElementById("budgetPercent");
+
+  if(!selectedBudgetTier || currentBudgetLimit === Infinity){
+    fill.style.width = "0%";
+    percentText.innerText = "";
+    return;
+  }
+
+  const percent = Math.min(
+    (totalUsedBudget / currentBudgetLimit) * 100,
+    100
+  );
+
+  fill.style.width = percent + "%";
+  percentText.innerText = Math.round(percent) + "%";
+
+  if(percent < 60){
+    fill.style.background =
+      "repeating-linear-gradient(45deg,rgba(255,255,255,0.2) 0px,rgba(255,255,255,0.2) 8px,rgba(255,255,255,0.08) 8px,rgba(255,255,255,0.08) 16px),linear-gradient(45deg,#4b0007,#a67c2d)";
+  }
+  else if(percent < 85){
+    fill.style.background =
+      "repeating-linear-gradient(45deg,rgba(255,255,255,0.2) 0px,rgba(255,255,255,0.2) 8px,rgba(255,255,255,0.08) 8px,rgba(255,255,255,0.08) 16px),linear-gradient(45deg,#7a0012,#d4af37)";
+  }
+  else{
+    fill.style.background =
+      "repeating-linear-gradient(45deg,rgba(255,255,255,0.2) 0px,rgba(255,255,255,0.2) 8px,rgba(255,255,255,0.08) 8px,rgba(255,255,255,0.08) 16px),linear-gradient(45deg,#6b0008,#ffb300)";
+  }
 }
 </script>
 
