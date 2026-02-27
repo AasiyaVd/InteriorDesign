@@ -9,6 +9,9 @@ const router = express.Router();
  */
 router.post("/", authenticate, async (req, res) => {
   try {
+    console.log("USER FROM TOKEN:", req.user); 
+
+console.log("BODY RECEIVED:", req.body);
 
     const {
       city,

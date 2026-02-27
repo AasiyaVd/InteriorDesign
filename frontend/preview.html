@@ -506,7 +506,7 @@ html, body {
   </div>
 
   <!-- MAIN CTA -->
-  <div class="dock-main" onclick="goMakeItReal()">
+  <div class="dock-main" onclick="handleMakeItReal()">
     Make It Real
   </div>
 
@@ -667,6 +667,53 @@ document.getElementById("costTotal").innerText =
 <script>
   // Save the current preview URL so dashboard can reopen it
   sessionStorage.setItem("lastPreviewUrl", window.location.href);
+
+  async function handleMakeItReal() {
+  const token = sessionStorage.getItem("token");
+
+  if (!token) {
+    alert("Please login first");
+    return;
+  }
+
+  const draft = JSON.parse(sessionStorage.getItem("design_draft"));
+
+  if (!draft) {
+    alert("No design found");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:5000/api/designs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({
+        title: "Untitled Design",
+        imagePath: sessionStorage.getItem("preview_after"),
+        designState: draft
+      })
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to save design");
+    }
+
+    const data = await res.json();
+
+    // 🔥 Store saved design ID
+    sessionStorage.setItem("saved_design_id", data.design.id);
+
+    // Redirect after save
+    window.location.href = "make-it-real.html";
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to save design");
+  }
+}
 </script>
 
 
