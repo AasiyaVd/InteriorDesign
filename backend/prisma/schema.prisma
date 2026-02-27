@@ -53,7 +53,7 @@ model DesignRequest {
   designId               Int
 
   city                   String
-  budgetRange            String   // still needed (auto-calculated)
+  budgetRange            String
   designStyle            String
   propertyType           String
   roomType               String

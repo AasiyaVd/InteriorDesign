@@ -626,15 +626,15 @@ document.addEventListener("DOMContentLoaded", setupNavbarAuth);
         </div>
 
         <!-- FEATURES -->
-        <div class="footer-col">
-          <h4>FEATURES</h4>
-          <ul>
-            <li><a href="AI.html">AI Room Design</a></li>
-            <li><a href="template.html">Drag & Drop Furniture</a></li>
-            <li><a href="AI.html">Smart Recommendations</a></li>
-            <li><a href="template.html">Before & After Views</a></li>
-          </ul>
-        </div>
+      <div class="footer-col footer-brand">
+        <h4>FEATURES</h4>
+        <ul>
+          <li>AI Room Design</li>
+          <li>Drag & Drop Furniture</li>
+          <li>Smart Recommendations</li>
+          <li>Before & After Views</li>
+        </ul>
+      </div>
 
         <!-- NEWSLETTER -->
         <div class="footer-col footer-newsletter">
@@ -642,10 +642,11 @@ document.addEventListener("DOMContentLoaded", setupNavbarAuth);
             RECEIVE OUR NEWSLETTER AND DISCOVER CURATED INTERIOR STORIES AND INSPIRATIONS.
           </p>
 
-          <form class="newsletter-form">
-            <input type="email" placeholder="ENTER YOUR EMAIL*" required />
-            <button type="submit">SUBSCRIBE</button>
-          </form>
+          <form id="myForm"    class="newsletter-form">
+          <input id="myInput" type="email" placeholder="ENTER YOUR EMAIL*" required />
+          <button type="submit">SUBSCRIBE</button>
+        </form>
+
 
           <h5>FOLLOW US</h5>
           <div class="social-icons">

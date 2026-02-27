@@ -2,7 +2,8 @@ node_modules
 # Keep environment variables out of version control
 .env
 *.db
-
+# Prisma
+prisma/dev.db
 /generated/prisma
 
 STABILITY_API_KEY=sk-TqrNFZdRIZggnDterHN1aDMKfcvnbk4PEcbbKY0nOnGCkSvG
