@@ -684,7 +684,7 @@ document.getElementById("costTotal").innerText =
   }
 
   try {
-    const res = await fetch("http://localhost:5000/api/designs", {
+    const res = await fetch("http://localhost:5000/api/designs/save", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -692,7 +692,8 @@ document.getElementById("costTotal").innerText =
       },
       body: JSON.stringify({
         title: "Untitled Design",
-        imagePath: sessionStorage.getItem("preview_after"),
+image: sessionStorage.getItem("preview_after"),
+beforeImage: sessionStorage.getItem("preview_before"),
         designState: draft
       })
     });
