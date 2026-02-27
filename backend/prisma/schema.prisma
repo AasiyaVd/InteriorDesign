@@ -47,21 +47,21 @@ model Design {
 // MAKE-IT-REAL REQUEST
 // ==========================
 model DesignRequest {
-  id Int @id @default(autoincrement())
+  id                     Int      @id @default(autoincrement())
 
-  userId   Int
-  designId Int
+  userId                 Int
+  designId               Int
 
-  city        String
-  budgetRange String
-  spaceType   String
-  timeline    String
+  city                   String
+  budgetRange            String   // still needed (auto-calculated)
+  designStyle            String
+  propertyType           String
+  roomType               String
+  projectTimeline        String
+  preferredContactMethod String
 
-  designerName String
-  designerLink String?
-
-  status    String   @default("shared")
-  createdAt DateTime @default(now())
+  status                 String   @default("pending")
+  createdAt              DateTime @default(now())
 
   user   User   @relation(fields: [userId], references: [id])
   design Design @relation(fields: [designId], references: [id])
