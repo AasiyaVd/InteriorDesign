@@ -56,7 +56,6 @@ app.get("/health", (req, res) => {
 // =====================
 // START SERVER
 // =====================
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+app.listen(5000, "0.0.0.0", () => {
+  console.log("Server running on port 5000");
 });
