@@ -485,9 +485,9 @@ img {
 #budgetPercent{
   position:absolute;
   right:6px;
-  top:50%;
+  top:40%;
   transform:translateY(-50%);
-  font-size:15px;
+  font-size:13px;
   color:#fff;
   font-weight:500;
 }
@@ -641,6 +641,7 @@ console.log("LOADED DESIGN STATE =", designState);
 
 /* ========= WINDOW ONLOAD =========CHANGE2 */
 window.onload = () => {
+  
   const saved = sessionStorage.getItem("design_draft");
 
   if (saved) {
@@ -649,6 +650,15 @@ window.onload = () => {
   if (designState.roomImage) {
   roomReady = true;
  }
+
+  if (designState.budgetTier) {
+
+    selectedBudgetTier = designState.budgetTier;
+    budgetLocked = true;
+    currentBudgetLimit = budgetLimits[selectedBudgetTier];
+
+    updateBudgetDisplay();
+  }
 
   if (editorMode === "create") {
     // coming from template page
@@ -1620,7 +1630,11 @@ async function goToPreview() {
   });
 
   const afterImage = afterCanvas.toDataURL("image/png");
+const editingId = sessionStorage.getItem("editing_design_id");
 
+if (editingId) {
+  sessionStorage.setItem("preview_editing_id", editingId);
+}
   /* ================= SAVE ================= */
   sessionStorage.setItem("preview_before", beforeImage);
   sessionStorage.setItem("preview_after", afterImage);
@@ -1784,11 +1798,16 @@ function setBudget(tier, type){
 
   selectedBudgetTier = tier;
   budgetLocked = true;
-currentBudgetLimit = budgetLimits[tier];
-totalUsedBudget = 0;
-updateBudgetBar();
-  updateBudgetDisplay();
+  currentBudgetLimit = budgetLimits[tier];
+  totalUsedBudget = 0;
 
+  // 🔥 SAVE IN DESIGN STATE
+  designState.budgetTier = tier;
+
+  persistDesignState();
+
+  updateBudgetBar();
+  updateBudgetDisplay();
   if(type === "furniture"){
     openFurnitureCategories();
   } else {

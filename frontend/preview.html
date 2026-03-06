@@ -604,8 +604,9 @@ function downloadDesign(){
 
 <script>
 async function saveDesign() {
-  const beforeImage = beforeImg.src;   // 👈 TAKE DIRECTLY FROM IMG
-  const afterImage  = afterImg.src;    // 👈 TAKE DIRECTLY FROM IMG
+
+  const beforeImage = beforeImg.src;
+  const afterImage  = afterImg.src;
 
   if (!afterImage) {
     alert("No design to save.");
@@ -620,8 +621,22 @@ async function saveDesign() {
   }
 
   try {
-    const response = await fetch("http://localhost:5000/api/designs/save", {
-      method: "POST",
+
+    const editingId =
+      sessionStorage.getItem("preview_editing_id") ||
+      sessionStorage.getItem("editing_design_id");
+
+    let url = "http://localhost:5000/api/designs/save";
+    let method = "POST";
+
+    // 🔥 If editing → update
+    if (editingId) {
+      url = `http://localhost:5000/api/designs/${editingId}`;
+      method = "PUT";
+    }
+
+    const response = await fetch(url, {
+      method: method,
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
@@ -629,7 +644,7 @@ async function saveDesign() {
       body: JSON.stringify({
         title: "My Interior Design",
         image: afterImage,
-        beforeImage: beforeImage,  // 🔥 GUARANTEED VALUE
+        beforeImage: beforeImage,
         designState: JSON.parse(sessionStorage.getItem("design_draft")) || {}
       })
     });
@@ -640,7 +655,7 @@ async function saveDesign() {
       throw new Error(data.message || "Save failed");
     }
 
-    alert("Design saved successfully 💾");
+    alert(editingId ? "Design updated successfully ✨" : "Design saved successfully 💾");
 
   } catch (err) {
     console.error(err);
@@ -684,19 +699,29 @@ document.getElementById("costTotal").innerText =
   }
 
   try {
-    const res = await fetch("http://localhost:5000/api/designs/save", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token
-      },
-      body: JSON.stringify({
-        title: "Untitled Design",
-image: sessionStorage.getItem("preview_after"),
-beforeImage: sessionStorage.getItem("preview_before"),
-        designState: draft
-      })
-    });
+    const editingId = sessionStorage.getItem("preview_editing_id");
+
+let url = "http://localhost:5000/api/designs/save";
+let method = "POST";
+
+if (editingId) {
+  url = `http://localhost:5000/api/designs/${editingId}`;
+  method = "PUT";   // 🔥 update instead of create
+}
+
+const res = await fetch(url, {
+  method: method,
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token
+  },
+  body: JSON.stringify({
+    title: "Untitled Design",
+    image: sessionStorage.getItem("preview_after"),
+    beforeImage: sessionStorage.getItem("preview_before"),
+    designState: draft
+  })
+});
 
     if (!res.ok) {
       throw new Error("Failed to save design");

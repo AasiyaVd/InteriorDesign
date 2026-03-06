@@ -73,5 +73,68 @@ router.get("/", authenticate, async (req, res) => {
   }
 });
 
+router.put("/:id", authenticate, async (req, res) => {  try {
+    const userId = Number(req.user.id);
+    const designId = Number(req.params.id);
 
+    const { title, image, beforeImage, designState } = req.body;
+
+    const design = await prisma.design.update({
+      where: {
+        id: designId
+      },
+      data: {
+        title: title || "Untitled Design",
+        imagePath: image,
+        beforeImage: beforeImage,
+        designState: designState
+      }
+    });
+
+    res.json({
+      message: "Design updated successfully",
+      design
+    });
+
+  } catch (err) {
+    console.error("Update design error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.delete("/:id", authenticate, async (req, res) => {
+  try {
+
+    const designId = Number(req.params.id);
+    const userId = req.user.id;
+
+    const design = await prisma.design.findUnique({
+      where: { id: designId }
+    });
+
+    if (!design) {
+      return res.status(404).json({ message: "Design not found" });
+    }
+
+    if (design.userId !== userId) {
+      return res.status(403).json({ message: "Not authorized to delete this design" });
+    }
+
+    /* 🔥 STEP 1: delete related Make-It-Real requests */
+    await prisma.designRequest.deleteMany({
+      where: { designId: designId }
+    });
+
+    /* 🔥 STEP 2: delete the design itself */
+    await prisma.design.delete({
+      where: { id: designId }
+    });
+
+    res.json({ message: "Design deleted successfully" });
+
+  } catch (err) {
+    console.error("Delete design error:", err);
+    res.status(500).json({ message: "Server error deleting design" });
+  }
+});
 module.exports = router; // ✅ REQUIRED

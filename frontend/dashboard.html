@@ -629,6 +629,37 @@
     }
   }
 
+
+/* DELETE ICON */
+.design-card{
+  position:relative;
+}
+
+.delete-btn{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:rgba(0,0,0,0.65);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  cursor:pointer;
+  opacity:0;
+  transition:opacity .25s ease;
+}
+
+.design-card:hover .delete-btn{
+  opacity:1;
+}
+
+.delete-btn:hover{
+  background:#7a0c14;
+}
     </style>
   </head>
 
@@ -939,16 +970,53 @@
         const card = document.createElement("div");
         card.className = "design-card";
 
-        card.innerHTML = `
-  <img src="${design.imagePath}" 
-       alt="Design Image"
-       onerror="this.style.display='none'" />
-  <div class="design-info">
-    <h5>${design.title}</h5>
-    <span>${new Date(design.createdAt).toDateString()}</span>
-  </div>
-`;
+card.innerHTML = `
+<div class="delete-btn" title="Delete Design">
+  <i class="fas fa-trash"></i>
+</div>
 
+<img src="${design.imagePath}" 
+     alt="Design Image"
+     onerror="this.style.display='none'" />
+
+<div class="design-info">
+  <h5>${design.title}</h5>
+  <span>${new Date(design.createdAt).toDateString()}</span>
+</div>
+`;
+const deleteBtn = card.querySelector(".delete-btn");
+
+deleteBtn.onclick = async (e) => {
+  e.stopPropagation(); // prevent opening preview
+
+  const confirmDelete = confirm(
+    "Are you sure you want to permanently delete this design?"
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    const token = sessionStorage.getItem("token");
+
+    const res = await fetch(
+      `http://localhost:5000/api/designs/${design.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (!res.ok) throw new Error("Delete failed");
+
+    card.remove(); // remove from dashboard instantly
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to delete design");
+  }
+};
 
   card.querySelector("img").onclick = () => {
     lightboxImg.src = design.imagePath;
@@ -985,7 +1053,8 @@
     );
 
     sessionStorage.setItem("editor_mode", "edit");
-
+  // 🔥 ADD THIS
+  sessionStorage.setItem("editing_design_id", designId);
     window.location.href = "furniture.html";
   };
 
